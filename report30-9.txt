@@ -1,0 +1,13 @@
+We basically setup cordova and ran some sample code on it.
+
+ServerSide script handling:
+	Using PHP & JSON
+	Client Side script handling:
+	Using Javascript,jquery, ajax
+
+
+ 
+
+	The theme used by the framework, requires that elements used 	in the CSS and HTML be mentioned before hand. 
+
+The week is basically focused on creating database schema and choosing the payment gateway, Which will be posted as a seperate document.
