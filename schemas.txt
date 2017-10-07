@@ -1,0 +1,210 @@
+
+----------------------user--------
+{
+    "title": "user",
+    "type": "object",
+    "properties": {
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "age": {
+            "description": "Age in years",
+            "type": "integer",
+            "minimum": 0
+        }
+		"email": {
+            "type": "string",
+            "contains": "@"
+        }
+		"actor": {
+            "type": "string",
+            "enum": ["customer","vendor","transporter"]
+        }
+		"phone": {
+            "type": "integer",
+        }
+    },
+    "required": [ALL]
+}
+----------------------payment-----------------------
+
+{
+    "title": "payment",
+    "type": "object",
+    "properties": {
+        "request_id": {
+            "type": "string"
+        },
+        "from_name": {
+            "type": "user"
+        },
+        "to_name": {
+            "type": "user",
+        },
+		"timestamp": {
+            "type": "date",
+        },
+		"pending": {
+            "type": "boolean",
+			"default" : "false"
+        },
+		"amount": {
+            "type": "number",
+        },
+		"transaction_info": {
+		    "type" : "bank_id"
+		}
+		
+		
+    },
+    "required": [ALL]
+}
+
+----------------------bank_id-----------------------
+
+{
+    "title": "bank_id",
+    "type": "object",
+    "properties": {
+        "transaction_id": {
+            "type": "string"
+        },
+        "timestamp": {
+            "type": "date"
+        },
+        "organization_name": {
+            "type": "string",
+        },
+        "payment_method": {
+            "type": "string",
+			"enum": "internetb, creditcard, debitcard"
+		},		
+		
+    },
+    "required": [ALL]
+}
+
+----------------------vendor/user/transporter-----------------------
+
+{
+    "title": "vendor",
+    "type": "object",
+    "properties": {
+        "email": {
+            "type": "string"
+        },
+        "location": {
+            "type": "location"
+        },
+        "organization_name": {
+            "type": "string",
+			"description" : "basically just the name"
+		},
+		
+		
+    },
+    "required": [if <vendor,customer> "location","email","organization_name" else "email", "organization_name"]
+}
+
+--------------------------transaction_record--------------
+{
+    "title": "products_exchange",
+    "type": "object",
+    "properties": {
+        "request_id": {
+            "type": "integer"
+        },
+        "description": {
+            "type": "string"
+        },
+        "timestamp": {
+            "type": "date"
+        },
+        "vendor_id": {
+            "type": "string"
+			"description" : "the email of the vendor"
+        },
+		"customer_id": {
+            "type": "string"
+			"description" : "the email of the customer"
+		},
+		"transporter_id": {
+            "type": "string"
+			"description" : "the email of the transporter"
+		}
+		"state": {
+            "type": "boolean"
+			"default": "false"
+        }
+		
+	},
+    "required": ["vendor_id", "customer_id", "transporter_id", "request_id"]
+}
+
+
+----------------------gps----------------
+{
+    "title": "Gps",
+    "type": "object",
+    "properties": {
+        "session_id": {
+            "type": "string"
+        },
+        "location": {
+            "type": "location"
+        }
+    },
+    "required": ["session_id", "location"]
+}
+
+--------------------------location--------------
+{
+    "title": "location",
+    "type": "object",
+    "properties": {
+        "latitiude": {
+            "type": "number"
+        },
+        "longitude": {
+            "type": "number"
+        },
+		"address": {
+            "type": "string"
+        },
+		"postal_code": {
+            "type": "integer"
+        }
+	},
+    "required": ["latitude", "longitude"]
+}
+
+
+--------------------------customer_feedback--------------
+{
+    "title": "customer_feedback",
+    "type": "object",
+    "properties": {
+        "user": {
+            "type": "string"
+        },
+        "comments": {
+            "type": "string"
+        },
+		"service_feedback": {
+            "type": "nummber"
+			"minimum" : 1
+			"maximum" : 5
+		},
+		"postal_code": {
+            "type": "integer"
+        }
+		"phone": {
+            "type": "integer",
+        }
+	},
+    "required": ["latitude", "longitude"]
+}
+
