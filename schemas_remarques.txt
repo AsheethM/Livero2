@@ -1,0 +1,9 @@
+DATABASE : MYSQL
+
+----------------------user--------
+
+age must be replaced by date_of_birth else we'll have to change the age every time in the database
+
+Do we need to store/stock bank information from the user ?
+
+

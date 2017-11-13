@@ -1,0 +1,12 @@
+-----------------Bidding System-------------------
+
+Actions :
+
+  * Pour le transporter:
+      - Faire une enchère pour le prix de la transaction
+      - Voir le prix (en cours) de la transaction
+
+  * Pour le client :
+      - Accepter le prix de la transaction
+
+  * Mettre en place un timer afin de pouvoir mettre fin à une enchère
