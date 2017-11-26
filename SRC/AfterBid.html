@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script src="js/index.js"></script>
+    <title>After Bid</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var result = window.localStorage.getItem("bid_return");
+            console.log(result);
+            if (result === "true")
+            {
+                $("#after-bid-text").html("Thank you for bidding on this order! </br> You wil be notified if you are selected");
+            }
+            else
+            {
+                $("#after-bid-text").html("Error on your bid");
+            }
+            window.localStorage.removeItem("bid_return");
+
+            $("#btn-dashbord").click(function () {
+                window.location.href="index.html";
+            })
+        })
+    </script>
+    <p>
+        <div id = "after-bid-text"></div>
+        <button type="button" id="btn-dashbord">Dashbord</button>
+    </p>
+</body>
+</html>
