@@ -7,7 +7,7 @@
 
   try
   {
-    $pdo = new PDO('mysql:host=localhost;port=8889;dbname=PRI;', 'root', 'Regis93130');
+    $pdo = new PDO('mysql:host=localhost;port=8889;dbname=PRI;', 'root', '');
 	//$response['success'] = true;
     //$response['message'] = "Database Connection : OK";
 

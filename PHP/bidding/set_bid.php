@@ -7,7 +7,7 @@ $response = array();
 
 try
 {
-    $pdo = new PDO('mysql:host=localhost;port=8889;dbname=PRI;', 'root', 'Regis93130');
+    $pdo = new PDO('mysql:host=localhost;port=8889;dbname=PRI;', 'root', '');
     $request = $pdo->prepare("UPDATE transaction SET price = :new_price, id_transporter = :id_deliverer WHERE id = :i AND price > :new_price");
     $request->bindParam(':i', $id_transaction);
     $request->bindParam(':new_price', $new_price);

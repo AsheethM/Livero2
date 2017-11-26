@@ -6,7 +6,7 @@ $response = array();
 
 try
 {
-    $pdo = new PDO('mysql:host=localhost;port=8889;dbname=PRI;', 'root', 'Regis93130');
+    $pdo = new PDO('mysql:host=localhost;port=8889;dbname=PRI;', 'root', '');
     $request = $pdo->prepare("SELECT * FROM TRANSACTION ");
     $exec = $request->execute();
 

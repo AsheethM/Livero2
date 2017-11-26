@@ -10,7 +10,7 @@
         {
             try
             {
-                $pdo = new PDO('mysql:host=localhost;port=8889;dbname=PRI;', 'root', 'regis93130');
+                $pdo = new PDO('mysql:host=localhost;port=8889;dbname=PRI;', 'root', '');
                 $bdd_request = $pdo->prepare("INSERT INTO  transaction(id_client, id_shop, timer, price, is_OK) VALUES (:customer, :shop, :timer, 0, 0)");
                 $bdd_request->bindParam(':customer', $customer_id);
                 $bdd_request->bindParam(':shop', $shop_id);
