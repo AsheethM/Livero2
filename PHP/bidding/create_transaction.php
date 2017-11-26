@@ -4,9 +4,9 @@
 
     // Use GET to test without a client but will be changed to a POST method
 
-    if (isset($_GET["id_customer"]) && isset($_GET["id_shop"]))
+    if (isset($_POST["id_customer"]) && isset($_POST["id_shop"]))
     {
-        if (is_int($_GET["id_customer"]) && is_int($_GET["id_shop"]))
+        if (is_int($_POST["id_customer"]) && is_int($_POST["id_shop"]))
         {
             try
             {

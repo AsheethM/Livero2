@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <!--<link rel="stylesheet" type="text/css" href="css/index.css">-->
+    <title>Orders</title>
+    <!--<script src="js/jquery.mobile-1.4.5.min.js"></script>-->
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script src="js/index.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $.ajax({
+               url: 'http://localhost/get_orders.php',
+               method:'get',
+               dataType: 'json',
+               success : function (data) {
+                   if (data.success)
+                   {
+                       $.each(data.results,function (index, value) {
+                           $("#list-orders").append(<li> index+": "+value.id+" "+value.timer</li>):
+                       });
+                   }
+                   else
+                   {
+                        $("#err-message").html("Error with orders");
+                        setTimeout(function () {
+                            $("#err-message").fadeOut('fast');
+                        }, 3000)
+                   }
+               }
+           });
+        });
+    </script>
+    <div id = 'div-orders'>
+        <ul id="list-orders">
+        </ul>
+    </div>
+    <div id="err-message"></div>
+</body>
+</html>
