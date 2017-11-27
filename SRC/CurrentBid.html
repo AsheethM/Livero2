@@ -35,7 +35,7 @@
         <title>Test Bid</title>
 
         <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
-        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        <!--<script src="js/jquery.mobile-1.4.5.min.js"></script>-->
         <script src="js/index.js"></script>
 
     </head>
@@ -54,13 +54,39 @@
         <script type="text/javascript">
             var server_ip = window.localStorage.getItem("server-ip");
 
+            function strToDate(str){
+                // Str : Year -Month-Day Hour:Minutes:Seconds
+
+                var tmp1 = str.split("-");
+
+                var datetime = new Date();
+                var year = parseInt(tmp1[0]);
+                datetime.setYear(year);
+
+                var tmp2 = tmp1[2].split(" ");
+
+                var month = parseInt(tmp1[1]) - 1; // Month January : 0
+
+                var day = parseInt(tmp2[0]);
+                datetime.setMonth(month, day);
+
+                var tmp3 = tmp2[1].split(":");
+
+                var hours = parseInt(tmp3[0]);
+                var mins = parseInt(tmp3[1]);
+                var secs = parseInt(tmp3[2]);
+                datetime.setHours(hours, mins, secs);
+                return datetime;
+            }
+
             $(document).ready(function () {
                 var CommandId = localStorage.getItem("command-id");
-                //var CommandId = 4;
-                window.localStorage.removeItem("command-id");
+                var CommmandPrice = 0;
+                var CommandTimer;
+
+
                 console.log(CommandId);
                 $.ajax({
-                    //url: 'http://192.168.1.29/PRI/PHP/bidding/get_current_bid.php',
                     url: 'http://'+server_ip+'/get_current_bid.php',
                     method:'get',
                     data: { 'id_transaction':CommandId },
@@ -68,10 +94,28 @@
                     success : function (data) {
                         if (data.success)
                         {
-                                console.log(data.results[0]);
+                                CommmandPrice = parseInt(data.results[0].price);
+                                CommandTimer = strToDate(data.results[0].timer);
 
-                                $("#current-bid").text(""+data.results[0].price);
-                                $("#end-bid-time").html(""+data.results[0].timer);
+                                var datenow = new Date();
+
+                                if (datenow < CommandTimer)
+                                {
+                                    $("#current-bid").text("" + data.results[0].price);
+                                    $("#end-bid-time").html("" + data.results[0].timer);
+
+                                }
+                                else
+                                {
+                                    $("#btn-get-bid").prop("disabled", true);
+                                    $("#err-message").html("Bidding time Over");
+                                    setTimeout(function () {
+                                        $("#err-message").html("Redirected to index");
+                                    }, 3000)
+                                    setTimeout(function () {
+                                        window.location.href="index.html";
+                                    }, 5000)
+                                }
                         }
                         else
                         {
@@ -82,8 +126,7 @@
                 });
 
                 $("#btn-get-bid").click(function () {
-                    //var CommandId = localStorage.getItem("command-id");
-                    var CommandId = 4;
+                    var CommandId = parseInt(window.localStorage.getItem("command-id"));
                     var new_price = parseInt($("#txf-bid").val());
                     var current_price = parseInt($("#current-bid").text());
                     if (isNaN(new_price) || new_price < 0)
@@ -91,8 +134,9 @@
                         $("#err-message").html("Entrez un nombre positif");
                         return;
                     }
-
-                    if (new_price < current_price) {
+                    var datenow = new Date();
+                    if (new_price < current_price && datenow < CommandTimer)
+                    {
                         $.ajax(
                             {
                                 url: 'http://'+server_ip+'/set_bid.php',
@@ -104,16 +148,18 @@
                                 },
                                 dataType: 'json',
                                 success: function (data) {
-                                    console.log(data.success);
-                                    if (data.success())
+                                    if (data.success)
                                     {
+                                        console.log("Bid_return : Success");
                                         window.localStorage.setItem("bid_return", "true");
                                     }
                                     else
                                     {
+                                        console.log("Bid_return : Error");
                                         window.localStorage.setItem("bid_return", "false");
                                     }
 
+                                    window.localStorage.removeItem("command-id");
                                     window.location.href = "AfterBid.html"
                                 }
                             }

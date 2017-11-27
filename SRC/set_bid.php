@@ -1,4 +1,3 @@
-
 <?php
 
 header('Content-Type: application/json');
@@ -16,9 +15,7 @@ try
     //$id_deliverer = $_GET["id_deliverer"];
     $new_price = intval($_GET["new_price"]);
 
-    //$id_transaction = 4;
     $id_deliverer = 3;
-    //$new_price = -1;
 
     $request->execute();
     $count = $request->rowCount();
@@ -40,6 +37,4 @@ catch(Exception $e)
 }
 
 echo json_encode($response);
-
-
 ?>

@@ -13,10 +13,10 @@
 <body>
     <script type="text/javascript">
         var server_ip = window.localStorage.getItem("server-ip");
-
         $(document).ready(function () {
-           $.ajax({
-               //url: 'http://192.168.1.29/PRI/get_orders.php',
+            console.log(server_ip);
+            $.ajax({
+               //url: 'http://192.168.1.29/PRI/get_orders.php'
                url: 'http://'+server_ip+'/get_orders.php',
                method:'get',
                dataType: 'json',
@@ -54,7 +54,9 @@
 </body>
 <script>
     $("body").delegate("button", "click", function () {
-        localStorage.setItem("command-id", $(this).attr("id"));
+        console.log("ID TRANS"+$(this).attr("id"));
+        window.localStorage.setItem("command-id", $(this).attr("id"));
+        console.log(window.localStorage.getItem("command-id"));
         window.location.href="CurrentBid.html"
     });
 </script>
