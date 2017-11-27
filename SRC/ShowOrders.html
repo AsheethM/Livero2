@@ -12,18 +12,28 @@
 </head>
 <body>
     <script type="text/javascript">
+        var server_ip = window.localStorage.getItem("server-ip");
+
         $(document).ready(function () {
            $.ajax({
-               url: 'http://192.168.1.29/PRI/get_orders.php',
+               //url: 'http://192.168.1.29/PRI/get_orders.php',
+               url: 'http://'+server_ip+'/get_orders.php',
                method:'get',
                dataType: 'json',
                success : function (data) {
                    if (data.success)
                    {
                        console.log("Entered")
-                       /*$.each(data.results,function (index, value) {
-                           $("#list-orders").append(<li> index+": "+value.id+" "+value.timer</li>):
-                       });*/
+                       $.each(data.results,function (index, value) {
+                           $("#list-orders").append(
+                               "<li>"
+                                   +"<p>" +
+                                        "SHOP :"+value.shopname
+                                        + " <button type = 'button' id='"+value.id+"'>OK</button>"
+                                   +"</p>"
+                               +"</li>"
+                           );
+                       });
                    }
                    else
                    {
@@ -42,4 +52,10 @@
     </div>
     <div id="err-message"></div>
 </body>
+<script>
+    $("body").delegate("button", "click", function () {
+        localStorage.setItem("command-id", $(this).attr("id"));
+        window.location.href="CurrentBid.html"
+    });
+</script>
 </html>

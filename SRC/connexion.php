@@ -1,5 +1,13 @@
 <?php
 
-$pdo = new PDO('mysql:host=localhost;port=3306;dbname=PRI;', 'root', '');
+try
+{
+    $pdo = new PDO('mysql:host=localhost;dbname=PRI;', 'root', 'Regis93130');
+}
+catch (Exception $e)
+{
+    echo "Connection failed";
+}
+
 
 ?>

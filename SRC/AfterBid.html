@@ -11,11 +11,14 @@
 </head>
 <body>
     <script type="text/javascript">
+        var server_ip = window.localStorage.getItem("server-ip");
+
         $(document).ready(function () {
             var result = window.localStorage.getItem("bid_return");
             console.log(result);
             if (result === "true")
             {
+                console.log(result);
                 $("#after-bid-text").html("Thank you for bidding on this order! </br> You wil be notified if you are selected");
             }
             else

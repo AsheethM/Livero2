@@ -33,8 +33,9 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <!--<link rel="stylesheet" type="text/css" href="css/index.css">-->
         <title>Test Bid</title>
-        <!--<script src="js/jquery.mobile-1.4.5.min.js"></script>-->
+
         <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
         <script src="js/index.js"></script>
 
     </head>
@@ -51,13 +52,16 @@
         </div>
 
         <script type="text/javascript">
+            var server_ip = window.localStorage.getItem("server-ip");
+
             $(document).ready(function () {
                 var CommandId = localStorage.getItem("command-id");
                 //var CommandId = 4;
                 window.localStorage.removeItem("command-id");
                 console.log(CommandId);
                 $.ajax({
-                    url: 'http://192.168.1.29/PRI/PHP/bidding/get_current_bid.php',
+                    //url: 'http://192.168.1.29/PRI/PHP/bidding/get_current_bid.php',
+                    url: 'http://'+server_ip+'/get_current_bid.php',
                     method:'get',
                     data: { 'id_transaction':CommandId },
                     dataType: 'json',
@@ -91,7 +95,7 @@
                     if (new_price < current_price) {
                         $.ajax(
                             {
-                                url: 'http://192.168.1.29/PRI/PHP/bidding/set_bid.php',
+                                url: 'http://'+server_ip+'/set_bid.php',
                                 method: 'get',
                                 data: {
                                     'id_transaction': CommandId,
@@ -100,8 +104,16 @@
                                 },
                                 dataType: 'json',
                                 success: function (data) {
-                                    window.localStorage.setItem("bid_return", "true");
-                                    var result = window.localStorage.getItem("bid_return");
+                                    console.log(data.success);
+                                    if (data.success())
+                                    {
+                                        window.localStorage.setItem("bid_return", "true");
+                                    }
+                                    else
+                                    {
+                                        window.localStorage.setItem("bid_return", "false");
+                                    }
+
                                     window.location.href = "AfterBid.html"
                                 }
                             }

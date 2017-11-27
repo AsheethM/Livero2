@@ -7,7 +7,7 @@ $response = array();
 try
 {
     require_once("connexion.php");
-    $request = $pdo->prepare("SELECT * FROM TRANSACTION ");
+    $request = $pdo->prepare("SELECT  t.id, s.shopname FROM transaction t INNER JOIN Shop s ON t.id_shop = s.id");
     $request->execute();
 
     if ($request->rowCount() > 0)
@@ -27,6 +27,7 @@ catch (Exception $e)
     $response['success'] = false;
     $response['message'] = "Database Connection : KO";
 }
+
 echo json_encode($response);
 
 
