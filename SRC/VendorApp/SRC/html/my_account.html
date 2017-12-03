@@ -1,16 +1,129 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="stylesheet" type="text/css" href="css/index.css">
-    <title>DashBoard</title>
+    <title>MY ACCOUNT</title>
     <script src="js/jquery-3.2.1.js"></script>
     <title>MY ACCOUNT</title>
     <script type="text/javascript">
+        var server_ip = localStorage.getItem("server_ip");
+        var user_id = localStorage.getItem("user_id");
+        var shop_id = localStorage.getItem("shop_id");
+
+        alert("Hello World");
+
         $(document).ready(function () {
+            $.ajax({
+                url : "http://"+server_ip+"Vendor/Account/get_account.php",
+                method:"post",
+                data:{'user_id' : user_id, 'shop_id' : shop_id},
+                dataType:"json",
+                success : function (data) {
+                    if (data.success)
+                    {
+                        console.log(data.results[0]);
+                        $("#user_firstname").val(data.results[0].firstname);
+                        $("#user_lastname").val(data.results[0].lastname);
+                        $("#user_email").val(data.results[0].email);
+                        //$("#user_birthdate").setAttribute("value", data.results[0].birthdate);
+                        $("#user_phone").val(data.results[0].user_phone);
+
+                        $("#shop_name").val(data.results[0].shop_name);
+                        $("#shop_address").val(data.results[0].shop_address);
+                        $("#shop_postcode").val(data.results[0].shop_postcode);
+                        $("#shop_town").val(data.results[0].shop_town);
+                        $("#shop_phone").val(data.results[0].shop_phone);
+                    }
+                    else
+                    {
+                        $("#div-error").html("<p>"+data.message+"</p>");
+                    }
+
+                },
+                error : function () {
+                    $("#div-error").html("<p>Request Get Account : KO</p>");
+                }
+            });
+
+
+            $("#btn-update-account").click(function () {
+                var user_firstname = $("#user_firstname").val();
+                var user_lastname = $("#user_lastname").val();
+                var user_email = $("#user_email").val();
+                var user_birthdate = $("#user_birthdate").val();
+                var user_phone = $("#user_phone").val();
+
+                var shop_name = $("#shop_name").val();
+                var shop_address = $("#shop_address").val();
+                var shop_postcode = $("#shop_postcode").val();
+                var shop_town = $("#shop_town").val();
+                var shop_phone = $("#shop_phone").val();
+
+
+                $.ajax({
+                   url : "http://"+server_ip+"Vendor/Account/update_account.php",
+                   method:"post",
+                   data:{'user_id' : user_id, 'shop_id' : shop_id, 'user_firstname' : user_firstname, 'user_lastname' : user_lastname,
+                   'user_email' : user_email, 'user_birthdate' : user_birthdate, 'user_phone' : user_phone,
+                   'shop_name': shop_name, 'shop_address' : shop_address, 'shop_postcode' : shop_postcode,
+                   'shop_town' : shop_town, 'shop_phone' : shop_phone},
+                   dataType:"json",
+                   success : function (data) {
+                       if (data.success) {
+                           alert("Hello World");
+                       }
+                       else
+                       {
+                           $("#div-error").html("<p>"+data.message+"</p>");
+                       }
+
+                   },
+                   error : function () {
+                       $("#div-error").html("<p>Request Update Account : KO 3</p>");
+                   }
+               });
+            });
 
         });
     </script>
 </head>
 <body>
+    <h1> MY ACCOUNT</h1>
+    <div>
+        <div id="div-user_infos">
+            <p>
+                <h2> USER INFORMATION</h2>
+                <br>
+                Firstname : <input type="text" id="user_firstname">
+                <br>
+                Lastname : <input type="text" id="user_lastname">
+                <br>
+                Email : <input type="email" id="user_email">
+                <br>
+                Birthdate : <input type="date" id="user_birthdate">
+                <br>
+                Phone : <input type="tel" id="user_phone">
+                <br>
+            </p>
+        </div>
+        <div id="div-shop_infos">
+            <p>
+                <h2> SHOP INFORMATION</h2>
+                <br>
+                Shopname : <input type="text" id="shop_name">
+                <br>
+                Address : <input type="text" id="shop_address">
+                <br>
+                PostCode: <input type="email" id="shop_postcode">
+                Town : <input type="text" id="shop_town">
+                <br>
+                Phone : <input type="tel" id="shop_phone">
+                <br>
+            </p>
+        </div>
+        <button type="button" id="btn-update-account">UPDATE</button>
+    </div>
+    <div id="div-error">
 
+    </div>
 </body>
 </html>
