@@ -9,22 +9,22 @@ CREATE TABLE IF NOT EXISTS user
   lastname VARCHAR(255) NOT NULL ,
   firstname VARCHAR(255) NOT NULL ,
   birthdate DATE NOT NULL ,
-  mail VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
   phone VARCHAR(10) NOT NULL,
   role INT NOT NULL , # 1 : customer 2:vendor 4:deliverer 3:customer - vendor 5: customer - deliverer 6: vendor - deliverer 7 : all roles
   PRIMARY KEY (id)
 );
 
-INSERT INTO user (id,lastname, firstname, birthdate, mail, phone, role)
+INSERT INTO user (id,lastname, firstname, birthdate, email, phone, role)
 VALUES (1, 'Titus', 'Regis', '28/12/1995', 'regis.titus@epita.fr', '0123456789', 1);
 
-INSERT INTO user (id, lastname, firstname, birthdate, mail, phone, role)
+INSERT INTO user (id, lastname, firstname, birthdate, email, phone, role)
 VALUES (2, 'Sehil', 'Yvael', '10/11/1992', 'yvael.sehil@epita.fr', '0123456789', 2);
 
-INSERT INTO user (id, lastname, firstname, birthdate, mail, phone, role)
+INSERT INTO user (id, lastname, firstname, birthdate, email, phone, role)
 VALUES (3, 'Pelletier', 'Nicolas', '10/02/1993', 'nicolas.pelletier@epita.fr', '0123456789', 4);
 
-INSERT INTO user (id, lastname, firstname, birthdate, mail, phone, role)
+INSERT INTO user (id, lastname, firstname, birthdate, email, phone, role)
 VALUES (4, 'Seridj', 'Sadek', '14/03/1995', 'sadek.seridj@epita.fr', '0123456789', 3);
 
 
@@ -33,14 +33,16 @@ CREATE TABLE IF NOT EXISTS shop
   id INT NOT NULL AUTO_INCREMENT,
   owner_id INT NOT NULL ,
   shop_name VARCHAR(255) NOT NULL ,
-  adress VARCHAR(255) NOT NULL ,
+  address VARCHAR(255) NOT NULL ,
+  postcode VARCHAR(255) NOT NULL,
+  town VARCHAR(255) NOT NULL ,
   phone VARCHAR(10) NOT NULL ,
   PRIMARY KEY (id),
   FOREIGN KEY (owner_id) REFERENCES user(id)
 );
 
-INSERT INTO shop (id, owner_id, shop_name, adress, phone) VALUES (1, 2, 'Yvael_Shop', 'Asnieres', '0123456789');
-INSERT INTO shop (id, owner_id, shop_name, adress, phone) VALUES (2, 4, 'Sadek_Shop', 'Paris-13', '0123456789');
+INSERT INTO shop (id, owner_id, shop_name, address, postcode, town, phone) VALUES (1, 2, 'Yvael_Shop', '10 Rue Michel','93025','Asnieres', '0123456789');
+INSERT INTO shop (id, owner_id, shop_name, address, postcode, town, phone) VALUES (2, 4, 'Sadek_Shop','15 Rue Seridj','75013', 'Paris', '0123456789');
 
 CREATE TABLE IF NOT EXISTS product
 (
