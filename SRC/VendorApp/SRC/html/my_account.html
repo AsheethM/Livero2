@@ -9,9 +9,9 @@
         var user_id = localStorage.getItem("user_id");
         var shop_id = localStorage.getItem("shop_id");
 
-        alert("Hello World");
-
         $(document).ready(function () {
+            $("#div-error").hide();
+
             $.ajax({
                 url : "http://"+server_ip+"Vendor/Account/get_account.php",
                 method:"post",
@@ -20,17 +20,16 @@
                 success : function (data) {
                     if (data.success)
                     {
-                        console.log(data.results[0]);
                         $("#user_firstname").val(data.results[0].firstname);
                         $("#user_lastname").val(data.results[0].lastname);
                         $("#user_email").val(data.results[0].email);
-                        //$("#user_birthdate").setAttribute("value", data.results[0].birthdate);
+                        $("#user_birthdate").val(data.results[0].birthdate);
                         $("#user_phone").val(data.results[0].user_phone);
 
                         $("#shop_name").val(data.results[0].shop_name);
-                        $("#shop_address").val(data.results[0].shop_address);
-                        $("#shop_postcode").val(data.results[0].shop_postcode);
-                        $("#shop_town").val(data.results[0].shop_town);
+                        $("#shop_address").val(data.results[0].address);
+                        $("#shop_postcode").val(data.results[0].postcode);
+                        $("#shop_town").val(data.results[0].town);
                         $("#shop_phone").val(data.results[0].shop_phone);
                     }
                     else
@@ -68,17 +67,20 @@
                    'shop_town' : shop_town, 'shop_phone' : shop_phone},
                    dataType:"json",
                    success : function (data) {
-                       if (data.success) {
-                           alert("Hello World");
+                       if (data.success)
+                       {
+                           location.href="my_account.html";
                        }
                        else
                        {
                            $("#div-error").html("<p>"+data.message+"</p>");
+                           $("#div-error").show();
                        }
 
                    },
                    error : function () {
                        $("#div-error").html("<p>Request Update Account : KO 3</p>");
+                       $("#div-error").show();
                    }
                });
             });

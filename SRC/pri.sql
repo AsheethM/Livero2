@@ -62,8 +62,10 @@ INSERT INTO product(id, product_name, shop_id, description, price)
 VALUES (1, 'Lays', 1, 'Best Chips Ever', 3);
 
 INSERT INTO product(id, product_name, shop_id, description, price)
-VALUES (2, 'Cake', 1, 'Best Cake Ever', 2);
-
+VALUES
+(2, 'Cake', 1, 'Best Cake Ever', 2),
+(3, 'Shit', 2, 'De la Bonne Gros', 30),
+(4, 'PS4', 2, 'Bon pour FIFA', 300);
 
 CREATE TABLE IF NOT EXISTS transaction
 (
@@ -91,23 +93,22 @@ CREATE TABLE IF NOT EXISTS command
   id INT NOT NULL AUTO_INCREMENT,
   product_id INt NOT NULL,
   transaction_id INT NOT NULL,
+  quantity INT NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (product_id) REFERENCES product(id),
   FOREIGN KEY (transaction_id) REFERENCES transaction(id)
 );
 
-INSERT INTO command (id, product_id, transaction_id)
-VALUES (1, 1, 1);
+INSERT INTO command (id, product_id, transaction_id, quantity)
+VALUES (1, 1, 1, 1);
 
-INSERT INTO command (id, product_id, transaction_id)
-VALUES (2, 2, 1);
+INSERT INTO command (id, product_id, transaction_id, quantity)
+VALUES (2, 2, 1, 1);
 
 
-INSERT INTO command (id, product_id, transaction_id)
-VALUES (3, 1, 2);
+INSERT INTO command (id, product_id, transaction_id, quantity)
+VALUES (3, 1, 2, 1);
 
-INSERT INTO command (id, product_id, transaction_id)
-VALUES (4, 2, 2);
+INSERT INTO command (id, product_id, transaction_id, quantity)
+VALUES (4, 2, 2, 2);
 
-INSERT INTO command (id, product_id, transaction_id)
-VALUES (5, 2, 2);
