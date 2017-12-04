@@ -41,8 +41,11 @@ CREATE TABLE IF NOT EXISTS shop
   FOREIGN KEY (owner_id) REFERENCES user(id)
 );
 
-INSERT INTO shop (id, owner_id, shop_name, address, postcode, town, phone) VALUES (1, 2, 'Yvael_Shop', '10 Rue Michel','93025','Asnieres', '0123456789');
-INSERT INTO shop (id, owner_id, shop_name, address, postcode, town, phone) VALUES (2, 4, 'Sadek_Shop','15 Rue Seridj','75013', 'Paris', '0123456789');
+INSERT INTO shop (id, owner_id, shop_name, address, postcode, town, phone)
+VALUES (1, 2, 'Yvael_Shop', '10 Rue Michel','93025','Asnieres', '0123456789');
+
+INSERT INTO shop (id, owner_id, shop_name, address, postcode, town, phone)
+VALUES (2, 4, 'Sadek_Shop','15 Rue Seridj','75013', 'Paris', '0123456789');
 
 CREATE TABLE IF NOT EXISTS product
 (
@@ -55,8 +58,11 @@ CREATE TABLE IF NOT EXISTS product
   FOREIGN KEY (shop_id) REFERENCES shop(id)
 );
 
-INSERT INTO product(id, product_name, shop_id, description, price) VALUES (1, 'Lays', 1, 'Best Chips Ever', 3);
-INSERT INTO product(id, product_name, shop_id, description, price) VALUES (2, 'Cake', 1, 'Best Cake Ever', 2);
+INSERT INTO product(id, product_name, shop_id, description, price)
+VALUES (1, 'Lays', 1, 'Best Chips Ever', 3);
+
+INSERT INTO product(id, product_name, shop_id, description, price)
+VALUES (2, 'Cake', 1, 'Best Cake Ever', 2);
 
 
 CREATE TABLE IF NOT EXISTS transaction
@@ -65,13 +71,20 @@ CREATE TABLE IF NOT EXISTS transaction
   customer_id INT NOT NULL ,
   shop_id INT NOT NULL,
   deliverer_id INT,
-  price INT ,
-  status INT, # 1: Creation of the transaction, 2: Confirmation of Vendor
+  price_command INT NOT NULL ,
+  price_deliverer INT,
+  status INT, # 1: Creation of the transaction, 2: Confirmation of Vendor, 3: Confirmation of Client, 4: Transaction Finished
   PRIMARY KEY (id),
   FOREIGN KEY (customer_id) REFERENCES user(id),
   FOREIGN KEY (shop_id) REFERENCES shop(id),
   FOREIGN KEY (deliverer_id) REFERENCES user(id)
 );
+
+INSERT INTO transaction (id, customer_id, shop_id, price_command, status)
+VALUES (1, 1, 1, 5, 1);
+
+INSERT INTO transaction (id, customer_id, shop_id, price_command, status)
+VALUES (2, 1, 1, 7, 1);
 
 CREATE TABLE IF NOT EXISTS command
 (
@@ -82,3 +95,19 @@ CREATE TABLE IF NOT EXISTS command
   FOREIGN KEY (product_id) REFERENCES product(id),
   FOREIGN KEY (transaction_id) REFERENCES transaction(id)
 );
+
+INSERT INTO command (id, product_id, transaction_id)
+VALUES (1, 1, 1);
+
+INSERT INTO command (id, product_id, transaction_id)
+VALUES (2, 2, 1);
+
+
+INSERT INTO command (id, product_id, transaction_id)
+VALUES (3, 1, 2);
+
+INSERT INTO command (id, product_id, transaction_id)
+VALUES (4, 2, 2);
+
+INSERT INTO command (id, product_id, transaction_id)
+VALUES (5, 2, 2);
