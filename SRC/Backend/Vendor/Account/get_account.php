@@ -5,8 +5,7 @@
     if (isset($_POST["user_id"]) && !empty($_POST["user_id"])
         && isset($_POST["shop_id"]) && !empty($_POST["shop_id"]))
     {
-        //$user_id = $_POST["user_id"];
-        $user_id = 2;
+        $user_id = $_POST["user_id"];
         require_once ("../../Shared/connexion.php");
         $user_infos = "u.id as user_id, u.firstname, u.lastname, u.birthdate, u.email, u.phone as user_phone";
         $shop_infos = "s.id as shop_id, s.shop_name, s.address, s.postcode, s.town, s.phone as shop_phone";
@@ -23,13 +22,13 @@
         else
         {
             $response["success"] = false;
-            $response["message"] = "Request Get Account : KO";
+            $response["message"] = "Request Get Account 2 : KO";
         }
     }
     else
     {
         $response["success"] = false;
-        $response["message"] = "Request Get Account : KO";
+        $response["message"] = "Request Get Account 1: KO";
     }
 
     echo json_encode($response);
