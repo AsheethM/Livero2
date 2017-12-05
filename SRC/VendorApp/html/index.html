@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Login</title>
+        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            function onLoad() {
+                document.addEventListener("deviceready", onDeviceReady, false);
+            }
+
+            // device APIs are available
+            //
+            function onDeviceReady() {
+
+                window.FirebasePlugin.getToken(function(token) {
+                    // save this server-side and use it to push notifications to this device
+                    localStorage.setItem("phone_token", token);
+                    alert(token);
+                }, function(error) {
+                    console.error(error);
+                });
+                // Now safe to use device APIs
+
+                window.localStorage.setItem("server_ip", "192.168.1.29/PRI/Backend/");
+                /* Done if something happens and the app opens on login page with user already logged */
+                if (window.localStorage.getItem("user_id") !== null)
+                    window.location.href = "dashboard.html";
+
+                var server_ip = window.localStorage.getItem("server_ip");
+                $("#connection").click(function () {
+                    var phone_token = localStorage.getItem("phone_token");
+                    var login = $("#login").val();
+                    var password = $("#password").val();
+                    var url = 'http://' + server_ip + 'Vendor/connection_vendor.php';
+                    var data = get_connection(url, login, password);
+                    if (data.success) {
+                        alert("test2");
+                        window.localStorage.setItem("shop_id", data.result[0].shop_id);
+                        window.localStorage.setItem("user_id", data.result[0].user_id);
+                        var user_id = data.result[0].user_id;
+                        url = "http://" + server_ip + "Shared/add_phone_token.php";
+                        var test = add_phone_token(url, user_id, phone_token);
+                        window.location.href = "dashboard.html";
+                    }
+                    else {
+                        $("#div-err").html("<p>" + data.message + "</p>");
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body onload="onLoad()">
+        <div>
+            <h1>LOGIN PAGE</h1>
+            <div>
+                <p>
+                    Email : <input id="login" type="text">
+                </p>
+                <p>
+                    PassWord : <input id="password" type="password">
+                </p>
+                <button type="button" id="connection"> Connect </button>
+                <div id = "div-err">
+                </div>
+            </div>
+        </div>
+        <script src="js/jquery-3.2.1.js"></script>
+        <script src="js/vendor.js"></script>
+        <script src="js/shared.js"></script>
+    </body>
+</html>
