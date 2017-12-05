@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+
+<!--1   Need to get the token from the database with online username and password check
+    2   Generate QRCode from the token-->
+
+
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Login</title>
+        <script src="js/jquery-3.2.1.js"></script>
+        <!--<script src="js/jquery.mobile-1.4.5.min.js"></script>-->
+        <script type="text/javascript">
+            window.localStorage.setItem("server_ip", "localhost:8888/PRI/Backend/");
+
+            $(document).ready(function () {
+
+                var server_ip = window.localStorage.getItem("server_ip");
+                
+                $("#get_token").click(function () {
+                    
+                    var email = $("#email").val();
+
+                    $.ajax({
+                        url: 'http://'+server_ip+'Vendor/get_token.php',
+                        method:'POST',
+                        data: {'email': email},
+                        dataType: 'json',
+                        success : function (data) {
+                            if (data.success)
+                            {
+                                //window.localStorage.setItem("token", data.result[0].t_Deliverer);
+                                // $("#div-err").html("<img src=https:api.qrserver.com/v1/create-qr-code/?data=" 
+                                //     + data.result[0].t_Deliverer + "&amp;size=100x100 alt=\"\" title=\"\" />");
+                                $("#div-err").html("success");
+                            }
+                            else
+                            {
+                               $("#div-err").html("<p>"+data.message+"</p>");
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>LOGIN PAGE</h1>
+        <div>
+            <p>
+                Email : <input id="email" type="text">
+            </p>
+            <button type="button" id="get_token"> Get Token </button>
+            <div id = "div-err">
+
+            </div>
+        </div>
+    </body>
+</html>

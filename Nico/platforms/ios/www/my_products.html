@@ -1,0 +1,197 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>DashBoard</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <title>My Product</title>
+    <script type="text/javascript">
+        var server_ip = localStorage.getItem("server_ip");
+        var user_id = localStorage.getItem("user_id");
+        var shop_id = localStorage.getItem("shop_id");
+
+        $(document).ready(function () {
+            $("#div-update-product").hide();
+            $.ajax({
+                url : "http://"+server_ip+"Vendor/Product/get_products.php",
+                method:"post",
+                data:{"shop_id":shop_id},
+                dataType:"json",
+                success:function (data) {
+                    if (data.success)
+                    {
+                        $.each(data.results, function (index, value) {
+                            var product_name = "Product Name :"+value.product_name;
+                            var product_description = "Product Descrption :"+value.description;
+                            var product_price = "Product Price:"+value.price;
+                            var bloc_one = product_name+"<br>"+product_description+"<br>"+product_price+"<br>";
+                            var bloc_two = "<button id='product_"+value.id+"'>Modify</button>";
+                            $("#div-products").append("<p>"+bloc_one+bloc_two+"</p>");
+                        });
+
+                        /*
+                        * Dynamically allocate an action for the button created for every shop product
+                        * */
+                        $("#div-products").delegate("button", "click", function () {
+                            var product_id = $(this).attr("id").split("_")[1];
+                            $("#div-update-product").show();
+                            $("#div-products").hide();
+                            $("#div-add-product").hide();
+
+                            $.ajax({
+                                url : "http://"+server_ip+"Vendor/Product/get_product_id.php",
+                                method:"post",
+                                data:{'id_shop' : shop_id, 'product_id':product_id},
+                                dataType:"json",
+                                success :function (data) {
+                                    if (data.success)
+                                    {
+                                        $("#update_product_name").val(data.results[0].product_name);
+                                        $("#update_product_description").val(data.results[0].description);
+                                        $("#update_product_price").val(data.results[0].price);
+                                        $("#update_product_id").val(product_id);
+                                    }
+                                    else
+                                    {
+                                        $("#div-error").html("<p>Request Get Products With Id :  KO</p>");
+                                    }
+                                },
+                                error:function () {
+                                    $("#div-error").html("<p>Request Get Products With Id :  KO</p>");
+                                }
+                            })
+
+                        });
+                    }
+                    else
+                    {
+                        $("#div-error").html("<p>"+data.message+"</p>");
+                    }
+                },
+                error:function () {
+                    $("#div-error").html("<p>Request Get Products :  KO</p>");
+                }
+            });
+
+            $("#update_product_button").click(function () {
+                var product_id = $("#update_product_id").val();
+                var product_name = $("#update_product_name").val();
+                var product_price = $("#update_product_price").val();
+                var product_description = $("#update_product_description").val();
+                $.ajax({
+                    url: "http://" + server_ip + "Vendor/Product/update_product.php",
+                    method: "post",
+                    data: {'id_shop': shop_id, 'product_id': product_id, 'product_name' : product_name, 'product_price' : product_price,
+                    'product_description' : product_description},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            console.log(data);
+                            location.href="my_products.html";
+                        }
+                        else
+                        {
+                            $("#div-error").html("<p> Request Update Product : KO </p>");
+                            $("#div-error").show();
+                        }
+                    },
+                    error: function () {
+                        $("#div-error").html("<p> Request Update Product : KO </p>");
+                        $("#div-error").show();
+                    }
+                })
+            });
+
+            $("#delete_product_button").click(function () {
+                var id_product = $("#update_product_id").val();
+                var product_name = $("#update_product_name").val();
+                var product_price = $("#update_product_price").val();
+                var product_description = $("#update_product_description").val();
+                $.ajax({
+                    url: "http://" + server_ip + "Vendor/Product/delete_product.php",
+                    method: "post",
+                    data: {'id_shop': shop_id, 'product_id': id_product},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            location.href="my_products.html";
+                        }
+                        else
+                        {
+                            $("#div-error").html("<p>"+data.message+"</p>");
+                            $("#div-error").show();
+                        }
+                    },
+                    error: function () {
+                        $("#div-error").html("<p> Request Delete Product 2 : KO </p>");
+                        $("#div-error").show();
+                    }
+                })
+            });
+
+            $("#new_product_button").click(function () {
+                var product_name = $("#new_product_name").val();
+                var product_price = $("#new_product_price").val();
+                var product_description = $("#new_product_description").val();
+                $.ajax({
+                    url: "http://" + server_ip + "Vendor/Product/add_product.php",
+                    method: "post",
+                    data: {'id_shop': shop_id, 'product_name' : product_name, 'product_price' : product_price,
+                        'product_description' : product_description},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            location.href="my_products.html";
+                        }
+                        else
+                        {
+                            $("#div-error").html("<p>"+data.message+"</p>");
+                            $("#div-error").show();
+                        }
+                    },
+                    error: function () {
+                        $("#div-error").html("<p> Request Add Product : KO </p>");
+                        $("#div-error").show();
+                    }
+                });
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+    <h1>My Products</h1>
+    <div id="div-products">
+    </div>
+    <div id ="div-add-product">
+        <p>
+            Product Name : <input id="new_product_name" type="text">
+            <br>
+            Price : <input id="new_product_price" type="text">
+            <br>
+            Description : <input id="new_product_description" type="text">
+            <br>
+            <button type="button" id="new_product_button">Add product</button>
+        </p>
+    </div>
+    <div id="div-update-product">
+        <p>
+            <span hidden = true id="update_product_id"></span>
+            Product Name : <input id="update_product_name" type="text">
+            <br>
+            Price : <input id="update_product_price" type="text">
+            <br>
+            Description : <input id="update_product_description" type="text">
+            <br>
+            <button type="button" id="update_product_button">Update product</button>
+            <button type="button" id="delete_product_button">Delete product</button>
+        </p>
+    </div>
+    <div id="div-error">
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+esh,
+
+pour lancer le generateur de QRCODE tu dois mettre le contenu de mon dossier SRC_MAMP_NICO dans ton serveur, dans le fichier QRgen.html modifie les lignes de connections etc mais normalement il pointe sur le dossier Backend avec le php à l'intérieur.
+
+le Dossier QRScanner fonctionne bien, tu le build et normalement tu le met sur ton tel et il fonctionne.
+	(il faudra un peu le modifier pour le checking en base de données)
+
+sinon à part ça pas grand chose:
+
+	- copier les fichiers de SRC_MAMP_NICO dans les sources de ton serveur pour tester
+	- les reconnaître avec le projet QRScanner
+
