@@ -21,13 +21,13 @@
         else
         {
             $response['success'] = false;
-            $response['message'] = "Request Connection Vendor : KO";
+            $response['message'] = "Request Connection Vendor2 : KO";
         }
     }
     else
     {
         $response['success'] = false;
-        $response['message'] = "Request Connection Vendor : KO";
+        $response['message'] = "Request Connection Vendor 1: KO";
     }
 
     echo json_encode($response);

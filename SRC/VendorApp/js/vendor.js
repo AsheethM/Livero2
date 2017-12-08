@@ -20,9 +20,11 @@ function get_connection(url, login, password)
         dataType: 'json',
         async : false,
         success: function (data) {
+            alert("World");
             json = data;
         },
         error: function () {
+            alert("Hello");
             json = {success: false, message: "Request Get Connection: KO"};
         }
     });

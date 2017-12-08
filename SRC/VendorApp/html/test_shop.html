@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="js/jquery-3.2.1.js"></script>
+<script src="../../Front/QRCode/qrcode.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var server_ip = localStorage.getItem("server_ip");
+        var shop_id = localStorage.getItem("shop_id");
+        var transaction_id = 1;
+        var url = "http://"+server_ip+"Shared/QRCode/get_shop_token.php";
+        $("#btn-qrcode").click(function () {
+            var img = get_vendor_qrcode(url, transaction_id, shop_id);
+            $("#test_qrcode").html("<p>"+img+"</p>");
+        });
+    });
+</script>
+<body>
+<div id = "test_qrcode">
+
+</div>
+<button id="btn-qrcode">Display QRCODE</button>
+</body>
+</html>

@@ -1,7 +1,6 @@
 function add_phone_token(url, user_id, phone_token)
 {
     alert(phone_token);
-    alert(user_id);
     var json = null;
     $.ajax({
         url : url,
