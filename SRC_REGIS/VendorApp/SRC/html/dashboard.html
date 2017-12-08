@@ -3,52 +3,76 @@
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <title>DashBoard</title>
     <script src="js/jquery-3.2.1.js"></script>
-    <title>DASHBOARD</title>
+    <script src="js/vendor.js"></script>
     <script type="text/javascript">
         var server_ip = localStorage.getItem("server_ip");
         var user_id = localStorage.getItem("user_id");
         var shop_id = localStorage.getItem("shop_id");
 
-        $(document).ready(function () {});
-            /*$.ajax({
-                url:"http://"+server_ip+"Vendor/get_commands.php",
-                method:"post",
-                data: {"shop_id" : shop_id},
-                dataType:"json",
-                success:function (data) {
-                    if (data.success)
-                    {
-                        if (Integer.parseInt(data.nbtransaction) == 0)
-                        {
-                            $("#div-transactions").html("<p>Aucune transaction</p>")
+        $(document).ready(function () {
+            $("#div-command").hide();
+            $("#div-error").hide();
+            var url = "http://"+server_ip+"/Vendor/Transaction/get_transactions.php";
+            var data = get_transactions(url, shop_id);
+            if (data.success) {
+                if (data.isTransactions) {
+                    $.each(data.results, function (index, value) {
+                        var transaction_num = "Order num:" + (index + 1);
+                        var status = "Status : ";
+                        switch (value.status) {
+                            case 1 :
+                                status += "Waiting for you validation";
+                                break;
+                            case 2 :
+                                status += "Waiting for you customer";
+                                break;
+                            case 3:
+                                status += "Waiting for a deliverer";
+                                break;
+                            case 4:
+                                status += "Waiting the end of the transaction";
+                                break;
+                            default :
+                                break;
                         }
-                        else
-                        {
-                            $.each(data.results,)
+
+                        var bloc_one = transaction_num + "<br>" + status + "<br>";
+                        var bloc_two = "<button id='trans_" + value.id + "_" + value.status + "_" + (index + 1) + "'>Check the Order</button>";
+                        $("#div-transaction").append("<p>" + bloc_one + bloc_two + "</p>");
+                    });
+
+                    $("#div-transaction").delegate("button", "click", function () {
+                        var transaction_id = $(this).attr("id").split("_")[1];
+                        var transaction_status = $(this).attr("id").split("_")[2];
+                        var order_num = $(this).attr("id").split("_")[3];
+                        $("#div-transaction").hide();
+
+                        var url  = "http://" + server_ip + "Vendor/Transaction/get_command.php";
+                        var res = get_command(url, transaction_id, shop_id);
+                        if (res.success) {
+
                         }
-
-
-                    }
-                    else
-                    {
-
-                    }
+                    });
                 }
-
-            })
-        });*/
+            }
+        });
     </script>
+    <title>DASHBOARD</title>
 </head>
 <body>
     <h1>DASHBOARD</h1>
     <p>
-        <a href="logout.html">LOG OUT</a> </br> </br>
-        <a href="my_account.html">MY ACCOUNT</a> </br> </br>
-        <a href="my_products.html"> MY PRODUCTS</a> </br> </br>
+        <a href="logout.html">LOG OUT</a> <br> <br>
+        <a href="my_account.html">MY ACCOUNT</a> <br> <br>
+        <a href="my_products.html"> MY PRODUCTS</a> <br> <br>
+        <a href="test_shop.html"> QRCODE </a> <br> <br>
+        <a href="test_deliverer.html"> QRCODE TEST </a> <br> <br>
     </p>
-    <div id="div-transactions">
-
+    <div id="div-transaction">
+        <h2>Transaction</h2>
+        <br>
     </div>
+    <div id="div-command"></div>
     <div id="div-error">
 
     </div>

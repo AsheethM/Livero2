@@ -28,6 +28,13 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
+        window.FirebasePlugin.getToken(function(token) {
+            // save this server-side and use it to push notifications to this device
+            localStorage.setItem("phone_token", token);
+        }, function(error) {
+            alert("e"+error);
+            localStorage.setItem("phone_token", "error");
+        });
     },
 
     // Update DOM on a Received Event
