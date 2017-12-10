@@ -2,6 +2,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <title>DashBoard</title>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/vendor.js"></script>
     <script type="text/javascript">
@@ -12,7 +13,7 @@
         $(document).ready(function () {
             $("#div-command").hide();
             $("#div-error").hide();
-            var url = "http://"+server_ip+"/Vendor/Transaction/get_transactions.php";
+            var url = "http://"+server_ip+"/Transaction/get_transactions.php";
             var data = get_transactions(url, shop_id);
             if (data.success) {
                 if (data.isTransactions) {
@@ -47,7 +48,7 @@
                         var order_num = $(this).attr("id").split("_")[3];
                         $("#div-transaction").hide();
 
-                        var url  = "http://" + server_ip + "Vendor/Transaction/get_command.php";
+                        var url  = "http://" + server_ip + "Transaction/get_command.php";
                         var res = get_command(url, transaction_id, shop_id);
                         if (res.success) {
 

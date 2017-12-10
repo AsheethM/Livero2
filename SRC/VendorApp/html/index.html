@@ -37,8 +37,8 @@
                 }, function(error) {
                     console.error(error);
                 });
-                // Now safe to use device APIs
 
+                // Now safe to use device APIs
                 window.localStorage.setItem("server_ip", "192.168.1.29/PRI/Backend/");
                 /* Done if something happens and the app opens on login page with user already logged */
                 if (window.localStorage.getItem("user_id") !== null)
@@ -55,7 +55,7 @@
                         window.localStorage.setItem("shop_id", data.result[0].shop_id);
                         window.localStorage.setItem("user_id", data.result[0].user_id);
                         var user_id = data.result[0].user_id;
-                        url = "http://" + server_ip + "Shared/add_phone_token.php";
+                        url = "http://" + server_ip + "Notification/add_phone_token.php";
                         var test = add_phone_token(url, user_id, phone_token);
                         window.location.href = "dashboard.html";
                     }

@@ -12,7 +12,7 @@
 
         $(document).ready(function () {
             $("#div-update-product").hide();
-            var url = "http://"+server_ip+"Vendor/Product/get_products.php";
+            var url = "http://"+server_ip+"Product/get_products.php";
             var data = get_products(url, shop_id);
             if (data.success) {
                 $.each(data.results, function (index, value) {
@@ -33,7 +33,7 @@
                     $("#div-products").hide();
                     $("#div-add-product").hide();
 
-                    var url = "http://"+server_ip+"Vendor/Product/get_product_id.php";
+                    var url = "http://"+server_ip+"Product/get_product_id.php";
                     var data = get_product_from_id(url, shop_id, product_id);
                     if (data.success) {
                         $("#update_product_name").val(data.results[0].product_name);
@@ -57,7 +57,7 @@
                 var product_price = $("#update_product_price").val();
                 var product_description = $("#update_product_description").val();
 
-                var url = "http://" + server_ip + "Vendor/Product/update_product.php";
+                var url = "http://" + server_ip + "Product/update_product.php";
                 var data = update_product(url, product_id, product_name, product_price, product_description);
                 if (data.success) {
                     location.href = "my_products.html";
@@ -75,7 +75,7 @@
                 var product_price = $("#update_product_price").val();
                 var product_description = $("#update_product_description").val();
 
-                var url = "http://" + server_ip + "Vendor/Product/delete_product.php";
+                var url = "http://" + server_ip + "Product/delete_product.php";
                 var data = delete_product(url, shop_id, id_product);
                 if (data.success)
                 {
@@ -93,7 +93,7 @@
                 var product_price = $("#new_product_price").val();
                 var product_description = $("#new_product_description").val();
 
-                var url =  "http://" + server_ip + "Vendor/Product/add_product.php";
+                var url =  "http://" + server_ip + "Product/add_product.php";
                 var data = add_product(url, shop_id, product_name, product_price, product_description);
                 if (data.success)
                 {

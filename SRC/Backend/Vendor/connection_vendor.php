@@ -9,7 +9,9 @@
     {
         $mail = $_POST['login'];
         $password = $_POST['password'];
-        $request = $pdo->prepare("SELECT u.id as user_id, s.id as shop_id FROM user u JOIN shop s ON u.id = s.owner_id WHERE u.email = ?");
+        $req_str = "SELECT u.id as user_id, v.id as shop_id ".
+            "FROM user u JOIN vendor v ON u.id = v.owner_id WHERE u.email = ?";
+        $request = $pdo->prepare($req_str);
         $request->bindParam(1, $mail, PDO::PARAM_STR);
         $request->execute();
         if ($request->rowCount()  == 1)

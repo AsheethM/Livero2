@@ -20,11 +20,9 @@ function get_connection(url, login, password)
         dataType: 'json',
         async : false,
         success: function (data) {
-            alert("World");
             json = data;
         },
         error: function () {
-            alert("Hello");
             json = {success: false, message: "Request Get Connection: KO"};
         }
     });
@@ -145,6 +143,8 @@ function update_command() {
  */
 function get_account(url, user_id, shop_id) {
     var json = null;
+    alert(user_id);
+    alert(shop_id);
     $.ajax({
         url : url,
         method: "post",
