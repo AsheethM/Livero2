@@ -39,4 +39,20 @@
             echo $result;
         }
 
+
+        function send_notification_with_id($pdo, $id, $message, $messageTitle)
+        {
+            $req_str = 'SELECT phone_token FROM user WHERE id = ?';
+            $request = $pdo->prepare($req_str);
+            $request->bindParam(1, $id, PDO::PARAM_INT);
+            $request->execute();
+            if ($request->rowCount() > 0) {
+                require_once('../Notification/notification.php');
+                $phone_token = $request->fetchAll()[0]['phone_token'];
+                send_notification($phone_token, $message, $messageTitle);
+                return true;
+            }
+            return false;
+        }
+
 ?>

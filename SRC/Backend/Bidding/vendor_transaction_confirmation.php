@@ -38,8 +38,10 @@
     if ($success)
     {
         sleep(5*60);
-        $request = $pdo->prepare('SELECT * FROM bidding WHERE transaction_id = ?');
+        $request = $pdo->prepare('SELECT * FROM bidding WHERE transaction_id = ? '.
+            'AND bet = (SELECT MIN(bet) FROM bidding WHERE transaction_id = ?)');
         $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
+        $request->bindParam(2, $transaction_id, PDO::PARAM_INT);
         $request->execute();
 
         if ($request->rowCount() > 0)
@@ -61,15 +63,7 @@
                 $request->execute();
                 if ($request->rowCount() >0) {
                     $client_id = $request->fetchAll()[0]['client_id'];
-                    $req_str = 'SELECT phone_token FROM user  WHERE u.id = ?';
-                    $request = $pdo->prepare($req_str);
-                    $request->bindParam(1, $client_id, PDO::PARAM_INT);
-                    $request->execute();
-                    if ($request->rowCount() > 0) {
-                        require_once('../Notification/notification.php');
-                        $phone_token = $request->fetchAll()[0]['phone_token'];
-                        send_notification($phone_token, 'Confirmation Order', 'Order');
-                    }
+                    send_notification_with_id($pdo, $client_id, 'Confirmation Order', 'Order');
                 }
             }
         }

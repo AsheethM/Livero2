@@ -1,0 +1,94 @@
+#################################
+            README
+##################################
+
+Vendor.js is the file containing all the functions that has been done for now
+
+The html directory contains html files  (index.html, my_products.html, my_account.html, dashboard.html)
+Html files are examples of how to use the functions (which are in vendor.js)
+
+In dashboard.html: Example of how to use transactions related functions
+In my_products.html : Example of how to use products related functions
+In my_account.html : Example of how to use Account related functions
+In index.html : Example of how to initialize some variables
+  - server_ip
+  - shop_id
+  - user_id
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+QRCode Generator for Hello WOrld : <img src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&amp;size=300x300" alt="" title="" />
+
+------------------------------------------------------------------------
+
+
+
+
+###########################################################
+
+                        TODO LIST
+
+###########################################################
+
+- Integrate QrCode Module
+- Timer
+- Final Database
+- Integrate Notifications
+- Vendor App functions
+-
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+#####################################
+#                                   #
+#		TODO		    #
+#	      DELIVERER             #
+#                                   #
+#####################################
+
+
+Deliverer :
+  - Recuperer les magasins proches (Matthiews)
+  - Recuperer les transactions liés à un magasin en attente d'un livreur
+  - Recuperer les informations sur une transaction
+  - Recuperer l'heure de fin d'une transaction à partir de son id
+  - pouvoir faire un bid
+  - Recuperer les informations sur client et vendeur a partir d'une transation en attente de livraion
+  - Pouvoir effectuer un scan QRCode
+
+
+Optional :
+  - Recuperer les informations sur une commande (ex: distance,....)
+  - Recuperer les informations sur le livreur (moyen de livraison ..)
+  - Mettre à jour les informations sur le livreur
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+- Shop :
+  - Recuperer les transactions associés au shop
+  - Pouvoir valider une transaction
+  - Pouvoir reduire une quantite de produit voulu par le client
+  - Pouvoir afficher les informations sur une transaction
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+- Bidding :
+  - Bloquer le livreur dès qu'il a 3 bidding
+  - Garder l'ensemble des livreurs dans la BDD (Pourquoi ?)
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------

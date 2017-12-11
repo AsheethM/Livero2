@@ -20,8 +20,10 @@
       {
           $status = $request->fetchAll()[0]['status'];
           if ($status == 2) {
-              $request = $pdo->prepare("SELECT bet FROM bidding WHERE transaction_id = ?");
+              $request = $pdo->prepare("SELECT bet FROM bidding WHERE transaction_id = ?".
+                  " AND bet = (SELECT MIN(bet) FROM bidding WHERE transaction_id = ?) ");
               $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
+              $request->bindParam(2, $transaction_id, PDO::PARAM_INT);
               $request->execute();
               $success = true;
               if ($request->rowCount() == 0)
