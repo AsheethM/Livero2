@@ -1,6 +1,6 @@
 <?php
 
-    header ('application/json');
+    header ('Content-Type: application/json');
     $response = array();
     $success = false;
     $message = "";
@@ -23,10 +23,9 @@
         if ($request->rowCount() > 0 && $request->fetchAll()[0]['status'] == 3)
         {
             /* Updating status in BDD*/
-            $req_str = 'UPDATE transaction SET status = 4 WHERE id = ? AND client_id = ?';
+            $req_str = 'UPDATE transaction SET status = 4 WHERE id = ?';
             $request = $pdo->prepare($req_str);
             $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
-            $request->bindParam(2, $client_id, PDO::PARAM_INT);
             /*--------------------------------------*/
             if ($request->execute())
             {
@@ -48,9 +47,11 @@
     echo json_encode($response);
 
 
+    require_once ('../../Notification/notification.php');
+
     if ($success)
     {
-        $req_str = 'SELECT v.owner_id , t.deliverer_id FROM transaction t JOIN vendor v ON t.vendor_id = v.id WHERE id = ?';
+        $req_str = 'SELECT v.id , t.deliverer_id FROM transaction t JOIN shop v ON t.shop_id = v.id WHERE id = ?';
         $request = $pdo->prepare($req_str);
         $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
         $request->execute();

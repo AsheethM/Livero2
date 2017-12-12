@@ -12,7 +12,7 @@
 
         require_once("../Shared/connexion.php");
 
-        $request = $pdo->prepare("SELECT p.id, p.product_name, p.description, p.price FROM product p WHERE p.id = ? AND p.vendor_id = ?");
+        $request = $pdo->prepare("SELECT p.id, p.product_name, p.description, p.price FROM product p WHERE p.id = ? AND p.shop_id = ?");
         $request->bindParam(1, $product_id, PDO::PARAM_INT);
         $request->bindParam(2, $id_shop, PDO::PARAM_INT);
         $request->execute();

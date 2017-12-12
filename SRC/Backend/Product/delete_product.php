@@ -12,7 +12,7 @@
 
         require_once("../Shared/connexion.php");
 
-        $request = $pdo->prepare("DELETE FROM product WHERE id = ? AND vendor_id = ?");
+        $request = $pdo->prepare("DELETE FROM product WHERE id = ? AND shop_id = ?");
         $request->bindParam(1, $product_id, PDO::PARAM_INT);
         $request->bindParam(2, $shop_id, PDO::PARAM_INT);
 
@@ -29,9 +29,7 @@
         }
     }
     else
-    {
         $message = "Parameters Error";
-    }
 
     $response["success"] = $success;
     $response["message"] = $message;

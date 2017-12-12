@@ -4,13 +4,17 @@
     $success = false;
     $message = "";
 
-    if (isset($_POST["transaction_id"]) && !empty($_POST["transaction_id"]))
+    if (isset($_POST["transaction_id"]) && !empty($_POST["transaction_id"])
+        && isset($_POST["shop_id"]) && !empty($_POST["shop_id"]))
     {
+        $shop_id = $_POST["shop_id"];
         $transaction_id = $_POST["transaction_id"];
         require_once ('../../Shared/connexion.php');
-        $req_str = 'SELECT * FROM transaction_item WHERE transaction_id =  ?';
+        $req_str = 'SELECT * FROM transaction_products tp JOIN transaction t ON tp.transaction_id = t.id'.
+            ' WHERE transaction_id =  ? AND t.shop_id = ?';
         $request = $pdo->prepare($req_str);
         $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
+        $request->bindParam(2, $shop_id, PDO::PARAM_INT);
         if ($request->execute())
         {
             if ($request->rowCount() > 0)

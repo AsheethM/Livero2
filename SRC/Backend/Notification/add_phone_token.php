@@ -6,6 +6,7 @@
 
     if (isset($_POST["user_id"]) && !empty($_POST["user_id"])
         && isset($_POST["phone_token"]) && !empty($_POST["phone_token"])) {
+
         $user_id = $_POST["user_id"];
         $phone_token = $_POST["phone_token"];
 
@@ -22,7 +23,7 @@
             $message = "Error on Updating the phone_token";
     }
     else
-        $message = "Parameters Erroe";
+        $message = "Parameters Error";
 
 
     $response["success"] = $success;

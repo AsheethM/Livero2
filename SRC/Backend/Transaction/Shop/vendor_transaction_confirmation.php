@@ -1,6 +1,6 @@
 <?php
 
-    header ('application/json');
+    header ('Content-Type: application/json');
     $response = array();
     $success = false;
     $message = "";

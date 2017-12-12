@@ -8,11 +8,11 @@
         && isset($_POST["shop_id"]) && !empty($_POST["shop_id"]))
     {
         $user_id = $_POST["user_id"];
-        require_once("../Shared/connexion.php");
+        require_once("../../Shared/connexion.php");
         $user_infos = "u.id as user_id, u.firstname, u.lastname, u.birthdate, u.email, u.phone as user_phone";
-        $shop_infos = "s.id as shop_id, s.vendor_name, s.street, s.postcode, s.town, s.phone as shop_phone";
-        $req_str = 'SELECT '.$user_infos.', '.$shop_infos.' FROM user u JOIN vendor s'.
-            ' ON u.id = s.owner_id WHERE u.id = ?';
+        $shop_infos = "s.shop_name, s.address , s.phone as shop_phone";
+        $req_str = 'SELECT '.$user_infos.', '.$shop_infos.' FROM user u JOIN shop s'.
+            ' ON u.id = s.id WHERE u.id = ?';
 
         $request = $pdo->prepare($req_str);
         $request->bindParam(1, $user_id, PDO::PARAM_INT);
