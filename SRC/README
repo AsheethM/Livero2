@@ -2,6 +2,8 @@
                                                  README
 ########################################################################################################################
 
+
+
 ########################################################################################################################
                                                 DATABASE
 ########################################################################################################################
@@ -9,9 +11,8 @@
   * user table :
     - phone_token is the token we need in order to send him a notification
 
-  * vendor table :
-    - street/postCode/town is the address of the vendor
-    Question : Do we use one field instead of 3 ?
+  * shop table :
+    id in shp table is the same id in the user table
 
   * transaction :
     - client_token needed for QRCODE
@@ -19,31 +20,34 @@
     - dest_address can be split into 3 field
     - status is needed so we know the current state of the transaction
 
-  * command :
+  * transaction_products :
     - This table contains the full order of a client
+    - vendor quantity is a value if the shop hasn't the same amount of a product needed by the customer
 
   * bidding :
-    - For a given transaction, this table contains the current bid and deliverer_id so we know who did it
+    - For a given transaction, this table contains all the bids with the deliverer_ids
 
 
 ########################################################################################################################
+
+
 ########################################################################################################################
-                                                BIDDING
+                                                TRANSACTION
 ########################################################################################################################
 How it works :
 
   - The client chooses items in a shop, when he clicks on confirm
     It creates in the databse an entry in transaction table (creation_transaction.php) (This will send a notification to the vendor)
-    Then it creates in command table all the entries with product_id - transaction_id
+    Then it creates in transaction_product table all the entries with product_id - transaction_id
 
   - Then the vendor goes on his app and confirm the order
     It changes the status in transaction table (status goes to 2)
-    It creates an entry in bidding table and will enable the deliverers to see this order in their app if they choose this shop
+    It will enable the deliverers to see this order in their app if they choose this shop
 
    (IMPLEMENTATION OF THE BIDDING)
   - Now the bidding starts:
         - Bidding lasts for 5 min but we can change it
-        - If a deliverer bids for an order and is winning the bid, he can't bid for another order
+        - If a deliverer bids for an order then an entry is made in bidding table with his bid
         - If a deliverer had bid for an order and now looses the order, he receives an notification that someone
         else has made a better offer
 
@@ -60,7 +64,15 @@ How it works :
 
         - if the price is not Ok for the client, we need to do something
 
+  - Then when the deliverer has scanned the shop phone:
+        - Status in transaction goes to 5
+
+  - Then when the deliverer has scanned the customer phone :
+        - STatus in transaction goes to 6
+
 ########################################################################################################################
+
+
 ########################################################################################################################
                                                 FILES
 ########################################################################################################################
@@ -78,6 +90,8 @@ In index.html : Example of how to initialize some variables
   - user_id
 
 ########################################################################################################################
+
+
 ########################################################################################################################
                                                 QRCODE
 ########################################################################################################################
@@ -86,3 +100,5 @@ QRCode Generator for Hello WOrld : <img src="https://api.qrserver.com/v1/create-
                                     alt="" title="" />
 
 ########################################################################################################################
+
+

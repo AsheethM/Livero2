@@ -1,52 +1,114 @@
 
 ###########################################################
-
-                        TODO LIST
-
+#                                                         #
+#                        TODO LIST                        #
+#                                                         #
 ###########################################################
 
-- Integrate QrCode Module
-- Timer
-- Final Database
-- Integrate Notifications
-- Vendor App functions
+-----------------------------------------------------------------------------------------------------------
+Important : MAJ code par rapport à la BDD : KO
+
+Account :
+    Shop :
+        get_account : OK
+        update_account : KO (A tester avec le tel)
+
+Notification :
+    add_phone_token : OK
+    notification : KO (Tester avec le tel)
+
+Product :
+    add_product : OK
+    delete_product: OK
+    get_product_with_id : OK
+    get_products_with_shop_id: OK
+    update_product: OK
+
+QRCode :
+    check_customer_token : KO
+    check_shop_token : KO
+    get_client_token : KO
+    get_shop_token : KO
+
+Transaction :
+    Shop:
+        get_informations_about_transaction_with_id : KO
+        get_transaction_products_with_transaction_id : KO
+        get_transactions_with_shop_id : KO
+        update_shop_quantity : KO
+        vendor_transaction_confirmation : KO
+
+    CUstomer:
+        create_transaction : KO
+        delete_transaction : KO
+        client_transaction_confirmation : KO
+
+    Deliverer:
+        get_informations_about_transaction_and_bid_with_id : KO
+        get_transactions_waiting_deliverer_with_shop_id : KO
+        set_bid : KO
+
+Vendor :
+    connection_vendor : OK
+
+----------------------------------------------------------------------------------------------------------
+
+- Integrate QrCode Module : KO
+
+- Timer : KO
+
+- Final Database : OK
+
+- Integrate Notifications : KO
+
+- Vendor App functions : KO
 
 ----------------------------------------------------------------------
-
 Deliverer :
   - Recuperer les magasins proches (Matthiews) : KO
+
   - Recuperer les transactions liés à un magasin en attente d'un livreur : OK
   (Transaction/get_transactions_waiting_deliverer_with_shop_id)
+
   - Recuperer les informations sur une transaction (Bid Actuelle, timer, ...) : OK
   (Transaction/get_informations_about_transaction_and_bid_with_id)
-  - pouvoir faire un bid : OK (Transaction/Deliverer/set_bid.php)
-  - Recuperer les informations sur client et vendeur a partir d'une transation en attente de livraion
-  - Pouvoir effectuer un scan QRCode : OK
 
+  - pouvoir faire un bid : OK
+  (Transaction/Deliverer/set_bid.php)
+
+  - Pouvoir effectuer un scan QRCode : KO
+
+  - Recuperer les informations sur client et vendeur a partir d'une transation en attente de livraion : KO
+    (Transaction/Deliverer/get_informations_about_customer_with_transaction_id.php)
+    (Transaction/Deliverer/get_informations_about_shop_with_transaction_id.php)
 
 Optional :
   - Recuperer les informations sur une commande (ex: distance,....)
   - Recuperer les informations sur le livreur (moyen de livraison ..)
   - Mettre à jour les informations sur le livreur
 
-
-
 ------------------------------------------------------------------------------------------------------------------------------------
+Shop :
+  - Recuperer les produits liés à une transaction : OK
+  (Transaction/Shop/get_transaction_items_with_transaction_id)
 
+  - Recuperer les transactions associés au shop : OK
+  (Transaction/Shop/get_transactions_with_shop_id)
 
-- Shop :
-  - Recuperer les produits liés à une transaction : OK (Transaction/Shop/get_transaction_items_with_transaction_id)
-  - Recuperer les transactions associés au shop : OK (Transaction/Shop/get_transactions_with_shop_id)
-  - Pouvoir valider une transaction : OK (Transaction/Shop/vendor_transaction_confirmation)
-  - Pouvoir reduire une quantite de produit voulu par le client : KO (Transaction/Shop/update_shop_quantity) (Not Finished See it)
-  - Pouvoir afficher les informations sur une transaction : OK (Transaction/Shop/get_informations_about_transaction_with_id)
+  - Pouvoir valider une transaction : OK
+  (Transaction/Shop/vendor_transaction_confirmation)
 
+  - Pouvoir reduire une quantite de produit voulu par le client : OK
+  (Transaction/Shop/update_shop_quantity)
+
+  - Pouvoir afficher les informations sur une transaction : OK
+  (Transaction/Shop/get_informations_about_transaction_with_id)
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
 - Bidding :
-  - Bloquer le livreur dès qu'il a 3 bidding
-  - Garder l'ensemble des livreurs dans la BDD (Pourquoi ?)
+  - Bloquer le livreur dès qu'il a 3 bidding : KO
+  - Garder l'ensemble des livreurs dans la BDD (Pourquoi ?) : KO
 
 
 -------------------------------------------------------------------------------------------------------------------------------------
