@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS bidding
 
 CREATE TABLE IF NOT EXISTS dispute
 (
-  id NOT NULL AUTO_INCREMENT,
-  transaction_id NOT NULL ,
+  id INT NOT NULL AUTO_INCREMENT,
+  transaction_id INT NOT NULL ,
   motive VARCHAR(255) NOT NULL ,
   comment TEXT NOT NULL ,
   isClosed BOOLEAN NOT NULL DEFAULT false,
