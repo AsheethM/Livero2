@@ -1,7 +1,7 @@
 <?php
     header('Content-Type: application/json');
     $response = array();
-    $err = true;
+    $success = false;
     $message  = "";
 
     if (isset($_POST['transaction_id']) && !empty($_POST['transaction_id'])
@@ -23,22 +23,13 @@
             $response['results'] = $request->fetchAll();
         }
         else
-        {
             $message = "BDD Error";
-        }
-
-    }
-
-    if ($err)
-    {
-        $response['success'] = false;
-        $response['message'] = $message;
     }
     else
-    {
-        $response['success'] = true;
-        $response['message'] = "Request Get Shop Token : OK";
-    }
+        $message = "Parameters Error";
+
+    $response['success'] = $success;
+    $response['message'] = $message;
 
     echo json_encode($response);
 ?>

@@ -1,0 +1,10 @@
+#################################################################
+                        README
+#################################################################
+                        TECHNICAL
+#################################################################
+
+Transaction:
+    - Shop :
+        - vendor_transaction_confirmation : Async Request
+            Request Result won't be used in client side (Need to see how to change that)

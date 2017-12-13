@@ -12,7 +12,7 @@
         $deliverer_id = $_POST['deliverer_id'];
         $token = $_POST['token'];
 
-        $req_str = 'SELECT shop_token FROM TRANSACTION WHERE id = ? AND deliverer_id = ?';
+        $req_str = 'SELECT customer_token FROM TRANSACTION WHERE id = ? AND deliverer_id = ?';
 
         require_once('../Shared/connexion.php');
         $request = $pdo->prepare($req_str);
@@ -21,15 +21,15 @@
         $request->execute();
 
         if ($request->rowCount() > 0) {
-            $dbb_token = $request->fetchAll()[0]['shop_token'];
+            $dbb_token = $request->fetchAll()[0]['customer_token'];
             if ($dbb_token == $token)
             {
                 $success = true;
-                $message = "Request Check Client Token : OK";
+                $message = "Request Check customer Token : OK";
             }
             else
             {
-                $message = "Request Check Client Token : KO";
+                $message = "Request Check customer Token : KO";
             }
         }
         else
@@ -42,7 +42,9 @@
     {
         $message = "Parameters Error";
     }
-$response['success'] = $success;
-$response['message'] = $message;
+    $response['success'] = $success;
+    $response['message'] = $message;
 
-echo json_encode($response);
+    echo json_encode($response);
+
+?>

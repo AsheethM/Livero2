@@ -6,11 +6,11 @@
 
     if (isset($_POST["shop_id"]) && !empty($_POST["shop_id"]))
     {
-        $id_shop = $_POST["shop_id"];
+        $shop_id = $_POST["shop_id"];
         require_once("../../Shared/connexion.php");
 
-        $request = $pdo->prepare("SELECT * FROM transaction t WHERE vendor_id = ? ");
-        $request->bindParam(1, $id_shop, PDO::PARAM_INT);
+        $request = $pdo->prepare("SELECT * FROM transaction t WHERE shop_id = ? ");
+        $request->bindParam(1, $shop_id, PDO::PARAM_INT);
 
         if ($request->execute())
         {

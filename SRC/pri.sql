@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS user
   creation_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   lastlogin TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
-);
+)ENGINE=InnoDB;
 
 INSERT INTO user (id, email, password, lastname, firstname, birthdate, phone)
 VALUES
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS deliverer
   rating INT NOT NULL DEFAULT 5,
   PRIMARY KEY (id),
   FOREIGN KEY (id) REFERENCES user (id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
 
 INSERT INTO deliverer (id, vehicule, licence, picture)
 VALUES
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS shop
   logo VARCHAR(255) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (id) REFERENCES user(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
 
 INSERT INTO shop (id, shop_name, address, latitude, longitude, phone, logo)
 VALUES
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS shop_schedule
   closing_hour TIME NOT NULL ,
   PRIMARY KEY (id),
   FOREIGN KEY (shop_id) REFERENCES shop(id)
-);
+)ENGINE=InnoDB;
 
 INSERT INTO shop_schedule (id, shop_id, day, opening_hour, closing_hour) VALUES
   (1, 1, 'monday', '08:00', '20:00');
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS product
   price DOUBLE NOT NULL ,
   PRIMARY KEY (id),
   FOREIGN KEY (shop_id) REFERENCES shop(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
 
 INSERT INTO product (product_name, shop_id, description, price) VALUES
   ('PS4', 1, 'Console', 300),
@@ -90,14 +90,14 @@ CREATE TABLE IF NOT EXISTS transaction
 (
   id INT NOT NULL AUTO_INCREMENT,
   customer_id INT NOT NULL ,
-  customer_lat VARCHAR(255) NOT NULL,
-  customer_long VARCHAR(255) NOT NULL,
-  dest_address VARCHAR(255) NOT NULL,
-  description VARCHAR(255) NOT NULL COMMENT 'Message of the customer when he creates the transaction',
+  customer_lat VARCHAR(255) NOT NULL DEFAULT  '',
+  customer_long VARCHAR(255) NOT NULL DEFAULT  '',
+  dest_address VARCHAR(255) NOT NULL DEFAULT  '',
+  description VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Message of the customer when he creates the transaction',
   shop_id INT NOT NULL,
   deliverer_id INT,
-  customer_token VARCHAR(12) NOT NULL DEFAULT '',
-  shop_token VARCHAR(12) NOT NULL DEFAULT '',
+  customer_token VARCHAR(255) NOT NULL DEFAULT '',
+  shop_token VARCHAR(255) NOT NULL DEFAULT '',
   order_price DOUBLE NOT NULL ,
   deliverer_price DOUBLE,
   status INT NOT NULL COMMENT '1: After Creation of Transaction, 2: After Shop Confirmation, 3: After Finding Deliverer, 4: After Customer Confirmation , 5:Afer Vendor QRCode has been scanned, 6: Transaction Finished',
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS transaction
   FOREIGN KEY (customer_id) REFERENCES user(id) ON DELETE CASCADE ,
   FOREIGN KEY (shop_id) REFERENCES shop(id) ON DELETE CASCADE ,
   FOREIGN KEY (deliverer_id) REFERENCES user(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS gps
 (
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS gps
   UNIQUE (deliverer_id, transaction_id),
   FOREIGN KEY (deliverer_id) REFERENCES user(id) ON DELETE CASCADE ,
   FOREIGN KEY (transaction_id) REFERENCES transaction(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS transaction_product
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS transaction_product
   PRIMARY KEY (id),
   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE ,
   FOREIGN KEY (transaction_id) REFERENCES transaction(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS bidding
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS bidding
   PRIMARY KEY (id),
   FOREIGN KEY (transaction_id) REFERENCES transaction(id) ON DELETE CASCADE ,
   FOREIGN KEY (deliverer_id) REFERENCES user(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS dispute
@@ -162,4 +162,4 @@ CREATE TABLE IF NOT EXISTS dispute
   isClosed BOOLEAN NOT NULL DEFAULT false,
   PRIMARY KEY (id),
   FOREIGN KEY (transaction_id) REFERENCES transaction(id) ON DELETE CASCADE
-);
+)ENGINE=InnoDB;

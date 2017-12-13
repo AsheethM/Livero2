@@ -20,7 +20,7 @@ function get_transactions_waiting_deliverer_with_shop_id(url, deliverer_id, shop
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Product From ID  : KO"};
+            json = {success:false, message:"Request Get Transactions Without Deliverers  : KO"};
         }
     });
     return json;
@@ -45,7 +45,7 @@ function get_infotrmations_about_transaction_and_bid(url, deliverer_id, transact
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Product From ID  : KO"};
+            json = {success:false, message:"Request Get Informations About Transaction  : KO"};
         }
     });
     return json;
@@ -72,7 +72,7 @@ function set_bid(url, deliverer_id, transaction_id, bid) {
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Product From ID  : KO"};
+            json = {success:false, message:"Request Set Bid  : KO"};
         }
     });
     return json;

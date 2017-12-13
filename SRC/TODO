@@ -15,7 +15,7 @@ Account :
 
 Notification :
     add_phone_token : OK
-    notification : KO (Tester avec le tel)
+    notification : OK
 
 Product :
     add_product : OK
@@ -27,21 +27,21 @@ Product :
 QRCode :
     check_customer_token : KO
     check_shop_token : KO
-    get_client_token : KO
-    get_shop_token : KO
+    get_customer_token : OK
+    get_shop_token : OK
 
 Transaction :
     Shop:
         get_informations_about_transaction_with_id : KO
         get_transaction_products_with_transaction_id : KO
-        get_transactions_with_shop_id : KO
-        update_shop_quantity : KO
-        vendor_transaction_confirmation : KO
+        get_transactions_with_shop_id : OK
+        update_shop_quantity : OK
+        vendor_transaction_confirmation : OK
 
-    CUstomer:
-        create_transaction : KO
+    Customer:
+        create_transaction : OK
         delete_transaction : KO
-        client_transaction_confirmation : KO
+        client_transaction_confirmation : OK
 
     Deliverer:
         get_informations_about_transaction_and_bid_with_id : KO
@@ -108,7 +108,7 @@ Shop :
 
 - Bidding :
   - Bloquer le livreur dès qu'il a 3 bidding : KO
-  - Garder l'ensemble des livreurs dans la BDD (Pourquoi ?) : KO
+  - Garder l'ensemble des livreurs dans la BDD (Pourquoi ?) : OK
 
 
 -------------------------------------------------------------------------------------------------------------------------------------

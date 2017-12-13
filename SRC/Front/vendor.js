@@ -318,7 +318,7 @@ function get_transactions_with_shop_id(url, shop_id)
     $.ajax({
         url : url,
         method: "post",
-        data: {'id_shop': shop_id},
+        data: {'shop_id': shop_id},
         dataType: "json",
         async: false,
         success: function (data) {

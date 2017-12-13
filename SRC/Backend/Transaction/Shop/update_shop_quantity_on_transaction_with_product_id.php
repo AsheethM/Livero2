@@ -4,7 +4,7 @@
     $success = false;
     $message = "";
 
-    if (isset($_POST['vendor_quantity']) && !empty($_POST['vendor_quantity'])
+    if (isset($_POST['shop_quantity']) && !empty($_POST['shop_quantity'])
       && isset($_POST['product_id']) && !empty($_POST['product_id'])
       && isset($_POST['transaction_id']) && !empty($_POST['transaction_id'])
       && isset($_POST['shop_id']) && !empty($_POST['shop_id']))
@@ -12,7 +12,7 @@
         $shop_id = $_POST['shop_id'];
         $transaction_id = $_POST['transaction_id'];
         $product_id = $_POST['product_id'];
-        $vendor_quantity = $_POST['vendor_quantity'];
+        $shop_quantity = $_POST['shop_quantity'];
 
         require_once ('../../Shared/connexion.php');
 
@@ -22,11 +22,11 @@
         $request->bindParam(2, $shop_id, PDO::PARAM_INT);
         if ($request->execute() && $request->rowCount() > 0)
         {
-            $req_str = 'UPDATE transaction_item SET vendor_quantity = ? WHERE transaction_id = ?'.
+            $req_str = 'UPDATE transaction_product SET shop_quantity = ? WHERE transaction_id = ?'.
                 ' AND product_id = ?';
 
             $request = $pdo->prepare($req_str);
-            $request->bindParam(1, $vendor_quantity, PDO::PARAM_INT);
+            $request->bindParam(1, $shop_quantity, PDO::PARAM_INT);
             $request->bindParam(2, $transaction_id, PDO::PARAM_INT);
             $request->bindParam(3, $product_id, PDO::PARAM_INT);
 
