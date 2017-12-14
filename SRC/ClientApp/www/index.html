@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta  name="viewport" content="width=device-width, initial-scale=1">
+    <title>Livero</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+    
+    <!-- side menu -->
+    <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a" >
+       <div class="ui-panel-inner">
+			<ul data-role="listview" class="ui-listview">
+				<li class="ui-first-child">
+					<a href="#main" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Search for a shop</a>
+				</li>
+				<li>
+					<a href="#history" class="ui-btn ui-icon-carat-r ui-btn-icon-right">History</a>
+				</li>
+				<li>
+					<a href="#my_account" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My account</a>
+				</li>
+				<li class="ui-last-child">
+					<a href="#settings" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Settings</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+    <!-- top toolbar -->
+    <div class="top_toolbar" data-role="header" data-position="fixed" >
+        <div id="title_toolbar">
+			<h1 id="liveroo_app_title" class="ui-title">Liveroo</h1>
+        </div>
+		<div id="toolbar">
+            <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
+		</div>
+    </div>
+	   
+    <!-- main app division -->
+    <div data-role="page" id="main">
+        <h1>Shops in your area</h1>
+        <div class="ui-content jqm-content jqm-fullwidth">
+            <div class="map_canvas">
+                <!-- Google Maps widget -->
+            </div>
+			<ul id="main_shop_list" data-role="listview"></ul>
+        </div>
+    </div>
+    
+    <!-- shop list of items -->
+    <div id="shop_store" data-role="page">
+        <h1>Shop store</h1>
+        <div class="ui-content">
+            <h2 id="shop_store_name"></h2>
+            <ul id="shop_store_list" data-role="listview"></ul>
+            <button id="btn_shop_list_confirm">confirm</button>
+        </div>
+    </div>
+
+    <!-- recap cart -->
+    <div id="recap_cart" data-role="page">
+        <h1>Recap</h1>
+        <div class="ui-content">
+            <h2 id="recap_shop_name"></h2>
+            <div class="recap_shop_scrollpane">
+                <ul id="recap_shop_list" data-role="listview"></ul>
+            </div>
+            <div id="recap_total_price_div">
+                <h4 id="recap_total_price">price: 0€</h4>
+            </div>
+            <div id="recap_prefered_way_of_del">
+                <!--<h4 class="">prefered way of delivery:</h4>
+                <img id="recap_prefered_way_img" />
+                <select name="recap_prefered_way_select" id="recap_prefered_way_select" data-mini="true" data-inline="true">
+                    <!-- options ... -->
+                <!--</select>
+                <label class="recap_avg_time_label">average time of the delivery:</label>
+                <label id="recap_avg_time_display">Infinity</label>-->
+                <p class="recap_adress_label">adress:</p>
+                <p id="recap_adress_first_part"></p> 
+                <p id="recap_adress_zipcode"></p>
+                <p id="recap_adress_city"></p>
+                <button id="btn_recap_change_adress">change your delivery adress for this one</button>
+            </div>
+            <button id="btn_recap_modify" onclick="window.location.href='#shop_store'">Modify</button>
+            <button id="btn_recap_confirm">Confirm</button>
+        </div>
+        
+    </div>
+
+    <!-- notification announcement page -->
+    <div id="notification_anouncement" data-role="page"> 
+        <div class="ui-content">
+            <p class="notification_anouncement_text">Thank you for ordering with our application!</p>
+            <p class="notification_anouncement_text">We wil notify you once your order is ready!</p>
+            <button id="btn-notification_anouncement_dashboard" onclick="window.location.href = 'index.html'">Return to dashboard</button>
+        </div>
+    </div>
+
+    <!-- order ready -->
+    <div id="order_ready" data-role="page">
+       <h1>Order ready!</h1>
+        <div class="ui-content">
+            <h2 class="order_ready_title">Your order is ready!</h2>
+            <p class="order_ready_text">In order to continue and get delivered, we invite you to pay the amount for your order</p>
+            <button id="btn_order_ready_pay">Pay</button>
+            <button id="btn_order_ready_cancel">Cancel</button>
+        </div>
+    </div>
+
+    <!-- order almost ready -->
+    <div id="order_almost_ready" data-role="page">
+        <h1>Order almost ready!</h1>
+        <div class="ui-content">
+            <h2 class="order_almost_ready_title">Your order is almost ready!</h2>
+            <p class="order_almost_ready_text">the vendor is missing these articles from your order</p>
+            <div id="order_almost_ready_scrollpane">
+                <ul id="order_almost_ready_list"></ul>
+            </div>
+            <label class="order_almost_ready_new_total">New Total:</label>
+            <label class="order_almost_ready_new_amount"></label>
+            <button id="order_almost_ready_pay">Pay</button>
+            <button id="order_almost_ready_cancel">Cancel order</button>
+        </div>
+        
+    </div>
+    <!-- payment gateaway -->
+    <div id="payment_gateway" data-role="page">
+        
+        <div class="ui-content">
+            <!-- placeholder -->
+        </div>
+        
+    </div>
+    <!-- QR code -->
+    <div id="qr_code_page" data-role="page">
+        
+        <div class="ui-content">
+            <p class="qr_code_text">This QR code will be scanned by the deliverer once you get your order</p>
+            <div id="qr_code">
+
+            </div>
+            <h3 id="qr_order_id"></h3>
+            <div class="qr_code_advice" data-role="page">
+                <h4 class="qr_code_advice_label">Advice:</h4>
+                <p class="qr_code_advice_text"></p>
+            </div>
+            <button id="qr_code_open_dispute">Open a dispute</button>
+        </div>
+        
+    </div>
+    <!-- deliverer position when the order is ready and confirmed by all part -->
+    <div id="deliverer_pos" data-role="page">
+        <div class="ui-content jqm-content jqm-fullwidth">
+            <div id="deliverer_map_canvas">
+
+            </div>
+        </div>
+    </div>
+    <!-- Optionnal: delivery rating -->
+    <div id="delivery_rating" data-role="page">
+        
+        <div class="ui-content">
+            <h2 class="delivery_rating_title">Rate your delivery!</h2>
+            <label class="delivery_rating_time_label">Delivery time</label>
+            <label id="delivery_rating_time"></label>
+            <div>
+                <h4 class="delivery_rating_deliverer_title"></h4>
+            </div>
+        </div>
+        
+    </div>
+    <!-- CSS -->
+
+	<!-- scripts -->
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/index.js"></script>
+    
+	
+</body>
+</html>

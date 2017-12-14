@@ -1,67 +1,64 @@
 /**
- *  Retrieve client qrcode
+ *  Retrieve customer qrcode
  *
  * @param url : The HTTP request
  * @param transaction_id : The transaction id in the database
- * @param client_id : The client id in the database
+ * @param customer_id : The customer id in the database
  * @returns : <img>  tag containing the QRCode
  */
-function get_client_qrcode(url, transaction_id, client_id)
+function get_customer_qrcode(url, transaction_id, customer_id)
 {
     var res = "";
     var json = null;
     $.ajax({
         url : url,
         method: 'post',
-        data: {'transaction_id' : transaction_id, 'client_id' : client_id},
+        data: {'transaction_id' : transaction_id, 'customer_id' : customer_id},
         dataType: 'json',
         async : false,
         success: function (data) {
             json = data;
         },
         error: function () {
-            json = {success: false, message: "Request Get Client Token: KO"};
+            json = {success: false, message: "Request Get customer Token: KO"};
         }
     });
 
     if (json.success)
     {
-        var token = json.results[0].client_token;
+        var token = json.results[0].customer_token;
         res +=  '<img src="https://api.qrserver.com/v1/create-qr-code/?data='+token+'&amp;size=100x100" alt="" title="" />';
     }
     else
-        res += json.message;
+        res += 'Error';
     return res;
 }
 
 /**
- *  Retrieve vendor qrcode
+ *  Retrieve shop qrcode
  *
  * @param url : The HTTP request
  * @param transaction_id : The transaction id in the database
- * @param vendor_id : The client id in the database
+ * @param shop_id : The customer id in the database
  * @returns : <img>  tag containing the QRCode
  */
-function get_vendor_qrcode(url, transaction_id, vendor_id)
+function get_shop_qrcode(url, transaction_id, shop_id)
 {
     var res = "";
     var json = null;
     $.ajax({
         url : url,
         method: 'post',
-        data: {'transaction_id' : transaction_id, 'shop_id' : vendor_id},
+        data: {'transaction_id' : transaction_id, 'shop_id' : shop_id},
         dataType: 'json',
         async : false,
         success: function (data) {
             json = data;
         },
         error: function () {
-            json = {success: false, message: "Request Get Client Token: KO"};
+            json = {success: false, message: "Request Get customer Token: KO"};
         }
-    });
-    alert("Hello1");
-    alert(json);
-    if (json.success)
+    });    if (json.success)
     {
         var token = json.results[0].shop_token;
         alert(token);
@@ -76,7 +73,7 @@ function get_vendor_qrcode(url, transaction_id, vendor_id)
 
 
 /**
- * Check if the token taken by the deliverer's camera is the same as the client token
+ * Check if the token taken by the deliverer's camera is the same as the customer token
  *
  * @param url : The HTTP request
  * @param transaction_id  : The transaction id in the database
@@ -84,7 +81,7 @@ function get_vendor_qrcode(url, transaction_id, vendor_id)
  * @param token : token from deliverer scan
  * @returns : boolean
  */
-function check_client_qrcode(url, transaction_id, deliverer_id, token)
+function check_customer_qrcode(url, transaction_id, deliverer_id, token)
 {
     var json = null;
     $.ajax({
@@ -97,7 +94,7 @@ function check_client_qrcode(url, transaction_id, deliverer_id, token)
             json = data;
         },
         error: function () {
-            json = {success: false, message: "Request Get Client Token: KO"};
+            json = {success: false, message: "Request Get customer Token: KO"};
         }
     });
     alert (json.message);
@@ -105,7 +102,7 @@ function check_client_qrcode(url, transaction_id, deliverer_id, token)
 }
 
 /**
- * Check if the token taken by the deliverer's camera is the same as the vendor token
+ * Check if the token taken by the deliverer's camera is the same as the shop token
  *
  * @param url : The HTTP request
  * @param transaction_id : The transaction id in the database
@@ -113,7 +110,7 @@ function check_client_qrcode(url, transaction_id, deliverer_id, token)
  * @param token : token from deliverer scan
  * @returns : boolean
  */
-function check_vendor_qrcode(url, transaction_id, deliverer_id, token)
+function check_shop_qrcode(url, transaction_id, deliverer_id, token)
 {
     var json = null;
     $.ajax({
@@ -126,7 +123,7 @@ function check_vendor_qrcode(url, transaction_id, deliverer_id, token)
             json = data;
         },
         error: function () {
-            json = {success: false, message: "Request Get Client Token: KO"};
+            json = {success: false, message: "Request Get customer Token: KO"};
         }
     });
     alert (json.message);
@@ -139,10 +136,10 @@ function check_vendor_qrcode(url, transaction_id, deliverer_id, token)
  * @param url : The HTTP request
  * @param transaction_id : transaction id in datbase
  * @param deliverer_id : deliverer id in database
- * @param is_client : true if scanning client phone
+ * @param is_customer : true if scanning customer phone
  * @returns : boolean
  */
-function scan(url, transaction_id, deliverer_id, is_client)
+function scan(url, transaction_id, deliverer_id, is_customer)
 {
     var res = false;
     var token = "";
@@ -169,10 +166,10 @@ function scan(url, transaction_id, deliverer_id, is_client)
     alert('lalalalla');
     if (res)
     {
-        if (is_client)
-            return check_client_qrcode(url, transaction_id, deliverer_id, token);
+        if (is_customer)
+            return check_customer_qrcode(url, transaction_id, deliverer_id, token);
         else
-            return check_vendor_qrcode(url, transaction_id, deliverer_id, token);
+            return check_shop_qrcode(url, transaction_id, deliverer_id, token);
     }
     return res;
 }

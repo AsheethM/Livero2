@@ -207,6 +207,7 @@ function get_product_from_id(url, shop_id, product_id)
  * Update a product in the database
  *
  * @param url : the HTTP request
+ * @param shop_id
  * @param product_id : the id of the product in the database
  * @param product_name : The name of the product
  * @param product_price : The price of the product
