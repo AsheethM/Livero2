@@ -78,7 +78,8 @@ CREATE TABLE IF NOT EXISTS product
   description VARCHAR(255) NOT NULL DEFAULT '',
   price DOUBLE NOT NULL ,
   PRIMARY KEY (id),
-  FOREIGN KEY (shop_id) REFERENCES shop(id) ON DELETE CASCADE
+  FOREIGN KEY (shop_id) REFERENCES shop(id) ON DELETE CASCADE,
+  UNIQUE (shop_id, product_name)
 )ENGINE=InnoDB;
 
 INSERT INTO product (product_name, shop_id, description, price) VALUES
@@ -104,6 +105,7 @@ CREATE TABLE IF NOT EXISTS transaction
   isComplete BOOLEAN DEFAULT true,
   delivery_rating INT NOT NULL DEFAULT 5,
   shop_rating INT NOT NULL DEFAULT 5,
+  timer DATETIME NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (customer_id) REFERENCES user(id) ON DELETE CASCADE ,
   FOREIGN KEY (shop_id) REFERENCES shop(id) ON DELETE CASCADE ,
@@ -137,7 +139,8 @@ CREATE TABLE IF NOT EXISTS transaction_product
   shop_quantity INT NOT NULL ,
   PRIMARY KEY (id),
   FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE ,
-  FOREIGN KEY (transaction_id) REFERENCES transaction(id) ON DELETE CASCADE
+  FOREIGN KEY (transaction_id) REFERENCES transaction(id) ON DELETE CASCADE,
+  UNIQUE (product_id, transaction_id)
 )ENGINE=InnoDB;
 
 
@@ -147,9 +150,11 @@ CREATE TABLE IF NOT EXISTS bidding
   transaction_id INT NOT NULL,
   deliverer_id INT NOT NULL,
   bid DOUBLE NOT NULL,
+  time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (transaction_id) REFERENCES transaction(id) ON DELETE CASCADE ,
-  FOREIGN KEY (deliverer_id) REFERENCES user(id) ON DELETE CASCADE
+  FOREIGN KEY (deliverer_id) REFERENCES user(id) ON DELETE CASCADE,
+  UNIQUE (transaction_id, deliverer_id)
 )ENGINE=InnoDB;
 
 

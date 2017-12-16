@@ -55,13 +55,13 @@ Vendor :
 
 - Integrate QrCode Module : KO
 
-- Timer : KO (Notifier le shop si il y a un problème)
+- Timer : KO
 
 - Final Database : OK
 
-- Integrate Notifications : OK (Server Side Only)
+- Integrate Notifications : KO
 
-- Vendor App functions : OK (For now)
+- Vendor App functions : KO
 
 ----------------------------------------------------------------------
 Deliverer :

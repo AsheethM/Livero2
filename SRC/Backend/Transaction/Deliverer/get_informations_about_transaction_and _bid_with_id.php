@@ -5,11 +5,13 @@
     $success = false;
     $message = "";
 
-    if ( isset($_POST['transaction_id']) && !empty($_POST['transaction_id'])
+    /*if ( isset($_POST['transaction_id']) && !empty($_POST['transaction_id'])
         && isset($_POST['deliverer_id']) && !empty($_POST['deliverer_id']))
     {
         $deliverer_id = $_POST['deliverer_id'];
-        $transaction_id = $_POST['transaction_id'];
+        $transaction_id = $_POST['transaction_id'];*/
+$deliverer_id = 2;
+$transaction_id = 1;
         require_once('../../Shared/connexion.php');
 
         $verif_str = 'SELECT * FROM deliverer WHERE id = ?';
@@ -18,8 +20,10 @@
 
         if ($request->execute() && $request->rowCount() > 0)
         {
-            $req_str = 'SELECT * FROM transaction t JOIN bidding b ON  t.id = b.transaction_id WHERE id = ? '.
-                ' AND status = 2 AND bid = (SELECT MIN(bid) FROM bidding WHERE transaction_id = ?)';
+            /*$req_str = 'SELECT * FROM transaction t JOIN bidding b ON  t.id = b.transaction_id WHERE t.id = ? '.
+                ' AND status = 2 AND bid = (SELECT MIN(bid) FROM bidding WHERE transaction_id = ?)';*/
+            $req_str = 'SELECT * FROM transaction t JOIN bidding b ON  t.id = b.transaction_id WHERE t.id = ? '.
+                ' AND bid = (SELECT MIN(bid) FROM bidding WHERE transaction_id = ?)';
             $request = $pdo->prepare($req_str);
             $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
             $request->bindParam(2, $transaction_id, PDO::PARAM_INT);
@@ -39,9 +43,9 @@
         else
             $message = 'User is not a deliverer';
 
-    }
+    /*}
     else
-        $message = 'Parameters Error';
+        $message = 'Parameters Error';*/
 
 
     $response['success'] = $success;
