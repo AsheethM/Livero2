@@ -1,11 +1,10 @@
 /*------------------------------------------------------------------------------------------*/
 
-function get_shops_nearby() {
+function get_shops_nearby(url) {
     var json = null;
     $.ajax({
         url : url,
         method: "post",
-        data:{'shop_id' : shop_id, 'deliverer_id':deliverer_id},
         dataType: "json",
         async: false,
         success: function (data) {

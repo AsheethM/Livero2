@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta  name="viewport" content="width=device-width, initial-scale=1">
+    <title>Livero</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+</head>
+<body onload="onLoad()">
+    
+    <!-- side menu -->
+    <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a" >
+       <div class="ui-panel-inner">
+			<ul data-role="listview" class="ui-listview">
+				<li class="ui-first-child">
+					<a href="#shops" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Shops</a>
+				</li>
+				<li>
+					<a href="#history" class="ui-btn ui-icon-carat-r ui-btn-icon-right">History</a>
+				</li>
+                <li>
+                    <a href="#my_orders" class="ui-btn ui-icon-carat-r ui-btn-icon-right" >My Orders</a>
+                </li>
+				<li>
+					<a href="#my_account" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My account</a>
+				</li>
+				<li class="ui-last-child">
+					<a href="#settings" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Settings</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+    <!-- top toolbar -->
+    <div class="top_toolbar" data-role="header" data-position="fixed" >
+        <div id="title_toolbar">
+			<h1 id="liveroo_app_title" class="ui-title">Liveroo</h1>
+        </div>
+		<div id="toolbar">
+            <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
+            <a class="ui-btn ui-shadow ui-mini ui-icon-back  ui-btn-right ui-corner-all  ui-btn-icon-notext" onclick="go_back()">Back</a>
+		</div>
+    </div>
+
+
+    <div data-role="page" id="home">
+        <h1>Home</h1>
+        <div class="ui-content">
+            <p>
+                This is Livero-Deliverer
+            </p>
+            <p>
+                How does it work ?
+            </p>
+        </div>
+    </div>
+    <!-- Transaction Section -->
+    <div data-role="page" id="shops">
+        <div class="ui-content">
+            <h1>Shops</h1>
+            <ul id="shops_list" data-role="listview" data-inset="true">
+            </ul>
+            <div id="shops_message"></div>
+        </div>
+    </div>
+
+    <div data-role="page" id="shop_orders">
+        <div class="ui-content">
+            <h1>Shop Orders:</h1>
+            <ul id="shop_orders_list" data-role="listview" data-inset="true">
+            </ul>
+            <div id="shop_orders_message"></div>
+        </div>
+    </div>
+
+    <div data-role="page" id="shop_order_instance">
+        <div class="ui-content">
+            <div>
+                <h1>Bidding</h1>
+                <h3> What is your offer ?</h3>
+                <p>
+                    Best Offer yet : <span id="shop_order_instance_cur_bid"></span>
+                </p>
+                <p>
+                    End of Bidding : <span id="shop_order_instance_timer"></span>
+                </p>
+                <p>
+                    <input type="number" id='shop_order_instance_bid' placeholder="Your Bid">
+                </p>
+                <div>
+                    <button id="shop_order_instance_confirm"> Confirm</button>
+                    <button id="shop_order_instance_cancel">Cancel</button>
+                </div>
+
+            </div>
+            <div id="shop_order_instance_message"></div>
+        </div>
+    </div>
+
+    <div data-role="page" id="after_bid">
+        <div class="ui-content">
+            <div>
+                <p>
+                    Thank yoi for bidding on this order,
+                    You will be notified once the bidding is over !
+                    <a href="#home" class="ui-btn ui-btn-center ui-shadow ui-corner-all ui-mini ui-icon-home">Return to DashBoard</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Section -->
+
+    <!-- Settings Section -->
+    <div data-role="page" id="settings">
+    </div>
+    <!-- Settings Section -->
+
+    <!-- Account Section -->
+    <div data-role="page" id="my_account">
+        <div class="ui-content">
+            <h1>My Account</h1>
+            <div id="div_account"></div>
+            <div id="div_account_message"></div>
+        </div>
+    </div>
+    <!-- Account Section -->
+
+    <!-- My_Orders Section -->
+    <div data-role="page" id="my_orders">
+        <div class="ui-content">
+            <h1>My Orders</h1>
+            <ul id="my_orders_list" data-role="listview" data-inset="true">
+            </ul>
+            <div id="my_orders_message"></div>
+        </div>
+    </div>
+    <!-- My_Orders Section -->
+
+
+    <!-- History Section -->
+    <div data-role="page" id="history">
+        <div class="ui-content">
+            <h1>History</h1>
+        </div>
+    </div>
+    <!-- History Section -->
+
+
+	<!-- scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/deliverer.js"></script>
+    <script src="js/display.js"></script>
+</body>
+</html>
