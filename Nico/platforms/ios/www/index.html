@@ -18,59 +18,24 @@
     under the License.
 -->
 <html xmlns="http://www.w3.org/1999/html">
-    <head>
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Login</title>
-        <script src="js/jquery-3.2.1.js"></script>
-        <!--<script src="js/jquery.mobile-1.4.5.min.js"></script>-->
-        <script type="text/javascript">
-            window.localStorage.setItem("server_ip", "localhost:8888/PRI/Backend/");
-
-            /* Done if something happens and the app opens on login page with user already logged */
-            if (window.localStorage.getItem("user_id") !== null)
-                window.location.href="dashboard.html";
-
-            $(document).ready(function () {
-                /**/
-                var server_ip = window.localStorage.getItem("server_ip");
-                $("#connection").click(function () {
-                    console.log("test");
-                    var login = $("#login").val();
-                    var password = $("#password").val();
-                    $.ajax({
-                        url: 'http://'+server_ip+'Vendor/connection_vendor.php',
-                        method:'post',
-                        data: {'login': login, 'password' : password},
-                        dataType: 'json',
-                        success : function (data) {
-                            if (data.success)
-                            {
-                                window.localStorage.setItem("shop_id", data.result[0].shop_id);
-                                window.localStorage.setItem("user_id", data.result[0].user_id);
-                                window.location.href="dashboard.html";
-                            }
-                            else
-                            {
-                               $("#div-err").html("<p>"+data.message+"</p>");
-                            }
-                        }
-                    });
-                });
-            });
-        </script>
-    </head>
     <body>
-        <h1>LOGIN PAGE</h1>
-        <div>
-            <p>
-                Email : <input id="login" type="text">
-            </p>
-            <p>
-                PassWord : <input id="password" type="password">
-            </p>
-            <button type="button" id="connection"> Connect </button>
-            <div id = "div-err">
-            </div>
-        </div>
+        <script src="https://js.stripe.com/v3/"></script>
+        <link rel="stylesheet" type="text/css" href="css/stripe.css">
+
+		<form action="/charge" method="post" id="payment-form">
+		  <div class="form-row">
+		    <label for="card-element">
+		      Credit or debit card
+		    </label>
+		    <div id="card-element">
+		      <!-- a Stripe Element will be inserted here. -->
+		    </div>
+
+		    <!-- Used to display form errors -->
+		    <div id="card-errors" role="alert"></div>
+		  </div>
+
+		  <button>Submit Payment</button>
+		</form>
     </body>
 </html>
