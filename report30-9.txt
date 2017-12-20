@@ -1,0 +1,12 @@
+We basically setup cordova and ran some sample code on it.
+https://cordova.apache.org/
+
+
+Work done on ServerSide script handling:
+	Using PHP & JSON setup basic registration form
+Client Side script handling:
+	Using Javascript,jquery, ajax implemented functionality to work with the serverside
+
+The theme used by the framework, requires that elements used 	in the CSS and HTML be mentioned before hand. 
+
+The week is basically focused on creating database schema and choosing the payment gateway, Which will be posted as a seperate document.
