@@ -1,0 +1,26 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-facebook": {
+      "FACEBOOK_APP_ID": "715571341975181",
+      "FACEBOOK_DISPLAY_NAME": "livero",
+      "PACKAGE_NAME": "org.apache.cordova.livero_client"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "org.apache.cordova.livero_client"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "org.apache.cordova.livero_client"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "org.apache.cordova.livero_client"
+    }
+  },
+  "dependent_plugins": {}
+}

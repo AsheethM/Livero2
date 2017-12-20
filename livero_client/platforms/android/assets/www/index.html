@@ -1,0 +1,165 @@
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-type" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+    <title>epita_pri stuff</title>
+
+	
+	   
+	
+	 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=PT+Sans:400,700'>
+        <link rel="stylesheet" href="assets/css/style.css">
+ 	<link rel="stylesheet" href="1.2/jquery.mobile-1.4.5.min.css" />
+	<link rel="stylesheet" href="index.css" /> 
+    <link rel="stylesheet" href="misc.css" /> 
+    <script src="1.2/jquery.js"></script>
+	
+	<script src="1.2/jquery.mobile-1.4.5.min.js"></script>
+
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvfMMyyi9xQcitKizTAJNE5Gqp1308pOQ"></script>-->
+
+
+	</head>
+  
+  <body >
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '715571341975181',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v2.11'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+    
+
+	
+		
+	<div data-role="content"  >			
+			
+		 <div class="api-div"  id="api-gps">    	
+		<input type="text" placeholder="enter you value" id="text_box"/>
+			<input type="button" value="press" id="button" onclick="fetch_info()"  />
+		<ul data-role="listview"  data-filter="true" data-inset="true" id="display">
+ 
+         </ul>
+		<div id="geolocation">
+		</div>
+		</div> <!----end of gps-->
+		
+			
+		 <div class="api-div"  id="api-login" >    	
+
+		 
+		 <div class="page-container" >
+            <h1>Welcome to livero</h1>
+            <form action="" method="post">
+                <input type="text" name="username" id="email" class="username" placeholder="Username">
+                <input type="password" name="password" id="password" class="password" placeholder="Password">
+				<span id="login_result"></span>
+                <button type="button" onclick="login_normal()">Lets's Shop</button>
+               
+            </form>
+            
+            <p><a href="#"  onclick="openapi('hyper-registration')" > Don't have an account?</a></p>
+            <div class="connect">
+                <p>Or connect with:</p>
+                <p>
+                    <a class="facebook" href=""></a>
+                    <a class="twitter" href=""></a>
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+		 
+		 
+		</div> <!----end of login-->
+		
+		 <div class="api-div"  id="api-registration" >    
+
+
+
+
+
+
+
+
+
+		 
+<form>
+
+
+        <legend>E-Mail*</legend>
+        <input type="text" name="textinput-f" id="email_r" placeholder="E-mail" value="">
+ <legend>First Name*</legend>
+        <input type="text" name="textinput-f" id="first" placeholder="First Name" value="">
+ <legend>Lastname Name*</legend>
+        <input type="text" name="textinput-f" id="last" placeholder="Last Name" value="">
+ <legend>Date of Birth*</legend>
+        <input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">
+ <legend>Address*</legend>
+        <input type="text" name="textinput-f" id="address" placeholder="Address" value="">
+ <legend>Phone*</legend>    
+	<input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
+ <legend>Password*</legend>
+        <input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
+	 <legend>Confirm Password*</legend>    
+	<input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
+		
+		
+		<span id="resgitration_result"></span>
+		<input type="button" name="textinput-f"  onclick="registration_normal()" value="submit">
+
+</form>
+
+    
+    <div id="listTable"></div>
+
+		</div> <!----end of registration-->
+		  
+			
+		 <div class="api-div"  id="api-displayvendor" >    	
+
+
+<input type="range" name="slider-fill" id="distance_value" value="10" min="0" max="50" data-highlight="true" />
+		 
+		 
+		 <div id="map_canvas"></div>
+		 
+		 <ul data-role="listview" data-inset="true" id="vendorlist">
+   
+         </ul>
+		 
+		 
+		 
+		 
+  
+		</div> <!----end ofdisplay vendor-->
+		
+		</div><!--end of content-->
+  
+	</div>
+	
+
+
+<script type="text/javascript" charset="utf-8" src="index.js"></script>
+
+  </body>
+</html>
