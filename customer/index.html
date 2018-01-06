@@ -4,6 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta  name="viewport" content="width=device-width, initial-scale=1">
        <title>Livero</title>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/index.css" />
+
 </head>
 <body>
     
@@ -15,7 +20,7 @@
 					<a href="#main" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Search for a shop</a>
 				</li>
 				<li>
-					<a href="#history" class="ui-btn ui-icon-carat-r ui-btn-icon-right">History</a>
+					<a id="my_orders" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My orders</a>
 				</li>
 				<li>
 					<a href="#my_account" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My account</a>
@@ -39,8 +44,6 @@
 			<input id="search_bar" type="search" name="search_bar" placeholder="search for a shop" />
         </div>
         <a href="#recap_cart" id="shopping_cart" class="ui-btn ui-btn-right ui-corner-all ui-mini ui-icon-cart ui-btn-icon-notext"></a>
-            
-        </span>
 		</div>
     </div>
 	   
@@ -54,7 +57,22 @@
 			<ul id="main_shop_list" data-role="listview"></ul>
         </div>
     </div>
-    
+    <!--ITEMS FROM SIDE MENU-->
+    <!-- all the orders by chronological order -->
+    <div data-role="page" id="orders">
+        <div class="ui-content">
+            <h1>Your orders</h1>
+            <ul id="orders_list" data-role="listview">
+
+            </ul>
+        </div>
+    </div>
+    <!-- when an order has been-->
+    <div data-role="page" id="orders_recap_an_order">
+
+    </div>
+    <!--/ITEMS FROM SIDE MENU-->
+
     <!-- shop list of items -->
     <div id="shop_store" data-role="page">
         <h1>Shop store</h1>
@@ -76,21 +94,21 @@
             <div id="recap_total_price_div">
                 <h4 id="recap_total_price">price: 0€</h4>
             </div>
-            <div id="recap_prefered_way_of_del">
-                <!--<h4 class="">prefered way of delivery:</h4>
+            <!--<div id="recap_prefered_way_of_del">
+                <h4 class="">prefered way of delivery:</h4>
                 <img id="recap_prefered_way_img" />
                 <select name="recap_prefered_way_select" id="recap_prefered_way_select" data-mini="true" data-inline="true">
                     <!-- options ... -->
                 <!--</select>
                 <label class="recap_avg_time_label">average time of the delivery:</label>
-                <label id="recap_avg_time_display">Infinity</label>-->
+                <label id="recap_avg_time_display">Infinity</label>
                 <p class="recap_adress_label">adress:</p>
                 <p id="recap_adress_first_part"></p> 
                 <p id="recap_adress_zipcode"></p>
                 <p id="recap_adress_city"></p>
                 <button id="btn_recap_change_adress">change your delivery adress for this one</button>
-            </div>
-            <button id="btn_recap_modify" onclick="window.location.href='#shop_store'">Modify</button>
+            </div>-->
+            <button id="btn_recap_modify">Modify</button>
             <button id="btn_recap_confirm">Confirm</button>
         </div>
         
@@ -101,7 +119,7 @@
         <div class="ui-content">
             <p class="notification_anouncement_text">Thank you for ordering with our application!</p>
             <p class="notification_anouncement_text">We wil notify you once your order is ready!</p>
-            <button id="btn-notification_anouncement_dashboard" onclick="window.location.href = 'index.html'">Return to dashboard</button>
+            <button id="btn-notification_anouncement_dashboard" onclick="window.location.href = '#'">Return to dashboard</button>
         </div>
     </div>
 
@@ -111,6 +129,9 @@
         <div class="ui-content">
             <h2 class="order_ready_title">Your order is ready!</h2>
             <p class="order_ready_text">In order to continue and get delivered, we invite you to pay the amount for your order</p>
+            <p id="order_ready_amount">
+
+            </p>
             <button id="btn_order_ready_pay">Pay</button>
             <button id="btn_order_ready_cancel">Cancel</button>
         </div>
@@ -123,7 +144,7 @@
             <h2 class="order_almost_ready_title">Your order is almost ready!</h2>
             <p class="order_almost_ready_text">the vendor is missing these articles from your order</p>
             <div id="order_almost_ready_scrollpane">
-                <ul id="order_almost_ready_list"></ul>
+                <ul id="order_almost_ready_list" data-role="listview"></ul>
             </div>
             <label class="order_almost_ready_new_total">New Total:</label>
             <label class="order_almost_ready_new_amount"></label>
@@ -153,6 +174,7 @@
                 <h4 class="qr_code_advice_label">Advice:</h4>
                 <p class="qr_code_advice_text"></p>
             </div>
+            <button id="qr_code_deliverer">watch where the deliverer is</button>
             <button id="qr_code_open_dispute">Open a dispute</button>
         </div>
         
@@ -178,14 +200,22 @@
         </div>
         
     </div>
-    <!-- CSS -->	
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link rel="stylesheet" href="css/index.css" />
-
+   <div id="dispute" data-type="page">
+       <div class="ui-content">
+           <h2>Send us a request</h2>
+           <p>Please tell us what is your concern about your delivery.
+           <br />
+           The Livero team will study your submission and answer as soon as possible.</p>
+           <input type="text" id="dispute_title" placeholder="title"/>
+           <textarea id="dispute_text" draggable="false" placeholder="explain to us here...">
+           </textarea>
+           <button id="btn_dispute_submit">submit</button>
+       </div>
+   </div>
 	<!-- scripts -->
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-	<script src="scripts/cart.js"></script>
+	<!--<script src="scripts/cart.js"></script>-->
     <script src="scripts/index.js"></script>
     
 	
