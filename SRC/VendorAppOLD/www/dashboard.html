@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>DashBoard</title>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/vendor.js"></script>
+    <script type="text/javascript">
+        var server_ip = localStorage.getItem("server_ip");
+        var user_id = localStorage.getItem("user_id");
+        var shop_id = localStorage.getItem("shop_id");
+
+
+
+        $(document).ready(function () {
+            $("#div-command").hide();
+            $("#div-error").hide();
+            var url = "http://"+server_ip+"/Transaction/Shop/get_transactions_with_shop_id.php";
+            var data = get_transactions_with_shop_id(url, shop_id);
+            if (data.success) {
+                if (data.isTransactions) {
+                    $.each(data.results, function (index, value) {
+                        var transaction_num = "Order num:" + (index + 1);
+                        var status = "Status : ";
+                        switch (parseInt(value.status)) {
+                            case 1 :
+                                status += "Waiting for your validation";
+                                break;
+                            case 2 :
+                                status += "Waiting for a deliverer";
+                                break;
+                            case 3:
+                                status += "Waiting for Customer Confirmation";
+                                break;
+                            case 4:
+                                status += "Waiting the Deliverer to pick up the products";
+                                break;
+                            case 5:
+                                status += "Waiting the deliverer to deliver products to customer ";
+                                break;
+                            default :
+                                break;
+                        }
+
+                        var bloc_one = transaction_num + "<br>" + status + "<br>";
+                        var bloc_two = "<button id='trans_" + value.id + "_" + value.status + "_" + (index + 1) + "'>Check the Order</button>";
+                        $("#div-transaction").append("<p>" + bloc_one + bloc_two + "</p>");
+                    });
+
+                    $("#div-transaction").delegate("button", "click", function () {
+                        var transaction_id = $(this).attr("id").split("_")[1];
+                        var transaction_status = $(this).attr("id").split("_")[2];
+                        var order_num = $(this).attr("id").split("_")[3];
+                        $("#div-transaction").hide();
+
+                        console.log('21 transaction_id: '+transaction_id);
+                        console.log('22 shop_id: '+shop_id);
+                        var url  = "http://" + server_ip + "Transaction/Shop/get_transaction_products_with_transaction_id.php";
+                        var res = get_transaction_products_with_transaction_id_and_shop_id(url, transaction_id, shop_id);
+                        if (res.success) {
+                            console.log('61 :'+res.message);
+                        }
+                        else
+                        {
+                            console.log('65 :'+res.message);
+                        }
+                    });
+                }
+            }
+            else
+            {
+                alert ('First World');
+            }
+        });
+    </script>
+    <title>DASHBOARD</title>
+</head>
+<body>
+    <h1>DASHBOARD</h1>
+    <p>
+        <a href="logout.html">LOG OUT</a> <br> <br>
+        <a href="my_account.html">MY ACCOUNT</a> <br> <br>
+        <a href="my_products.html"> MY PRODUCTS</a> <br> <br>
+        <a href="test_shop.html"> QRCODE </a> <br> <br>
+        <a href="test_deliverer.html"> QRCODE TEST </a> <br> <br>
+    </p>
+    <div id="div-transaction">
+        <h2>Transaction</h2>
+        <br>
+    </div>
+    <div id="div-command"></div>
+    <div id="div-error">
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Items to the cart</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+    <link rel="stylesheet" href="css/style_tables.css" media="screen" type="text/css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.shop.js"></script>
+</head>
+
+<body id="checkout-page" onload="display_items_on_load()">
+
+<div id="site">
+    <header id="masthead">
+        <h1>Livero <span class="tagline">Welcome to Livero</span> </h1>
+    </header>
+
+</div>
+<div>
+    <table class="timetable_sub">
+        <thead>
+            <tr>
+                <th>SL No.</th>
+                <!--<th>Product</th>-->
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Update</th>
+                <th>Delete</th>
+                <!--<th>Remove</th>-->
+            </tr>
+        </thead>
+        <tbody id="items_tbody">
+        </tbody>
+    </table>
+</div>
+
+<footer id="site-info">
+    Copyright &copy; Livero
+</footer>
+
+</body>
+<script src="../js/display.js"></script>
+<script src="../js/vendor.js"></script>
+</html>

@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="css/index.css" />
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
 </head>
 <body onload="onLoad()">
-    
+
     <!-- side menu -->
     <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a" >
        <div class="ui-panel-inner">
@@ -58,6 +58,7 @@
             </p>
         </div>
     </div>
+
     <!-- Transaction Section -->
     <div data-role="page" id="shops">
         <div class="ui-content">
@@ -124,7 +125,26 @@
     <div data-role="page" id="my_account">
         <div class="ui-content">
             <h1>My Account</h1>
-            <div id="div_account"></div>
+            <div id="div_account">
+                <p>Name : <span id="account_name"></span></p>
+                <p>Email : <span id="account_email"></span></p>
+                <p>Birthdate : <span id="account_birthdate"></span></p>
+                <p>Phone Number : <input type="tel" id="account_phone"></p>
+                <form>
+                    <input name="checkbox-mini-0" id="account_licence" data-mini="true" type="checkbox">
+                    <label for="account_licence">Licence</label>
+                    <div class="ui-field-contain">
+                        <label for="account_select">Vehicule : </label>
+                        <select name="select-native-2" id="account_select" data-mini="true">
+                            <option id="account_option_pedestrian" value="1">pedestrian</option>
+                            <option id="account_option_bicycle" value="2">bicycle</option>
+                            <option id="account_option_motorbike" value="3">motorbike</option>
+                            <option id="account_option_car" value="4">car</option>
+                        </select>
+                    </div>
+                    <input data-mini="true" id="account_update"  value="Update" type="button">
+                </form>
+            </div>
             <div id="div_account_message"></div>
         </div>
     </div>
@@ -139,6 +159,29 @@
             <div id="my_orders_message"></div>
         </div>
     </div>
+
+    <div data-role="page" id="order_instance">
+        <div class="ui-content">
+            <div>
+                <h1>Order</h1>
+                <div id="order_instance_customer_information">
+                    <p>Customer Name : <span id="order_instance_customer_name"></span></p>
+                    <p>Customer Address : <span id="order_instance_customer_address"></span></p>
+                    <p>Customer Number :<span id="order_instance_customer_number"></span></p>
+                </div>
+                <div id="order_instance_shop_information">
+                    <p>Shop Name : <span id="order_instance_shop_name"></span></p>
+                    <p>Shop Address : <span id="order_instance_shop_address"></span></p>
+                    <p>Shop Number :<span id="order_instance_shop_number"></span></p>
+                </div>
+                <div>
+                    <button id="order_instance_qrcode">QrCode Scanner</button>
+                </div>
+
+            </div>
+            <div id="order_instance_message"></div>
+        </div>
+    </div>
     <!-- My_Orders Section -->
 
 
@@ -146,6 +189,7 @@
     <div data-role="page" id="history">
         <div class="ui-content">
             <h1>History</h1>
+
         </div>
     </div>
     <!-- History Section -->

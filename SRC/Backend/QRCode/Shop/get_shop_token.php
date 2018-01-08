@@ -1,5 +1,5 @@
 <?php
-    header('Content-Type: application/json');
+    //header('Content-Type: application/json');
     $response = array();
     $success = false;
     $message  = "";
@@ -11,7 +11,7 @@
         $shop_id = $_POST['shop_id'];
         $req_str = 'SELECT shop_token FROM transaction WHERE id = ? AND shop_id = ?';
 
-        require_once('../Shared/connexion.php');
+        require_once('../../Shared/connexion.php');
         $request = $pdo->prepare($req_str);
         $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
         $request->bindParam(2, $shop_id, PDO::PARAM_INT);
@@ -19,7 +19,7 @@
 
         if ($request->rowCount() > 0)
         {
-            $err = false;
+            $success = true;
             $response['results'] = $request->fetchAll();
         }
         else

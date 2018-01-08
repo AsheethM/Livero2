@@ -21,6 +21,8 @@
                 $response["isTransactions"] = false;
             $response["results"] = $request->fetchAll();
         }
+        else
+            $message = "BDD Error";
     }
     else {
         $message = "Parameters Error";

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Items to the cart</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.shop.js"></script>
+</head>
+
+<body id="checkout-page" onload="add_product_on_load()">
+
+<div id="site">
+	<header id="masthead">
+		<h1>Livero <span class="tagline">Welcome to Livero</span> </h1>
+	</header>
+	
+		 
+		 <form id="checkout-order-form">
+		 	<h2>Add Products</h2>
+		 	
+		 	<fieldset id="fieldset-billing">
+		 		<legend>Inventory</legend>
+		 		<div>
+		 			<label for="product_name">Name of the Product</label>
+		 			<input type="text" name="name" id="product_name" data-type="string" data-message="This field cannot be empty" />
+		 		</div>
+		 		<div>
+		 			<label for="product_price">price of the product</label>
+		 			<input type="number" id="product_price" data-type="expression" data-message="Not a valid price" />
+		 		</div>
+		 		<div>
+		 			<label for="product_description">Description</label>
+		 			<input type="text" name="description" id="product_description" data-type="string" data-message="This field cannot be empty" />
+		 		</div>
+		 	</fieldset>
+		 	<p><input type="submit" id="submit_order" value="Submit" class="btn" /></p>
+		 
+		 </form>
+	</div>
+
+</div>
+
+<footer id="site-info">
+		Copyright &copy; Livero
+</footer>
+
+</body>
+<script src="../js/display.js"></script>
+<script src="../js/vendor.js"></script>
+</html> 

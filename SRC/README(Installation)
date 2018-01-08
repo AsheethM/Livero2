@@ -1,0 +1,11 @@
+Platform:
+  cordova platform add android
+  cordova platform add ios
+
+QRCode :
+  cordova plugin add cordova-plugin-barcodescanner
+  cordova plugin add cordova-plugin-dialogs
+  cordova plugin add cordova-plugin-inappbrowser
+
+
+Notification:

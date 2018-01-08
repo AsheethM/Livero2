@@ -32,7 +32,10 @@
                     $response['results'] = $request->fetchAll();
                 }
                 else
+                {
                     $response['isTransactions'] = false;
+                    $message = "No Transaction available for this shop";
+                }
             }
             else
                 $message = 'No transactions waiting for a deliverer for this shop';

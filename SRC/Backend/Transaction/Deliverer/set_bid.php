@@ -1,18 +1,17 @@
 <?php
 
-    header('Content-Type: application/json');
+    //header('Content-Type: application/json');
     $response = array();
     $success = false;
     $message = "";
 
     if (isset($_POST['deliverer_id']) && !empty($_POST['deliverer_id'])
-        && isset($_POST['transaction_id']) && !empty($_POST['transaction_id_id'])
+        && isset($_POST['transaction_id']) && !empty($_POST['transaction_id'])
         && isset($_POST['bid']) && !empty($_POST['bid']))
     {
         $deliverer_id = $_POST['deliverer_id'];
         $transaction_id = $_POST['transaction_id'];
         $bid = $_POST['bid'];
-
         require_once('../../Shared/connexion.php');
 
         $verif_str = 'SELECT * FROM deliverer WHERE id = ?';
@@ -38,8 +37,8 @@
                     $request->execute();
                     if ($request->rowCount() > 0)
                     {
-                        $current_bid = $request->fetchAll()[0]['bid'];
-                        if ($bid < $current_bid)
+                        $db_bid = $request->fetchAll()[0]['bid'];
+                        if ($bid < $db_bid)
                         {
                             $req_str = 'UPDATE bidding SET bid = ? WHERE transaction_id = ?'.
                                 ' AND deliverer_id = ?';
@@ -56,16 +55,16 @@
                     }
                     else
                     {
-                        $request = $pdo->prepare('INSERT INTO  bidding (transaction_id, dellverer_id, bid)' .
-                            ' VALUES (?, ?, ?)');
-                        $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
-                        $request->bindParam(2, $deliverer_id, PDO::PARAM_INT);
-                        $request->bindParam(3, $bid);
-                        $request->execute();
-                        if ($request->rowCount() > 0) {
+
+                        $new_request = $pdo->prepare('INSERT INTO bidding (transaction_id, deliverer_id, bid) VALUES  (?, ?, ?)');
+                        $new_request->bindParam(1, $transaction_id, PDO::PARAM_INT);
+                        $new_request->bindParam(2, $deliverer_id, PDO::PARAM_INT);
+                        $new_request->bindParam(3, $bid);
+                        if ($new_request->execute() && $new_request->rowCount() > 0) {
                             $success = true;
                             $message = "Request Set Bid : OK";
-                        } else
+                        }
+                        else
                             $message = "Insert did not work";
                     }
 

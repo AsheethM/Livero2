@@ -1,89 +1,95 @@
-<!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html xmlns="http://www.w3.org/1999/html">
-    <head>
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Login</title>
-        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-        <script type="text/javascript" charset="utf-8">
-            function onLoad() {
-                //document.addEventListener("deviceready", onDeviceReady, false);
-            //}
+	<link rel="stylesheet" href="Dashboard/css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="Dashboard/css/style.css"> <!-- Resource style -->
+	<script src="Dashboard/js/modernizr.js"></script> <!-- Modernizr -->
+  	
+	<title>livero</title>
+</head>
+<body onload="dashboard_load()">
+	<header class="cd-main-header">
+		<a href="#0" class="cd-logo"><img src="Dashboard/img/cd-logo.svg" alt="Logo"></a>
+		
+		<!--<div class="cd-search is-hidden">
+			<form action="#0">
+				<input type="search" placeholder="Search...">
+			</form>
+		</div> <!-- cd-search -->
 
-            // device APIs are available
-            //
-            //function onDeviceReady() {
+		<a href="#0" class="cd-nav-trigger">Menu<span></span></a>
 
-              /*  window.FirebasePlugin.getToken(function(token) {
-                    // save this server-side and use it to push notifications to this device
-                    localStorage.setItem("phone_token", token);
-                }, function(error) {
-                    console.error(error);
-                });*/
+		<nav class="cd-nav">
+			<ul class="cd-top-nav">
+				<li class="has-children account">
+					<a href="#0">
+						<img src="Dashboard/img/cd-avatar.png" alt="avatar">
+						Account
+					</a>
+					<ul>
+						<li><a id="gotoAccount" href="#">My Account</a></li>
+						<li><a id="gotoLogout" href="#">Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</header> <!-- .cd-main-header -->
 
-                // Now safe to use device APIs
-                //window.localStorage.setItem("server_ip", "192.168.1.29/PRI/Backend/");
-                window.localStorage.setItem("server_ip", "localhost/PRI/Backend/");
-                /* Done if something happens and the app opens on login page with user already logged */
-                if (window.localStorage.getItem("user_id") !== null)
-                    window.location.href = "dashboard.html";
+	<main class="cd-main-content">
+		<nav class="cd-side-nav">
+			<ul>
+				<li class="cd-label">Main</li>
+				<li class="has-children overview">
+					<a href="#">MyShop</a>
+					<ul>
+						<li><a id="gotoMyShopInfos">Shop Information</a></li>
+						<li><a id="gotoMyShopItems">View Items</a></li>
+						<li><a id="gotoMyShopAddItem">Add an Item</a></li>
+					</ul>
+				</li>
 
-                var server_ip = window.localStorage.getItem("server_ip");
-                $("#connection").click(function () {
-                    var phone_token = localStorage.getItem("phone_token");
-                    var login = $("#login").val();
-                    var password = $("#password").val();
-                    var url = 'http://' + server_ip + 'Vendor/connection_vendor.php';
-                    var data = get_connection(url, login, password);
-                    if (data.success) {
-                        window.localStorage.setItem("shop_id", data.result[0].shop_id);
-                        window.localStorage.setItem("user_id", data.result[0].user_id);
-                        var user_id = data.result[0].user_id;
-                        url = "http://" + server_ip + "Notification/add_phone_token.php";
-                        var test = add_phone_token(url, user_id, phone_token);
-                        window.location.href = "dashboard.html";
-                    }
-                    else {
-                        $("#div-err").html("<p>" + data.message + "</p>");
-                    }
-                });
-            }
-        </script>
-    </head>
-    <body onload="onLoad()">
-        <div>
-            <h1>LOGIN PAGE</h1>
-            <div>
-                <p>
-                    Email : <input id="login" type="text">
-                </p>
-                <p>
-                    PassWord : <input id="password" type="password">
-                </p>
-                <button type="button" id="connection"> Connect </button>
-                <div id = "div-err">
-                </div>
-            </div>
-        </div>
-        <script src="js/jquery-3.2.1.js"></script>
-        <script src="js/vendor.js"></script>
-        <script src="js/shared.js"></script>
-    </body>
+				<li class="has-children comments">
+
+				</li>
+			</ul>
+
+			<ul>
+				<li class="cd-label">Orders</li>
+				<li class="has-children bookmarks">
+					<a href="#">Newest</a>
+					<ul id="shops_orders_newest">
+					</ul>
+				</li >
+				<li class="has-children bookmarks">
+					<a>Validated</a>
+					<ul id="shops_orders_validated">
+					</ul>
+				</li>
+			</ul>
+
+			<ul>
+				<li class="cd-label"> History </li>
+				<li class="has-children">
+					<a>Orders</a>
+					<ul id="shops_orders_finalized"></ul>
+				</li>
+			</ul>
+		</nav>
+
+		<div class="content-wrapper">
+			<h1>Welcome To Livero</h1>
+		</div> <!-- .content-wrapper -->
+
+	</main> <!-- .cd-main-content -->
+
+<script src="Dashboard/js/jquery-2.1.4.js"></script>
+<script src="Dashboard/js/main.js"></script> <!-- Resource jQuery -->
+<script src="js/display.js"></script>
+<script src="js/vendor.js"></script>
+</body>
 </html>

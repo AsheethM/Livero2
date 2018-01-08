@@ -5,13 +5,12 @@
     $success = false;
     $message = "";
 
-    /*if ( isset($_POST['transaction_id']) && !empty($_POST['transaction_id'])
+    if ( isset($_POST['transaction_id']) && !empty($_POST['transaction_id'])
         && isset($_POST['deliverer_id']) && !empty($_POST['deliverer_id']))
     {
         $deliverer_id = $_POST['deliverer_id'];
-        $transaction_id = $_POST['transaction_id'];*/
-$deliverer_id = 2;
-$transaction_id = 1;
+        $transaction_id = $_POST['transaction_id'];
+
         require_once('../../Shared/connexion.php');
 
         $verif_str = 'SELECT * FROM deliverer WHERE id = ?';
@@ -30,11 +29,18 @@ $transaction_id = 1;
 
             if ($request->execute())
             {
-                if ($request->rowCount() > 0)
+                $row_count = $request->rowCount();
+                $success = true;
+                if ( $row_count > 0)
                 {
-                    $success = true;
+                    $response['isBidding'] = true;
                     $message = 'Request Get Info Abt Transaction With Id : OK';
                     $response['results'] = $request->fetchAll();
+                }
+                else if ( $row_count == 0)
+                {
+                    $response['isBidding'] = false;
+                    $message = 'No bidding has been done';
                 }
             }
             else
@@ -43,9 +49,9 @@ $transaction_id = 1;
         else
             $message = 'User is not a deliverer';
 
-    /*}
+    }
     else
-        $message = 'Parameters Error';*/
+        $message = 'Parameters Error';
 
 
     $response['success'] = $success;

@@ -76,11 +76,18 @@ Deliverer :
   - pouvoir faire un bid : OK
   (Transaction/Deliverer/set_bid.php)
 
-  - Pouvoir effectuer un scan QRCode : KO
+  - Pouvoir effectuer un scan QRCode : OK (Must be tested : KO)
 
-  - Recuperer les informations sur client et vendeur a partir d'une transation en attente de livraion : KO
-    (Transaction/Deliverer/get_informations_about_customer_with_transaction_id.php)
-    (Transaction/Deliverer/get_informations_about_shop_with_transaction_id.php)
+  - Recuperer les informations sur client et vendeur a partir d'une transation en attente de livraion : OK
+    (Transaction/Deliverer/get_order_instance_informations.php)
+
+  - Lors de l'update du bid, mettre à jour aussi la datetime du bid :    KO
+
+  - Recuperer les transactions pour lequel le livreur a été choisi : OK
+
+  - Account : OK
+
+  - Pour un order spécifique du livreur, afficher la liste des produits qu'il a livré : KO
 
 Optional :
   - Recuperer les informations sur une commande (ex: distance,....)
@@ -89,6 +96,7 @@ Optional :
 
 ------------------------------------------------------------------------------------------------------------------------------------
 Shop :
+  BACKEND:
   - Recuperer les produits liés à une transaction : OK
   (Transaction/Shop/get_transaction_items_with_transaction_id)
 
@@ -103,6 +111,18 @@ Shop :
 
   - Pouvoir afficher les informations sur une transaction : OK
   (Transaction/Shop/get_informations_about_transaction_with_id)
+
+  - Changer le isComplete dans le vendor_transaction_confirmation : KO
+  - Modifier le champ du timer dans la row tansaction dans vendor_transaction_confirmation : KO
+
+  INTEGRATION:
+    - Confirmation d'une commande d'un client : OK
+    - Information d'une transaction en cours : KO
+    - Ajouter un item : KO
+    - Voir les items : OK (Faire un tableau)
+    - Gestion des erreurs sur les items (Modification / suppression/ Ajout) : KO
+    - Change newest to pending : KO
+
 
 ------------------------------------------------------------------------------------------------------------------------------------
 

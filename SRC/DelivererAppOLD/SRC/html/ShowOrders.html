@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <!--<link rel="stylesheet" type="text/css" href="css/index.css">-->
+    <title>Orders</title>
+    <!--<script src="js/jquery.mobile-1.4.5.min.js"></script>-->
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script src="js/index.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        var server_ip = window.localStorage.getItem("server-ip");
+        $(document).ready(function () {
+            console.log(server_ip);
+            $.ajax({
+               //url: 'http://192.168.1.29/PRI/get_orders.php'
+               url: 'http://'+server_ip+'/get_orders.php',
+               method:'get',
+               dataType: 'json',
+               success : function (data) {
+                   if (data.success)
+                   {
+                       console.log("Entered")
+                       $.each(data.results,function (index, value) {
+                           $("#list-orders").append(
+                               "<li>"
+                                   +"<p>" +
+                                        "SHOP :"+value.shopname
+                                        + " <button type = 'button' id='"+value.id+"'>OK</button>"
+                                   +"</p>"
+                               +"</li>"
+                           );
+                       });
+                   }
+                   else
+                   {
+                        $("#err-message").html("Error with orders");
+                        setTimeout(function () {
+                            $("#err-message").fadeOut('fast');
+                        }, 3000)
+                   }
+               }
+           });
+        });
+    </script>
+    <div id = 'div-orders'>
+        <ul id="list-orders">
+        </ul>
+    </div>
+    <div id="err-message"></div>
+</body>
+<script>
+    $("body").delegate("button", "click", function () {
+        console.log("ID TRANS"+$(this).attr("id"));
+        window.localStorage.setItem("command-id", $(this).attr("id"));
+        console.log(window.localStorage.getItem("command-id"));
+        window.location.href="CurrentBid.html"
+    });
+</script>
+</html>

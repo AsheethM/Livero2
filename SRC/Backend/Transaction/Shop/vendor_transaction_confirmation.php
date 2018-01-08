@@ -7,15 +7,13 @@
 
     if (isset ($_POST['shop_id']) &&  !empty($_POST['shop_id'])
         && isset ($_POST['transaction_id']) &&  !empty($_POST['transaction_id'])
-        && isset ($_POST['isComplete']) &&  !empty($_POST['isComplete']))
+        //&& isset ($_POST['isComplete']) &&  !empty($_POST['isComplete']))
+    )
     {
         $shop_id = $_POST['shop_id'];
         $transaction_id = $_POST['transaction_id'];
-        $isComplete = ($_POST['isComplete'] == 1) ? true : false;
-
-        $shop_id = 1;
-        $transaction_id = 1;
-        $isComplete = false;
+        /* A changer le isComplete */
+        $isComplete = true;
 
         require_once('../../Shared/connexion.php');
         $req_str = 'UPDATE transaction SET status = 2, isComplete = ? WHERE id = ? AND shop_id = ?';

@@ -4,7 +4,8 @@
     $message = "";
     $success = false;
 
-    if (isset($_POST['id_shop']) && !empty($_POST['id_shop']) && isset($_POST['product_id']) && !empty($_POST['product_id'])
+    if (isset($_POST['id_shop']) && !empty($_POST['id_shop'])
+        && isset($_POST['product_id']) && !empty($_POST['product_id'])
         && isset($_POST['product_name']) && !empty($_POST['product_name'])
         && isset($_POST['product_price']) && !empty($_POST['product_price'])
         && isset($_POST['product_description']) && !empty($_POST['product_description'])) {

@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS transaction
   shop_token VARCHAR(255) NOT NULL DEFAULT '',
   order_price DOUBLE NOT NULL ,
   deliverer_price DOUBLE,
-  status INT NOT NULL COMMENT '1: After Creation of Transaction, 2: After Shop Confirmation, 3: After Finding Deliverer, 4: After Customer Confirmation , 5:Afer Vendor QRCode has been scanned, 6: Transaction Finished',
+  status INT NOT NULL DEFAULT  1 COMMENT '1: After Creation of Transaction, 2: After Shop Confirmation, 3: After Finding Deliverer, 4: After Customer Confirmation , 5:Afer Vendor QRCode has been scanned, 6: Transaction Finished',
   isComplete BOOLEAN DEFAULT true,
   delivery_rating INT NOT NULL DEFAULT 5,
   shop_rating INT NOT NULL DEFAULT 5,
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS transaction
   PRIMARY KEY (id),
   FOREIGN KEY (customer_id) REFERENCES user(id) ON DELETE CASCADE ,
   FOREIGN KEY (shop_id) REFERENCES shop(id) ON DELETE CASCADE ,
-  FOREIGN KEY (deliverer_id) REFERENCES user(id) ON DELETE CASCADE
+  FOREIGN KEY (deliverer_id) REFERENCES deliverer(id) ON DELETE CASCADE
 )ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS gps
