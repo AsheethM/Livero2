@@ -1,6 +1,6 @@
 function onLoad() {
-    //document.addEventListener("deviceready", onDeviceReady, false);
-    onDeviceReady();
+    document.addEventListener("deviceready", onDeviceReady, false);
+    //onDeviceReady();
 }
 
 function onBackKeyDown() {
@@ -10,19 +10,20 @@ function onBackKeyDown() {
 
 function onDeviceReady() {
     // Register the event listener
-    /*document.addEventListener("backbutton", onBackKeyDown, false);
+    //document.addEventListener("backbutton", onBackKeyDown, false);
 
     window.FirebasePlugin.getToken(function(token) {
-        // save this server-side and use it to push notifications to this device
+        alert("TOKEN:"+token);
         localStorage.setItem("phone_token", token);
     }, function(error) {
         localStorage.setItem("phone_token", "error");
-    });*/
+    });
 
     $( "body>[data-role='panel']" ).panel();
     $( "[data-role='header'], [data-role='footer']" ).toolbar({theme: "a"});
 
-    localStorage.setItem('server_ip', 'localhost/PRI/');
+    //localStorage.setItem('server_ip', 'localhost/PRI/');
+    localStorage.setItem('server_ip', '192.168.1.32/PRI/');
     localStorage.setItem('user_id', 2);
 }
 

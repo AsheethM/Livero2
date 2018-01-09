@@ -186,12 +186,12 @@ function display_order_instance(content) {
 
         $('#order_instance_qrcode').click(function () {
             console.log("QRCODE PART");
-            if (order_status === 4)
+            if (order_status == 4)
             {
                 var url = "http://"+server_ip+"SRC/Backend/QRCode/Deliverer/check_shop_token.php";
                 scan(url, transaction_id, user_id, false);
             }
-            else if (order_status === 5)
+            else if (order_status == 5)
             {
                 var url = "http://"+server_ip+"SRC/Backend/QRCode/Deliverer/check_customer_token.php";
                 scan(url, transaction_id, user_id, true);

@@ -1,11 +1,16 @@
+On every project's index file (Test if needed in other html file), add the <script src="cordova.js"></script>
+
+Get the computer (Server IP) and give to every app
+
+
+
 Platform:
-  cordova platform add android
+  cordova platform add android@6.3.0
   cordova platform add ios
 
 QRCode :
-  cordova plugin add cordova-plugin-barcodescanner
-  cordova plugin add cordova-plugin-dialogs
-  cordova plugin add cordova-plugin-inappbrowser
-
+  cordova plugin add phonegap-plugin-barcodescanner
 
 Notification:
+  Put the google_services.json file in every project
+  cordova plugin add cordova-plugin-firebase@0.1.25 --save

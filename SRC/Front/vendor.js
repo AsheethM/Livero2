@@ -29,6 +29,24 @@ function get_connection(url, login, password)
     return json;
 }
 
+
+function get_information_with_id(url, user_id) {
+    var json = null;
+    $.ajax({
+        url : url,
+        method: 'post',
+        data: {'user_id': user_id},
+        dataType: 'json',
+        async : false,
+        success: function (data) {
+            json = data;
+        },
+        error: function () {
+            json = {success: false, message: "Request Get Information User: KO"};
+        }
+    });
+    return json;
+}
 /* ----------------------------------------------------------------------------- */
 /*Account functions*/
 
@@ -400,14 +418,15 @@ function update_shop_quantity_on_transaction_with_product_id(url, transaction_id
         url : url,
         method: "post",
         data: {'shop_id': shop_id, 'transaction_id' : transaction_id,
-            'product_id' : product_id, 'vendor_quantity' : vendor_quantity},
+            'product_id' : product_id, 'shop_quantity' : vendor_quantity},
         dataType: "json",
-        async: false,
         success: function (data) {
             json = data;
+            console.log(json.message);
         },
         error: function () {
             json = {success:false, message:"Request Update Vendor Quantity: KO"};
+            console.log(json.message);
         }
     });
     return json;
@@ -421,15 +440,13 @@ function update_shop_quantity_on_transaction_with_product_id(url, transaction_id
  * @param isComplete
  * @returns {*}
  */
-function vendor_transaction_confirmation(url, shop_id, transaction_id, isComplete) {
+function vendor_transaction_confirmation(url, shop_id, transaction_id) {
     var json = null;
     $.ajax({
         url : url,
         method: "post",
-        data: {'shop_id': shop_id, 'transaction_id' : transaction_id,
-            'isComplete' : isComplete},
+        data: {'shop_id': shop_id, 'transaction_id' : transaction_id},
         dataType: "json",
-        async: false,
         success: function (data) {
             json = data;
         },
