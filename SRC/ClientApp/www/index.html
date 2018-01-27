@@ -1,185 +1,118 @@
-﻿<!DOCTYPE html>
+
+<!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta  name="viewport" content="width=device-width, initial-scale=1">
-    <title>Livero</title>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link rel="stylesheet" href="css/index.css" />
+	<meta http-equiv="Content-type" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+	<title>epita_pri stuff</title>
+
+	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=PT+Sans:400,700'>
+	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="1.2/jquery.mobile-1.4.5.min.css" />
+	<link rel="stylesheet" href="index.css" />
+	<link rel="stylesheet" href="misc.css" />
+	<script src="1.2/jquery.js"></script>
+
+	<script src="1.2/jquery.mobile-1.4.5.min.js"></script>
+
+	<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvfMMyyi9xQcitKizTAJNE5Gqp1308pOQ"></script>-->
+
 </head>
-<body>
-    
-    <!-- side menu -->
-    <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a" >
-       <div class="ui-panel-inner">
-			<ul data-role="listview" class="ui-listview">
-				<li class="ui-first-child">
-					<a href="#main" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Search for a shop</a>
-				</li>
-				<li>
-					<a href="#history" class="ui-btn ui-icon-carat-r ui-btn-icon-right">History</a>
-				</li>
-				<li>
-					<a href="#my_account" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My account</a>
-				</li>
-				<li class="ui-last-child">
-					<a href="#settings" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Settings</a>
-				</li>
-			</ul>
+
+<body >
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId            : '715571341975181',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v2.11'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div data-role="content"  >
+
+	<div class="api-div"  id="api-gps">
+		<input type="text" placeholder="enter you value" id="text_box"/>
+		<input type="button" value="press" id="button" onclick="fetch_info()"  />
+		<ul data-role="listview"  data-filter="true" data-inset="true" id="display">
+		</ul>
+		<div id="geolocation">
 		</div>
-	</div>
-	
-    <!-- top toolbar -->
-    <div class="top_toolbar" data-role="header" data-position="fixed" >
-        <div id="title_toolbar">
-			<h1 id="liveroo_app_title" class="ui-title">Liveroo</h1>
-        </div>
-		<div id="toolbar">
-            <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
+	</div> <!----end of gps-->
+
+	<div class="api-div"  id="api-login" >
+		<div class="page-container" >
+			<h1>Welcome to livero</h1>
+			<form action="" method="post">
+				<input type="text" name="username" id="email" class="username" placeholder="Username">
+				<input type="password" name="password" id="password" class="password" placeholder="Password">
+				<span id="login_result"></span>
+				<button type="button" onclick="login_normal()">Lets's Shop</button>
+
+			</form>
+
+			<p><a href="#"  onclick="openapi('hyper-registration')" > Don't have an account?</a></p>
+			<div class="connect">
+				<p>Or connect with:</p>
+				<p>
+					<a class="facebook" href=""></a>
+					<a class="twitter" href=""></a>
+				</p>
+			</div>
 		</div>
-    </div>
-	   
-    <!-- main app division -->
-    <div data-role="page" id="main">
-        <h1>Shops in your area</h1>
-        <div class="ui-content jqm-content jqm-fullwidth">
-            <div class="map_canvas">
-                <!-- Google Maps widget -->
-            </div>
-			<ul id="main_shop_list" data-role="listview"></ul>
-        </div>
-    </div>
-    
-    <!-- shop list of items -->
-    <div id="shop_store" data-role="page">
-        <h1>Shop store</h1>
-        <div class="ui-content">
-            <h2 id="shop_store_name"></h2>
-            <ul id="shop_store_list" data-role="listview"></ul>
-            <button id="btn_shop_list_confirm">confirm</button>
-        </div>
-    </div>
+	</div> <!----end of login-->
+	<div class="api-div"  id="api-registration" >
+		<form>      
+			<legend>E-Mail*</legend>
+			<input type="text" name="textinput-f" id="email_r" placeholder="E-mail" value="">
 
-    <!-- recap cart -->
-    <div id="recap_cart" data-role="page">
-        <h1>Recap</h1>
-        <div class="ui-content">
-            <h2 id="recap_shop_name"></h2>
-            <div class="recap_shop_scrollpane">
-                <ul id="recap_shop_list" data-role="listview"></ul>
-            </div>
-            <div id="recap_total_price_div">
-                <h4 id="recap_total_price">price: 0€</h4>
-            </div>
-            <div id="recap_prefered_way_of_del">
-                <!--<h4 class="">prefered way of delivery:</h4>
-                <img id="recap_prefered_way_img" />
-                <select name="recap_prefered_way_select" id="recap_prefered_way_select" data-mini="true" data-inline="true">
-                    <!-- options ... -->
-                <!--</select>
-                <label class="recap_avg_time_label">average time of the delivery:</label>
-                <label id="recap_avg_time_display">Infinity</label>-->
-                <p class="recap_adress_label">adress:</p>
-                <p id="recap_adress_first_part"></p> 
-                <p id="recap_adress_zipcode"></p>
-                <p id="recap_adress_city"></p>
-                <button id="btn_recap_change_adress">change your delivery adress for this one</button>
-            </div>
-            <button id="btn_recap_modify" onclick="window.location.href='#shop_store'">Modify</button>
-            <button id="btn_recap_confirm">Confirm</button>
-        </div>
-        
-    </div>
+			<legend>First Name*</legend>
+			<input type="text" name="textinput-f" id="first" placeholder="First Name" value="">
 
-    <!-- notification announcement page -->
-    <div id="notification_anouncement" data-role="page"> 
-        <div class="ui-content">
-            <p class="notification_anouncement_text">Thank you for ordering with our application!</p>
-            <p class="notification_anouncement_text">We wil notify you once your order is ready!</p>
-            <button id="btn-notification_anouncement_dashboard" onclick="window.location.href = 'index.html'">Return to dashboard</button>
-        </div>
-    </div>
+			<legend>Lastname Name*</legend>
+			<input type="text" name="textinput-f" id="last" placeholder="Last Name" value="">
 
-    <!-- order ready -->
-    <div id="order_ready" data-role="page">
-       <h1>Order ready!</h1>
-        <div class="ui-content">
-            <h2 class="order_ready_title">Your order is ready!</h2>
-            <p class="order_ready_text">In order to continue and get delivered, we invite you to pay the amount for your order</p>
-            <button id="btn_order_ready_pay">Pay</button>
-            <button id="btn_order_ready_cancel">Cancel</button>
-        </div>
-    </div>
+			<legend>Date of Birth*</legend>
+			<input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">
 
-    <!-- order almost ready -->
-    <div id="order_almost_ready" data-role="page">
-        <h1>Order almost ready!</h1>
-        <div class="ui-content">
-            <h2 class="order_almost_ready_title">Your order is almost ready!</h2>
-            <p class="order_almost_ready_text">the vendor is missing these articles from your order</p>
-            <div id="order_almost_ready_scrollpane">
-                <ul id="order_almost_ready_list"></ul>
-            </div>
-            <label class="order_almost_ready_new_total">New Total:</label>
-            <label class="order_almost_ready_new_amount"></label>
-            <button id="order_almost_ready_pay">Pay</button>
-            <button id="order_almost_ready_cancel">Cancel order</button>
-        </div>
-        
-    </div>
-    <!-- payment gateaway -->
-    <div id="payment_gateway" data-role="page">
-        
-        <div class="ui-content">
-            <!-- placeholder -->
-        </div>
-        
-    </div>
-    <!-- QR code -->
-    <div id="qr_code_page" data-role="page">
-        
-        <div class="ui-content">
-            <p class="qr_code_text">This QR code will be scanned by the deliverer once you get your order</p>
-            <div id="qr_code">
+			<legend>Address*</legend>
+			<input type="text" name="textinput-f" id="address" placeholder="Address" value="">
 
-            </div>
-            <h3 id="qr_order_id"></h3>
-            <div class="qr_code_advice" data-role="page">
-                <h4 class="qr_code_advice_label">Advice:</h4>
-                <p class="qr_code_advice_text"></p>
-            </div>
-            <button id="qr_code_open_dispute">Open a dispute</button>
-        </div>
-        
-    </div>
-    <!-- deliverer position when the order is ready and confirmed by all part -->
-    <div id="deliverer_pos" data-role="page">
-        <div class="ui-content jqm-content jqm-fullwidth">
-            <div id="deliverer_map_canvas">
+			<legend>Phone*</legend>    
+			<input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
 
-            </div>
-        </div>
-    </div>
-    <!-- Optionnal: delivery rating -->
-    <div id="delivery_rating" data-role="page">
-        
-        <div class="ui-content">
-            <h2 class="delivery_rating_title">Rate your delivery!</h2>
-            <label class="delivery_rating_time_label">Delivery time</label>
-            <label id="delivery_rating_time"></label>
-            <div>
-                <h4 class="delivery_rating_deliverer_title"></h4>
-            </div>
-        </div>
-        
-    </div>
-    <!-- CSS -->
+			<legend>Password*</legend>
+			<input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
 
-	<!-- scripts -->
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="js/index.js"></script>
-    
-	
+			<legend>Confirm Password*</legend>    
+			<input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
+
+			<span id="resgitration_result"></span>
+			<input type="button" name="textinput-f"  onclick="registration_normal()" value="submit">
+		</form>
+		<div id="listTable"></div>
+	</div> <!----end of registration-->
+
+
+	<div class="api-div"  id="api-displayvendor" >
+		<input type="range" name="slider-fill" id="distance_value" value="10" min="0" max="50" data-highlight="true" />
+		<div id="map_canvas"></div>
+		<ul data-role="listview" data-inset="true" id="vendorlist">
+		</ul>
+	</div> <!----end ofdisplay vendor-->
+
+</div><!--end of content-->
+
+<script type="text/javascript" charset="utf-8" src="index.js"></script>
+
 </body>
 </html>

@@ -159,11 +159,10 @@ function scan(url, transaction_id, deliverer_id, is_customer)
         function (error) {
             res = false;
             token = "error";
-            alert("Scanning failed: " + error);
         }
     );
+    alert("IS_CUSTOMER "+is_customer);
 
-    alert('lalalalla');
     if (res)
     {
         if (is_customer)

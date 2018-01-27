@@ -8,10 +8,9 @@
     <link rel="stylesheet" href="css/index.css" />
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
 </head>
 <body onload="onLoad()">
-
     <!-- side menu -->
     <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a" >
        <div class="ui-panel-inner">
@@ -34,7 +33,7 @@
 			</ul>
 		</div>
 	</div>
-	
+
     <!-- top toolbar -->
     <div class="top_toolbar" data-role="header" data-position="fixed" >
         <div id="title_toolbar">
@@ -46,6 +45,62 @@
 		</div>
     </div>
 
+
+    <div data-role="page" id="login" >
+        <div class="ui-content">
+            <h1>Welcome to livero</h1>
+            <form action="">
+                <input type="text" name="username" id="email" class="username" placeholder="Username">
+                <input type="password" name="password" id="password" class="password" placeholder="Password">
+                <span id="login_result"></span>
+                <button type="button" onclick="login_normal()">Lets's Shop</button>
+            </form>
+
+            <p><a href="#"  id="register_btn"> Don't have an account?</a></p>
+            <div class="connect">
+                <p>Or connect with:</p>
+                <p>
+                    <a class="facebook" href="">Facebook</a>
+                    <a class="twitter" href="">Twitter</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="page" id="api-registration" >
+        <div class="ui-content">
+            <form>      
+                <legend>E-Mail</legend>
+                <input type="text" name="textinput-f" id="email_r" placeholder="E-mail" value="">
+
+                <legend>First Name</legend>
+                <input type="text" name="textinput-f" id="first" placeholder="First Name" value="">
+
+                <legend>Lastname Name</legend>
+                <input type="text" name="textinput-f" id="last" placeholder="Last Name" value="">
+
+                <legend>Date of Birth</legend>
+                <input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">
+
+                <legend>Address</legend>
+                <input type="text" name="textinput-f" id="address" placeholder="Address" value="">
+
+                <legend>Phone</legend>    
+                <input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
+
+                <legend>Password</legend>
+                <input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
+
+                <legend>Confirm Password</legend>    
+                <input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
+
+                <span id="resgitration_result"></span>
+                <input type="button" name="textinput-f"  onclick="registration_normal()" value="submit">
+            </form>
+
+            <div id="listTable"></div>
+        </div>
+    </div> <!----end of registration-->
 
     <div data-role="page" id="home">
         <h1>Home</h1>
@@ -129,7 +184,8 @@
                 <p>Name : <span id="account_name"></span></p>
                 <p>Email : <span id="account_email"></span></p>
                 <p>Birthdate : <span id="account_birthdate"></span></p>
-                <p>Phone Number : <input type="tel" id="account_phone"></p>
+                <p>Phone Number : <input type="tel" id="account_phone">
+                    <label for="account_phone"> Phone Number</label></p>
                 <form>
                     <input name="checkbox-mini-0" id="account_licence" data-mini="true" type="checkbox">
                     <label for="account_licence">Licence</label>

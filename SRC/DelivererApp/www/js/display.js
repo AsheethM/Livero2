@@ -34,6 +34,23 @@ function go_back()
     }
 }
 
+
+/*----------------Login Section----------------------------------*/
+function display_login()
+{
+    $("#register_btn").click(function () {
+        $.mobile.pageContainer.pagecontainer('change','#api-registration', {content : content , transition : 'slideup'});
+    });
+}
+
+function display_register() {
+}
+
+function display_home() {
+    $( "body>[data-role='panel']" ).panel();
+    $( "[data-role='header'], [data-role='footer']" ).toolbar({theme: "a"});
+}
+
 /*----------------Shops Section----------------------------------*/
 function display_shop()
 {
@@ -289,7 +306,6 @@ function update_account()
     {
         var url = "http://"+server_ip+"SRC/Backend/Account/Deliverer/update_deliverer_account.php";
         update_deliverer_account(url, user_id, phone_number, licence, str_vehicule);
-        localStorage.setItem('old_content', content);
         $.mobile.pageContainer.pagecontainer('change', '#home', {
             transition: 'slideup'
         });
@@ -299,9 +315,19 @@ function update_account()
 
 $(document).on('pagecontainerbeforechange', function (event, ui) {
     var content = ui.options.content;
-
-    if (ui.toPage[0].id === 'home')
+    console.log(ui.toPage[0].id);
+    if (ui.toPage[0].id === 'login')
     {
+        display_login();
+    }
+    else if (ui.toPage[0].id === 'api-registration')
+    {
+        console.log("Help me");
+        display_register();
+    }
+    else if (ui.toPage[0].id === 'home')
+    {
+        display_home(); 
     }
     else if (ui.toPage[0].id === 'shops')
     {

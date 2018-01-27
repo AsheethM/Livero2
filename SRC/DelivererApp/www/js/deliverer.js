@@ -1,5 +1,25 @@
 /*------------------------------------------------------------------------------------------*/
 
+
+function normal_login(url, email, password) {
+        var json = null;
+        $.ajax({
+            url : url,
+            method: "post",
+            data:{'email' : email, 'password':password},
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                json = data;
+            },
+            error: function () {
+                json = {success:false, message:"Request Get Connection  : KO"};
+            }
+        });
+
+        return json;
+}
+
 function get_shops_nearby(url) {
     var json = null;
     $.ajax({
