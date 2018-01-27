@@ -1,964 +1,192 @@
-//------------------------------------------------------------------------------------
-var ccgp=0;
-var ccgs=0;
-var ccga=0;
-var name;
-var chat="chat";
-var id=[];
-var city=[];
-var nam=[];
-var lat=[];
-var lng=[];
-var des=[];
-var distance=[];
-var latx;
-var longx;
-var sendp=0;;
-var reqp=0;
-function groupclick(e)
-{ var cc;
-if( e == "gp")
-	{cc=ccgp;}
 
-else if( e == "gs")
-	{cc=ccgs;}
+var ajax_call;
+var timer_function;
+var gps_id;
+var wto; //slider variable
+var vender_items_number;
+var vendor_id;
+var json;
 
-else if( e == "ga")
-	{cc=ccga;}
-	
-var	 term = { button1 : cc , user : name, button : e };
-			
-	$.ajax({ 
-	 
-        url: 'http://www.indiageeks.in/app/feed.php', 
-        type: "POST",
-        data: term ,       
-        dataType: 'json', 
-        error: function(jqXHR, strError){
-            if(strError == 'timeout')
-            {
-             alert("Your Internet connection is slow please try again");
-            }
-            else{
-        alert("Sorry we could not establish connection");    
-            }
-            },
-            timeout:60000,
-        success: function(data) 
-        {
-        	if(e== "gp")
-        	{
-        	if(ccgp==0){
-        		
-        		
-        		$("#"+e).html("Unsubscribe"); ccgp = 1;}
-        	
-        		
-        		else
-        			{$("#"+e).html("Subscribe");ccgp=0;}
-        	
-        	}
-        	else if(e== "gs")
-        	{
-        	if(ccgs==0){
-        		
-        		
-        		$("#"+e).html("Unsubscribe"); ccgs = 1;}
-        	
-        		
-        		else
-        			{$("#"+e).html("Subscribe");ccgs =0;}
-        	
-        	}
-        	else if(e== "ga")
-        	{
-        	if(ccga ==0){
-        		
-        		
-        		$("#"+e).html("Unsubscribe"); ccga = 1;}
-        	
-        		
-        		else
-        			{$("#"+e).html("Subscribe");ccga =0;}
-        	
-        	}
-        }});
-	
-	
-}
-function group()
-{
-	$(".useroptions").hide();
-	var term ={ user : name};
-	$.ajax({ 
-		beforeSend: function() { $.mobile.showPageLoadingMsg();}, 
-	     complete: function() { $.mobile.hidePageLoadingMsg();},
-        url: 'http://www.indiageeks.in/app/feedc.php', 
-        type: "POST",
-        data: term ,       
-        dataType: 'json', 
-        error: function(jqXHR, strError){
-            if(strError == 'timeout')
-            {
-             alert("Your Internet connection is slow please try again");
-            }
-            else{
-        alert("Sorry we could not establish connection");    
-            }
-            },
-            timeout:60000,
-        success: function(data) 
-        {
-        	
-        if(data.placement == 0)
-        	{
-      
-        	$("#gp").html("Subscribe");ccgp=0;
-        	
-        	}
-        else
-        	{
-        	
-        	$("#gp").html("Unsubscribe");ccgp=1;
-        	}
-        
-        if(data.symposium == 0)
-    	{
-    	
-    	$("#gs").html("Subscribe");ccgs=0;
-    	
-    	}
-    else
-    	{
-    	
-    	$("#gs").html("Unsubscribe");ccgs=1;
-    	}
-    
-        if(data.article == 0)
-    	{
-    	alert(data.placement);
-    	$("#ga").html("Subscribe");ccga=0;
-    	
-    	}
-    else
-    	{
-    	
-    	$("#ga").html("Unsubscribe");ccga=1;
-    	}
-    
-        	
-        	
-        	$("#grouplist").show();	
-        }});
-	
-
-}
-
-function info(e)
-{  
-	alert ("entered");
-var term;
-
-
-$(".useroptions").hide();
-$("#userinfo").show();	
-	if(e == 2){
-		if($('#newemail').val() != ""){
-	 term = { button: name, button2: $('#newemail').val(),button1 : e };
-	}
-		else
-			{
-			alert("Please enter an valid E-mail!");
-			$("#newemail").val("");
-			return;
-			}
-	}
-	else if(e == 3)
-	 {
-		if ($('#password2').val()!= "" & $('#password2con').val()!="" & $("#password2cur").val()!= "" )
-		{
-			if($('#password2').val() == $('#password2con').val()){
-		term = { button: name, button2: $('#password2').val() ,button3: $("#password2cur").val(),button1 : e };
-		
-			}
-		else
-		{
-			$("#passnotmatch").html("<b style=\"color:red;\">Passwords do not match!</b>");
-			 return;
-		}}
-		else
-			{
-			alert("Please fill in all the required information!");
-			$('#password2').val("");
-			$('#password2cur').val("");
-			$('#password2con').val("");
-			return;
-			}
-	 }
-	else
-	 {term = { button: name, button1 : e };}
-	 $.ajax({ 
-	        url: 'http://www.indiageeks.in/app/info.php', 
-	        type: "POST",
-	        data: term ,       
-	        dataType: 'json', 
-	        error: function(jqXHR, strError){
-	            if(strError == 'timeout')
-	            {
-	             alert("Your Internet connection is slow please try again");
-	             $("#infocontent").html("<br/><b style=\"color:red;\">Sorry we could not fetch details, Please try refresh</b>");
-	            }
-	            else{
-	        alert("Sorry we could not establish connection");    
-	        $("#infocontent").html("<br/><b style=\"color:red;\">Sorry we could not fetch details, Please try refresh</b>");
-	            }
-	            },
-	            timeout:60000,
-	        success: function(data) 
-	        {
-	if(e== 2)
-		{
-		
-		
-		
-		$("#newemail").val("");
-		alert("E-mail updated");
-		info('1');
-		
-		}
-	else if(e==3)
-		{
-		 if( typeof(data.name) != "undefined")
-         {
-		$('#password2').val("");
-		$('#password2cur').val("");
-		$('#password2con').val("");
-		$("#passnotmatch").html("");
-		alert ("Password updated");
-         }
-		 else
-			 {
-	
-				$('#password2cur').val("");
-				$("#passnotmatch").html("");
-			 alert("The password you have entered is wrong");
-			 }
-		}
-	else{
-	        	$("#infocontent").html("<br/><b style=\"color:green;\">User Name:"+data.name+"</b><br/><b style=\"color:green;\">E-Mail:"+data.email+"</b><br/><b style=\"color:green;\">Phone:"+data.phone+"</b><br/><b style=\"color:green;\">Year:"+data.year);
-	}    	        	
-	}
-	
-
+$( document ).ready(function() {
+ $(".api-div").css("display", "none");
+//  $("#api-login").css("display", "block");
+	open_vendor('open-displayvendor');  
+  // navigator.geolocation.clearWatch(watchID);
+//fetch_info();
+$('#distance_value').change(function() {
+  clearTimeout(wto);
+  wto = setTimeout(function() {
+ navigator.geolocation.getCurrentPosition(fetch_vendor_list, onError);
+  }, 1000);
 });
 
 
-}
+
+  });
 
 
 
-function chatchannel()
-{
-	
-	chat= $("#channelname").val();
-	showmessages();
-	
+    function onSuccess(position) {
 
-}
+    $("#geolocation").html(
+							'data that is sent:' +
+							'Latitude: '  + position.coords.latitude      + '<br />' +
+                            'Longitude: ' + position.coords.longitude     + '<br />' +
+							'Altitude: ' + position.coords.altitude     + '<br />' +
+							'accuracy: ' + position.coords.accuracy     + '<br />' +
+							'Speed: ' + position.coords.speed     + '<br />' +
+                            'Heading: ' + position.coords.heading     + '<br />' +
+							'<hr />'  );
 
-function userpanel()
-{
-	$('.api-div').hide();
-    $('#api-userp').show();
-    $(".useroptions").hide();
-    $("#userboard").show();
-	  var disp = $('ul #listdivider').css("display");
-	    //alert(disp + ' : ' + api);
-	    if (disp === 'none') {
-	        $('div.ui-collapsible').trigger("collapse");
-	    } else {
-	        $.mobile.silentScroll(0);            
-	    }	
+//var term = {  latitude: position.coords.latitude, longitude:position.coords.longitude };   
 
-}
+ajax_call = $.ajax({
 
-function showmessages(){
-	
-	var term = { button1 : chat };
-	
-	 $.ajax({ 
-	        url: 'http://www.indiageeks.in/app/show-message.php', 
-	        type: "POST",
-	        data: term ,       
-	        dataType: 'json', 
-	        error: function(jqXHR, strError){
-	            if(strError == 'timeout')
-	            {
-	             alert("Your Internet connection is slow please try again");
-	            }
-	            else{
-	        alert("Sorry we could not establish connection");    
-	            }
-	            },
-	            timeout:60000,
-	        success: function(data) 
-	        {document.getElementById('messages').innerHTML = "";
-	        	for(var i in data ){
-	
-	        		 $('#messages').prepend(data[i]);
-	
-	
-	}
-	}
-
-});
-	        		 setTimeout('showmessages()',5000);
-}
-
-
-
-function send(){
-
-	
-	//Send an XMLHttpRequest to the 'send.php' file with all the required informations
-	
-	 var term = { button: $('#message').val(), button1 : chat , namee :name};
-	//Send an XMLHttpRequest to the 'send.php' file with all the required informations
-	 $('#message').val("");	
-	
-	/*
-	if(window.XMLHttpRequest){
-		alert("dasda");
-	xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("GET",sendto,false);
-	xmlhttp.send(null);
-	}
-	else{
-	xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	xmlhttp.open("GET",sendto,false);
-	xmlhttp.send();
-	}*/
-	 $.ajax({ 
-	        url: 'http://www.indiageeks.in/app/send.php', 
-	        type: "POST",
-	        data: term ,
-	        dataType: 'json', 
-	        error: function(jqXHR, strError){
-	            if(strError == 'timeout')
-	            {
-	             alert("Your Internet connection is slow please try again");
-	            }
-	            else{
-	        alert("Sorry we could not establish connection");    
-	            }
-	            },
-	            timeout:13000,
-	        success: function(data) 
-	        { 
-	 for(var i in data)
-	        	{
-	        	var error = '';
-	//If an error occurs the 'send.php' file send`s the number of the error and based on that number a message is displayed
-	switch(parseInt(data[i])){
-	
-	case 3:
-
-		error = 'Don`t forget the message!';
-	break;
-	case 4:
-		
-	error = 'The message is too long!';
-	break;
-
-	}
-	if(error == ''){
-
-		document.getElementById('error').innerHTML = '';
-	showmessages();
-	}
-	
-	else{
-	
-	document.getElementById('error').innerHTML = error;
-	}
-	}}
-	 });
-}
-
-
-$( "#popupPanel" ).on({
-    popupbeforeposition: function() {
-        var h = $( window ).height();
-        var w = $( window ).width();
+  url: "http://green.projectyogisha.com/gps.php",
+  data: {  'latitude': position.coords.latitude, 'longitude':position.coords.longitude , 'altitude':position.coords.altitude,'accuracy':position.coords.accuracy,'speed':position.coords.speed,'heading':position.coords.heading },
+  type: 'POST',
+   success: function (data) {
      
-        $( "#popupPanel" ).css( "height", h );
-        $( "#popupPanel" ).css( "width", w/2 );
-    }
+   },
+  error: function (jqXHR, exception)
+  {
+ if(jqXHR.aborted)
+       return;	 
+	 alert(exception);
+	  navigator.geolocation.clearWatch(watchID);
+  },
+  
+ beforeSend : function()    {           
+        if(ajax_call != null) {
+            ajax_call.abort();
+        }
+    },
 
 
-
-
+ timeout :13000
 });
 
 
-function getdistance()
-{
+	}
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+			  
+    }
+
+    // Options: throw an error if no update is received every 30 seconds.
+    //
+
 	
-    var t="11";
-    var term = { button: $('#dist-mini').val(), button1 : t};  
-    $.ajax({ 
-        url: 'http://www.indiageeks.in/app/dist.php', 
-        type: "POST",
-        data: term ,
-        dataType: 'json', 
-        error: function(jqXHR, strError){
-            if(strError == 'timeout')
-            {
-             alert("Your Internet connection is slow please try again");
-            }
-            else{
-        alert("Sorry we could not establish connection");    
-            }
-            },
-            timeout:13000,
-        success: function(data) 
-        { 
-        	
-        	for(var i in data.city){
-        	
-        		id[i] = data.id[i];
-        		city[i] = data.city[i];
-        		nam[i] = data.name[i];
-        		des[i] = data.des[i];
-        		lat[i] = data.latitude[i];
-            	lng[i] = data.longitude[i];
-    	  //  	  $('#searchs').append('<li> <h2>'+data[i]+'</p><a onclick=\"showcities()\">show cities</a></li>');
-        //  $('#searchlist').listview('refresh');
-        	
-        	}}
-    
-    });
-    
-    
-    
-   // return false; // keeps the page from not refreshing 
-
-
-}
-
-function distcalc(lat1,lon1,lat2,lon2)
+	
+	
+function fetch_gps_location ()
 {
-	var R = 6371; // km
-	lat1 = parseFloat(lat1);
-	lon1 = parseFloat(lon1);
-	lat2 = parseFloat(lat2);
-	lon2 = parseFloat(lon2);
-	var dlt = parseFloat((lat2>lat1)?(lat2-lat1):(lat1-lat2));
-	var dlg = parseFloat((lon2>lon1)?(lon2-lon1):(lon1-lon2));
-	var dLat = toRad(dlt);
-	var dLon = toRad(dlg);
-	lat1 = toRad(lat1);
-	lat2 = toRad(lat2);
+var term = { val1: $("#text_box").val()};   
 
-	var a = Math.sin(dLat/2)*Math.sin(dLat/2)+Math.sin(dLon/2)*Math.sin(dLon/2)*Math.cos(lat1)*Math.cos(lat2); 
-	var c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); 
-	var d = R*c;	
+
  
-	return d;
-}
 
-function toRad(Value) {
-    /** Converts numeric degrees to radians */
-    return Value * Math.PI / 180;
-}
-
-
-
-
-
-
-
-//------------------------------------------------------------------------------------
-
-
-
-
-
-function pop()
-{   
-	if($('#api-searcho').is(':visible'))
-	 {
-		$('.api-div').hide();
-	    $('#api-intro').show();
-	    var disp = $('ul #listdivider').css("display");
-	    //alert(disp + ' : ' + api);
-	    if (disp === 'none') {
-	        $('div.ui-collapsible').trigger("collapse");
-	    } else {
-	        $.mobile.silentScroll(0);            
-	    }
-	 }
-	else
-	{
-
-	$('.api-div').hide();
-    $('#api-searcho').show();
-    var disp = $('ul #listdivider').css("display");
-    //alert(disp + ' : ' + api);
-    if (disp === 'none') {
-        $('div.ui-collapsible').trigger("collapse");
-    } else {
-        $.mobile.silentScroll(0);            
-    }
-	}	
-
-}
-
-function logout()
-{
-
-var term = { user: name};
-$.ajax({ 
-	beforeSend: function() { $.mobile.showPageLoadingMsg();}, 
-     complete: function() { $.mobile.hidePageLoadingMsg();}, 
-	url: 'http://www.indiageeks.in/app/logout.php', 
-    type: "POST",
-    data: term ,
-    dataType: 'json', 
-    error: function(jqXHR, strError){
-        if(strError == 'timeout')
-        {
-         alert("Your Internet connection is slow please try again");
+ajax_call = $.ajax({
+  dataType: 'json',
+  url: "http://green.projectyogisha.com/gps_get.php",
+  data: term,
+  type: 'POST',
+  error: function (jqXHR, exception)
+  {
+	   if(jqXHR.aborted)
+                return;
+	  alert("failed to fetch gps");
+  },
+  
+ beforeSend : function()    {           
+        if(ajax_call != null) {
+            ajax_call.abort();
         }
-        else{
-    alert("Sorry we could not establish connection");    
-        }
-        },
-        timeout:13000,
-    success: function(data) 
-    {
-        
-    	 document.getElementById('username').innerHTML="";
-    	alert("Logged out");
-    	$('.loggedon').show();
-    	$('.api-div').hide();
-    	$('#logu').hide();
-    	$('.api-div#api-intro').show();
-    	$('.loggin').hide();
-    	reqp=0;sendp=0;
-    }
+    },
+
+
+  timeout :13000,
+  success:function (data)
+  {
+$("#display").html("");
+$("#display").append("<li>latitude:"+data[0]+"</li>");
+$("#display").append("<li>longitude:"+data[1]+"</li>");
+$("#display").append("<li>altitude:"+data[2]+"</li>");
+$("#display").listview("refresh");
+  }
 });
-return false;  
 
 
-
+ timer_function = setTimeout(fetch_gps_location, 5000);	
 }
 
-function searchboxx()
+function login_facebook()
 {
-	var t="";
-	$('#stp').hide();
-    $('#sts').hide();
-    $('#sta').hide();
-    $('.api-div').hide();
-    $('#api-search').show();
-    $('#searchp').html('');
-    $( '#searchs').html('');
-    $( '#searchagroup').html('');
-    var disp = $('ul #listdivider').css("display");
-    //alert(disp + ' : ' + api);
-    if (disp === 'none') {
-        $('div.ui-collapsible').trigger("collapse");
-    } else {
-        $.mobile.silentScroll(0);            
-    }
-    if($('#placementp').is(':checked'))
-    {
-    	t= t+"1";
-    if($('#pc1').is(':checked')	)	
-    	{
-    	t= t+"1";
-    
-    	}
-    else
-    	{
-    	
-    	t= t+"0";
-    	}
-    	if($('#pc2').is(':checked')	)
-    	{
-        	t= t+"1";
-        
-        	}
-        else
-        	{
-        	
-        	t= t+"0";
-        	}
-    		if($('#pc3').is(':checked')	)
-    		{
-    	    	t= t+"1";
-    	    
-    	    	}
-    	    else
-    	    	{
-    	    	
-    	    	t= t+"0";
-    	    	}
-    			if($('#pc4').is(':checked')	)
-    			{
-    		    	t= t+"1";
-    		    
-    		    	}
-    		    else
-    		    	{
-    		    	
-    		    	t= t+"0";
-    		    	}
-    			
-    }else{t= t+"00000";}
-    if($('#symposiump').is(':checked'))
-    {
-    	t= t+"1";
-    if($('#sc1').is(':checked')	)	
-    	{
-    	t= t+"1";
-    
-    	}
-    else
-    	{
-    	
-    	t= t+"0";
-    	}
-    	if($('#sc2').is(':checked')	)
-    	{
-        	t= t+"1";
-        
-        	}
-        else
-        	{
-        	
-        	t= t+"0";
-        	}
-    		if($('#sc3').is(':checked')	)
-    		{
-    	    	t= t+"1";
-    	    
-    	    	}
-    	    else
-    	    	{
-    	    	
-    	    	t= t+"0";
-    	    	}
-    			if($('#sc4').is(':checked')	)
-    			{
-    		    	t= t+"1";
-    		    
-    		    	}
-    		    else
-    		    	{
-    		    	
-    		    	t= t+"0";
-    		    	}
-    			if($('#sc5').is(':checked')	)
-    	    	{
-    	        	t= t+"1";
-    	        
-    	        	}
-    	        else
-    	        	{
-    	        	
-    	        	t= t+"0";
-    	        	}
-    			if($('#sc6').is(':checked')	)
-    	    	{
-    	        	t= t+"1";
-    	        
-    	        	}
-    	        else
-    	        	{
-    	        	
-    	        	t= t+"0";
-    	        	}
-    			if($('#sc7').is(':checked')	)
-    	    	{
-    	        	t= t+"1";
-    	        
-    	        	}
-    	        else
-    	        	{
-    	        	
-    	        	t= t+"0";
-    	        	}
-    }else{t= t+"00000000";}
-    if($('#articlep').is(':checked'))
-    {
-    	t= t+"1";
-    if($('#ac1').is(':checked')	)	
-    	{
-    	
-    	t= t+"1";
-    
-    	}
-    else
-    	{
-    	
-    	t= t+"0";
-    	}
-    	if($('#ac2').is(':checked')	)
-    	{
-        	t= t+"1";
-        
-        	}
-        else
-        	{
-        	
-        	t= t+"0";
-        	}
-    		if($('#ac3').is(':checked')	)
-    		{
-    	    	t= t+"1";
-    	    
-    	    	}
-    	    else
-    	    	{
-    	    	
-    	    	t= t+"0";
-    	    	}
-    			if($('#ac4').is(':checked')	)
-    			{
-    		    	t= t+"1";
-    		    
-    		    	}
-    		    else
-    		    	{
-    		    	
-    		    	t= t+"0";
-    		    	}
-    }
-    else{t= t+"00000";}
-   
-    
-    var term = { button: $('#search-mini').val(), button1 : t};   
- 
-    $.ajax({ 
-    	 beforeSend: function() { $.mobile.showPageLoadingMsg(); }, 
-         complete: function() { $.mobile.hidePageLoadingMsg() }, 
-    	url: 'http://www.indiageeks.in/app/conn.php', 
-        type: "POST",
-        data: term ,
-        dataType: 'json', 
-        error: function(jqXHR, strError){
-            if(strError == 'timeout')
-            {
-             alert("Your Internet connection is slow please try again");
-            }
-            else{
-        alert("Sorry we could not establish connection");    
-            }
-            },
-            timeout:13000,
-        success: function(data) 
-        {
-        	
-        	for(var i in data.name){
-        	
-    if(data.id[i].charAt(0)== 'p')
-        { 
-    	$('#stp').show()
-        $('#searchp').append('<li> <h2>'+data.name[i]+'</h2><p>'+data.des[i]+'</p><p><a href="#" onclick=\"getcontents(this.id)\" id=\"'+data.id[i]+'\" >Read More</a></p><p>Last Modified:'+data.time[i]+'</p></li>');
-               $('#searchlist').listview('refresh');
-           }
-        	
-    
-    else if(data.id[i].charAt(0)== 's')
-        {
-    	$('#sts').show();
-    	  $('#searchs').append('<li> <h2>'+data.name[i]+'</h2><p>'+data.des[i]+'</p><p><a href="#" onclick=\"getcontents(this.id)\" id=\"'+data.id[i]+'\" >Read More</a></p><p>Date of Symposium:'+data.time[i]+'</p></li>');
-          $('#searchlist').listview('refresh');
-    	
-        }	
-    else if(data.id[i].charAt(0)== 'a')
-    {
-	$('#sta').show();
-	  $('#searcha').append('<li> <h2>'+data.name[i]+'</h2><p>'+data.des[i]+'</p><p><a href="#" onclick=\"getcontents(this.id)\" id=\"'+data.id[i]+'\" >Read More</a></p><p>Date of Symposium:'+data.time[i]+'</p></li>');
-      $('#searchlist').listview('refresh');
 	
-    }	
-    	        	
-        	}
-        
+	
+	CordovaFacebook.login({
+   permissions: ['email'],
+   onSuccess: function(result) {
+      if(result.declined.length > 0) {
+         alert("The User declined something!");
+      }
+      /* ... */
+   },
+   onFailure: function(result) {
+      if(result.cancelled) {
+         alert("The user doesn't like my app");
+      } else if(result.error) {
+         alert("There was an error:" + result.errorLocalized);
+      }
+   }
+});
+}
+
+
+function hide_pages()
+{		
+
   
-        
-        }
-    });
-    return false; // keeps the page from not refreshing 
+  clearTimeout(timer_function);
+  //navigator.geolocation.clearWatch(gps_id);
+  $('.api-div').hide();
+}
 
+function open_vendor (args)
+{
 
-
+      navigator.geolocation.getCurrentPosition(fetch_vendor_list, onError);
+	      openapi(args);
 }
 
 
 
-function getcontents(e)
+function gps_page_open (args)
 {
-	 $('.api-div').hide();
-	 $('#api-display').show();
-	  
-	 $('#displayh').html('');
-	 $('#displayc').html('');
-	 $('#displayf').html('');
-if(e.charAt(0) == 'p')
-	 {
 	
-	  var term = { button: e};   
-	   
-	    $.ajax({ 
-	    	 beforeSend: function() { $.mobile.showPageLoadingMsg(); }, 
-	         complete: function() { $.mobile.hidePageLoadingMsg() }, 
-	    	url: 'http://www.indiageeks.in/app/ret.php', 
-	        type: "POST",
-	        data: term ,
-	        dataType: 'json', 
-	        error: function(jqXHR, strError){
-	            if(strError == 'timeout')
-	            {
-	             alert("Your Internet connection is slow please try again");
-	            }
-	            else{
-	        alert("Sorry we could not establish connection");    
-	            }
-	            },
-	            timeout:13000,
-	        success: function(data) 
-	        {
-	        	 var h=	 ($(window).height()) - ( $('#displayf').height())-( $('#displayh').height())-( $('#header').height())-( $('#menuc').height());
-	        
-	        
-	         $('#displayc').css({height : h});     
-	   
-		        	$('#displayh').append('<h2>'+data.name+'</h2>').trigger( "create" );
-		        	$('#displayc').append('<p>'+data.content+'</p>').trigger( "create" );
-		        	$('#displayf').append('<h4>'+data.time+'<br/> <p>CopyRights INdiaGeeks TEam</p></h4>').trigger( "create" );	        	 
-		        	$('#displaypage').trigger("create");
-
-	        
-	        }
-	    });
-	    return false;  
+		  gps_id = navigator.geolocation.watchPosition(onSuccess, onError, {maximumAge: 3000, timeout: 50000, enableHighAccuracy: true  });
+		  fetch_gps_location ();
+	      openapi(args);
 
 	
-	 }
-else if(e.charAt(0) == 's')
+	
+}
+
+
+function openapi (apiid)
 {
-
-
-	 var term = { button: e};
-	   
-	    $.ajax({ 
-	        url: 'http://www.indiageeks.in/app/ret.php', 
-	        type: "POST",
-	        data: term ,
-	        dataType: 'json', 
-	        error: function(jqXHR, strError){
-	            if(strError == 'timeout')
-	            {
-	             alert("Your Internet connection is slow please try again");
-	            }
-	            else{
-	        alert("Sorry we could not establish connection");    
-	            }
-	            },
-	            timeout:13000,
-	        success: function(data) 
-	        {
-	        var h=	 ($(window).height()) - ( $('#displayf').height())-( $('#displayh').height())-( $('#header').height())-( $('#menuc').height());
-	        
-	        
-	         $('#displayc').css({height : h});     
-	   
-		        	$('#displayh').append('<h2>'+data.name+'</h2>').trigger( "create" );
-		        	$('#displayc').append('<p>'+data.content+'<br/>Date of Symposium<br/> '+data.date+' </p>').trigger( "create" );
-		        	$('#displayf').append('<h4>'+data.time+'<br/> <p>CopyRights INdiaGeeks TEam</p></h4>').trigger( "create" );	        	 
-		        	$('#displaypage').trigger("create");
-
-	        
-	        }
-	    });
-	    return false;  
-}
-if(e.charAt(0) == 'a')
-{
-
- var term = { button: e};   
-  
-   $.ajax({ 
-   	 beforeSend: function() { $.mobile.showPageLoadingMsg(); }, 
-        complete: function() { $.mobile.hidePageLoadingMsg() }, 
-   	url: 'http://www.indiageeks.in/app/ret.php', 
-       type: "POST",
-       data: term ,
-       dataType: 'json', 
-       error: function(jqXHR, strError){
-           if(strError == 'timeout')
-           {
-            alert("Your Internet connection is slow please try again");
-           }
-           else{
-       alert("Sorry we could not establish connection");    
-           }
-           },
-           timeout:13000,
-       success: function(data) 
-       {
-       	 var h=	 ($(window).height()) - ( $('#displayf').height())-( $('#displayh').height())-( $('#header').height())-( $('#menuc').height());
-       
-       
-        $('#displayc').css({height : h});     
-  
-	        	$('#displayh').append('<h2>'+data.name+'</h2>').trigger( "create" );
-	        	$('#displayc').append('<p>'+data.content+'</p>').trigger( "create" );
-	        	$('#displayf').append('<h4>'+data.time+'<br/> <p>CopyRights INdiaGeeks TEam</p></h4>').trigger( "create" );	        	 
-	        	$('#displaypage').trigger("create");
-
-       
-       }
-   });
-   return false;  
-
-
-}
-
-}
-
-
-$('#page-home').live('pageinit', function(event){  
-    $('.api-div').hide();
-    $('.api-div#api-intro').show();
-    
-    $('#intro').click(function() {
-        $('.api-div').hide();
-        $('.api-div#api-intro').show();
-        $.mobile.silentScroll(0);            
-    });
-    
-   
-    
-    
-    
-    $('div ul li a').click(function(event) {
-        event.preventDefault();
+	  event.preventDefault();
         //alert('clicked : ' + $(this).attr('id'));
-        var attrId = $(this).attr('id');
+ 
 
-        if (attrId.indexOf("click") !== 0) {
-            return;
-        }
-        
-        var api = '#api' + attrId.substring(attrId.indexOf('-'));
+        var api = '#api' + apiid.substring(apiid.indexOf('-'));
         
         // hide all div's, show only this one
-        $('.api-div').hide();
+		hide_pages();
         $(api).show();
 
         // if small screen and portrait - close after tap
@@ -969,26 +197,291 @@ $('#page-home').live('pageinit', function(event){
         } else {
             $.mobile.silentScroll(0);            
         }
-    }); 
-    
-    $('#listdivider').click(function(event) {
-        event.preventDefault();
-        $('.api-div').hide();
-        $('.api-div#api-intro').show();
-        $.mobile.silentScroll(0);
-    });
-});
 
-function symposiuml()
+	
+	
+	
+}
+  
+/*****login functions****/
+
+function login_normal()
 {
-	$('.api-div').hide();
-	 $('#api-symposiuml').show();
-	 var disp = $('ul #listdivider').css("display");
-	    //alert(disp + ' : ' + api);
-	    if (disp === 'none') {
-	        $('div.ui-collapsible').trigger("collapse");
-	    } else {
-	        $.mobile.silentScroll(0);            
-	    }
+
+ajax_call = $.ajax({
+
+  url: "http://green.projectyogisha.com/login_normal.php",
+  data: { 'email': $("#email").val(), 'password': $("#password").val()},
+  type: 'POST',
+   success: function (data) {
+
+    if ("1" == data)
+	{
+		 open_vendor('open-displayvendor');
+	}
+	else
+	{
+		$("#login_result").html("user/name or password it wrong");
+	}
+   },
+   
+ beforeSend : function()    {           
+        if(ajax_call != null) {
+            ajax_call.abort();
+        }
+    },
+
+
+  error: function (jqXHR, exception)
+  {
+	   if(jqXHR.aborted)
+                return;
+	  alert(exception);
+	
+  },
+ timeout :13000
+});
+	
+
+	
 }
 
+
+
+function registration_normal ()
+{
+	var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+	var email = $("#email_r").val();
+	var first = $("#first").val();
+	var last = $("#last").val();
+	var dob = $("#dob").val();
+	var address = $("#address").val();
+	var pass = $("#password_r").val();
+	var pass_com = $("#confirm_password_r").val();
+	var phone = $("#phone").val()
+	if (!email.trim() ||!first.trim()||!last.trim()||!dob.trim()||!address.trim()||!pass.trim()||!pass_com.trim())
+	{
+		
+		$("#resgitration_result").html("<span style=\"color:red;\">Please enter the required fields</span>");
+	return;
+	}
+	else if ( pass  !== pass_com )
+	{
+		$("#resgitration_result").html("<span style=\"color:red;\">Passwords dont match</span>");
+		return;
+	}
+	else if (!re.test(email))
+	{
+			$("#resgitration_result").html("<span style=\"color:red;\">E-mail is not correct</span>");
+		return;
+	}
+	else
+	{
+		$("#resgitration_result").html("");
+	}
+
+	ajax_call = $.ajax({
+  url: "http://green.projectyogisha.com/registration_normal.php",
+  data: { 'email': email,'actor': 3 ,'first': first,'last': last,'dob': dob, 'address': address, 'phone': phone,'password': pass},
+  type: 'POST',
+   success: function (data) {
+
+    if ("1" == data)
+	{
+		  openapi("open-login");
+	}
+	else
+	{
+		$("#resgitration_result").html("<span style=\"color:red;\">"+data+"</span>");
+	}
+   },
+  error: function (jqXHR, exception)
+  {
+	   if(jqXHR.aborted)
+                return;
+	  alert(exception);
+	
+  },
+  
+ beforeSend : function()    {           
+        if(ajax_call != null) {
+            ajax_call.abort();
+        }
+    },
+
+
+ timeout :13000
+});
+
+	
+}
+
+/*
+function initializeMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(43.069452, -89.411373),
+        zoom: 11,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+}
+*/
+
+function fetch_vendor_list(position)
+{ 
+
+	ajax_call = $.ajax({
+  url: "http://green.projectyogisha.com/get_gps_nearest.php",
+  data: {'latitude': position.coords.latitude, 'longitude':position.coords.longitude, 'distance': $("#distance_value").val() },
+  type: 'POST',
+  dataType: 'json', 
+   success: function (data) {
+	
+	  	$("#vendorlist").html("");
+		
+	  for (var i in data.name) {
+
+	$("#vendorlist").append(" <li onclick=\"shop('"+data.id[i]+"','"+data.logos[i]+"','"+data.name[i]+"')\"><a href=\"#\">  <img src=\""+data.logos[i]+"\">  <h2>"+data.name[i]+ "</h2>   <p>"+data.latitude[i]+"__"+data.longitude[i]+"</p></a></li>");
+	   }
+	   $("#vendorlist").listview("refresh");
+ //  initializeMap();
+   },
+  error: function (jqXHR, exception)
+  {
+
+	
+  },
+  
+ beforeSend : function()    {           
+        if(ajax_call != null) {
+            ajax_call.abort();
+        }
+    },
+
+
+ timeout :13000
+});
+
+
+}
+
+
+function shop(id,logo,name)
+{	
+vendor_id=id;
+openapi("api-vendor");
+$("#logodiv").html("");
+$("#myUL").html("");
+$("#logodiv").append("<img src=\""+logo+"\" alt=\""+name+"\" /><br/><h2>"+name+"</h2>");
+    
+	ajax_call = $.ajax({
+
+  url: "http://green.projectyogisha.com/fetch_shop_items.php",
+  data: { 'vendor_id': vendor_id, 'offset':vender_items_number  },
+  type: 'POST',
+    dataType: 'json', 
+   success: function (data) {
+		json=data;
+	
+   },
+   
+ beforeSend : function()    {           
+        if(ajax_call != null) {
+            ajax_call.abort();
+        }
+	},
+
+
+  error: function (jqXHR, exception)
+  {
+	   if(jqXHR.aborted)
+                return;
+	  alert(exception);
+	
+  },
+ timeout :13000
+});
+var shop_list [];
+for (var name in json.product)
+{	
+   shop_list.push({
+	  item_id: json.id_items[name],
+		item_name: json.product[name],
+		item_price: json.price[name],
+		item_desc: json.des[name],
+   });
+}
+console.log(shop_list);
+
+return shop_list;
+}
+
+
+
+
+/*
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u0020");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+
+}
+
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
+
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+	
+	
+	  var inputValue = $("#myInput").val();
+  if (inputValue === '') {
+    alert("You must write something!");
+  } 
+$("#myUL").append("<li><a href=\"#\">"+inputValue+" <input size=\"2\" type=\"text\" value=\"1\" /></a><a class=\"close ui-icon ui-icon-delete\"></a> </li>   </li>");	
+*/
+/*
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }*/ 
+/*
+$("#myUL").listview("refresh");
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u0020");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+ for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
+
+*/
