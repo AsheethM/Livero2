@@ -1,36 +1,100 @@
 var customer_id = localStorage.getItem('customer_id');
 var server_ip = '';
+var wto; // slidebar variable
+var vendor_item_number = 0;
+var ajax_call;
 
-function get_shops_nearby() {
+function get_shops_nearby(position) {
     //
     //  REQUEST TODO
     //
-    return [{ shop_id: 1, name: 'Lidl', distance: 5000 },
-    { shop_id: 3, name: 'Carrefour', distance: 400 },
-    { shop_id: 4, name: 'Aldi', distance: 2000 },
-    { shop_id: 5, name: 'Franprix', distance: 7000 },
-    { shop_id: 6, name: 'Monoprix', distance: 5600 },
-    { shop_id: 2, name: 'Auchan', distance: 6000 }];
+    var json = null;
+    var ajax_call = $.ajax({
+        url: "http://green.projectyogisha.com/get_gps_nearest.php",
+        data: { 'latitude': position.coords.latitude, 'longitude': position.coords.longitude, 'distance': $("#distance_value").val() },
+        type: 'POST',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            json = data;
+            /*$("#main_shop_list").html("");
+            for (var i in data.name) {
+                $("#main_shop_list").append(" <li><a href=\"#\">  <img src=\"" + data.logos[i] + "\">  <h2>" + data.name[i] + "</h2>   <p>" + data.latitude[i] + "__" + data.longitude[i] + "</p></a></li>");
+            }
+            $("#vendorlist").listview("refresh");
+            //  initializeMap(); */
+        },
+        error: function (jqXHR, exception) {
+            json = { success: false, message: "Request get shops nearby: KO" };
+        },
+        beforeSend: function () {
+            if (ajax_call != null) {
+                ajax_call.abort();
+            }
+        },
+        timeout: 13000
+    });
+    var shops = [];
+    for (var name in json.name)
+    {
+        shops.push({
+            shop_id: json.id[name],
+            name: json.name[name],
+            logo: json.logos[name],
+        }
+        );
+    }
+    console.log(shops);
+    return shops;
 }
 
 function retrieve_items_from_db(shop_id) {
     //
     // REQUEST TODO
     //
-    var shop_list = [];
-    if (shop_id === 1) shop_list = [
-        {
-            item_id: 505,
-            item_name: 'Lays Classic',
-            item_price: 2.59,
-            item_desc: 'delicious chips'
+    var json = null;
+
+    ajax_call = $.ajax({
+
+        url: "http://green.projectyogisha.com/fetch_shop_items.php",
+        data: { 'vendor_id': shop_id, 'offset': vendor_item_number },
+        type: 'POST',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            json = data;
+
         },
-        {
-            item_id: 580,
-            item_name: 'Doritos',
-            item_price: 1.99,
-            item_desc: 'delicious Doritos!!!'
-        }];
+
+        beforeSend: function () {
+            if (ajax_call != null) {
+                ajax_call.abort();
+            }
+        },
+
+
+        error: function (jqXHR, exception) {
+            if (jqXHR.aborted)
+                return;
+            alert(exception);
+
+        },
+        timeout: 13000
+    });
+    vendor_item_number += 2;
+
+    var shop_list = [];
+    for (var name in json.product) {
+        shop_list.push({
+            item_id: json.id_items[name],
+            item_name: json.product[name],
+            item_price: json.price[name],
+            item_desc: json.des[name]
+         //   item_img: json.img[name]
+        });
+    }
+
+    console.log(vendor_item_number);
     return shop_list;
 }
 
@@ -95,19 +159,25 @@ function retrieve_orders_from_server() {
     });
 }
 
-function generate_shops_nearby() {
-    var shops = get_shops_nearby();
+function fetch_vendor_list(position) {
 
+    
+}
+
+function generate_shops_nearby(position) {
+    var shops = get_shops_nearby(position);
+    $("#main_shop_list").empty();
+    vendor_item_number = 0;
     /* then complete the list from the main_shop_list page */
     for (let i = 0; i < shops.length; i++) {
         $("#main_shop_list").append($('<li>')
             .append($('<button>')
                 .attr('class', 'shop_btn ui-btn ui-icon-carat-r ui-btn-icon-right')
                 .attr('data-shopid', shops[i].shop_id.toString())
-                .append($('<img>').attr('src', ''))
-                .append($('<h3>').append(shops[i].name))
-                .append($('<p>').append('<strong>Distance</strong>'))
-                .append($('<p>').append(get_distance(shops[i].distance)))));
+                .append($('<img>').attr('class','lvr_shop_img').attr('src', shops[i].logo))
+                .append($('<h3>').append(shops[i].name))));
+                //.append($('<p>').append('<strong>Distance</strong>'))
+                //.append($('<p>').append(get_distance(shops[i].distance)))));
         $('.shop_btn[data-shopid="' + shops[i].shop_id.toString() + '"]').click(function () {
             generate_items_from_shop(shops[i].shop_id, shops[i].name);
             define_shop_list_confirm_click();
@@ -395,7 +465,8 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
     var content = ui.options.content;
     if (ui.toPage[0].id === 'main') {
         clear_list('#main_shop_list');
-        generate_shops_nearby();
+        navigator.geolocation.getCurrentPosition(generate_shops_nearby, onError);
+        console.log("yes");
     }
     if (ui.toPage[0].id === 'shop_store') {
         if ($('#shop_store_list li').length <= 0)
@@ -419,3 +490,13 @@ $(function () {
     $("body>[data-role='panel']").panel();
     define_my_orders_click();
 });
+$(function () {
+    $('#distance_value').change(function () {
+        clearTimeout(wto);
+        wto = setTimeout(function () {
+            navigator.geolocation.getCurrentPosition(generate_shops_nearby, onError);
+        }, 500);
+    });
+});
+
+function onError(position){};
