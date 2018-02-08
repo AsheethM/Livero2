@@ -21,7 +21,7 @@ if (isset($_POST["user_id"]) && !empty($_POST["user_id"])
     $request->bindParam(2, $user_id, PDO::PARAM_INT);
     if ($request->execute())
     {
-        $req_str = "UPDATE deliverer SET licence = ? AND vehicule = ? WHERE id = ?";
+        $req_str = "UPDATE deliverer SET licence = ? , vehicule = ? WHERE id = ?";
         $request = $pdo->prepare($req_str);
         $tinyintlicence = ($licence) ? 1 : 0;
         $request->bindParam(1, $tinyintlicence);

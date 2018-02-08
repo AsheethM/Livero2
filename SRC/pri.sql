@@ -14,12 +14,6 @@ CREATE TABLE IF NOT EXISTS user
   PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
-INSERT INTO user (id, email, password, lastname, firstname, birthdate, phone)
-VALUES
-  (1, 'regis.titus@epita.fr', 'test', 'Regis', 'Titus', '1995-12-28', '0699027889'),
-  (2, 'yvael.sehil@epita.fr', 'test', 'Sehil', 'Yvael', '1993-10-23', '0888888888'),
-  (3, 'nicolas.pelletier@epita.fr', 'test', 'Pelletier', 'Nicolas', '1993-10-23', '0888888888');
-
 CREATE TABLE IF NOT EXISTS deliverer
 (
   id INT NOT NULL,
@@ -30,10 +24,6 @@ CREATE TABLE IF NOT EXISTS deliverer
   PRIMARY KEY (id),
   FOREIGN KEY (id) REFERENCES user (id) ON DELETE CASCADE
 )ENGINE=InnoDB;
-
-INSERT INTO deliverer (id, vehicule, licence, picture)
-VALUES
-  (2, 'pieton', false, 'test');
 
 
 CREATE TABLE IF NOT EXISTS shop
@@ -50,11 +40,6 @@ CREATE TABLE IF NOT EXISTS shop
   FOREIGN KEY (id) REFERENCES user(id) ON DELETE CASCADE
 )ENGINE=InnoDB;
 
-INSERT INTO shop (id, shop_name, address, latitude, longitude, phone, logo)
-VALUES
-  (1, 'Regis Shop', 'test_address', '100', '100', '1111111111', 'test');
-
-
 CREATE TABLE IF NOT EXISTS shop_schedule
 (
   id INT NOT NULL AUTO_INCREMENT,
@@ -66,10 +51,6 @@ CREATE TABLE IF NOT EXISTS shop_schedule
   FOREIGN KEY (shop_id) REFERENCES shop(id)
 )ENGINE=InnoDB;
 
-INSERT INTO shop_schedule (id, shop_id, day, opening_hour, closing_hour) VALUES
-  (1, 1, 'monday', '08:00', '20:00');
-
-
 CREATE TABLE IF NOT EXISTS product
 (
   id INT NOT NULL AUTO_INCREMENT,
@@ -77,15 +58,11 @@ CREATE TABLE IF NOT EXISTS product
   shop_id INT NOT NULL ,
   description VARCHAR(255) NOT NULL DEFAULT '',
   price DOUBLE NOT NULL ,
+  image VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (id),
   FOREIGN KEY (shop_id) REFERENCES shop(id) ON DELETE CASCADE,
   UNIQUE (shop_id, product_name)
 )ENGINE=InnoDB;
-
-INSERT INTO product (product_name, shop_id, description, price) VALUES
-  ('PS4', 1, 'Console', 300),
-  ('Xbox3One', 1, 'Console', 250),
-  ('Wii', 1, 'Console', 300);
 
 CREATE TABLE IF NOT EXISTS transaction
 (

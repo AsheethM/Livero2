@@ -2,7 +2,6 @@
         #API access key from Google API's Console
         define( 'API_ACCESS_KEY', 'AAAAhvE8cWc:APA91bFCip-Me8oN1uud-IWFDOyIbht47bWhqOwNXDR2CzZ7AgypE00vlLypb9v9xYh-AL6tYwDWrqCwuE0LTOPtA1SGDHiUs4NaL5K-C98cVS7EOaXzFYanW0yGVkfF-pUq6sOtDBDp' );
 
-
         function send_notification($token, $message, $message_title)
         {
             #prep the bundle
