@@ -8,8 +8,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href="css/index.css" />
-
-</head>
+    </head>
 <body>
     
     <!-- side menu -->
@@ -38,15 +37,74 @@
 			<h1 id="liveroo_app_title" class="ui-title">Livero</h1>
         </div>
 		<div id="toolbar">
-		<a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
-
+		<a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-inline ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
+        <a id="return_icon" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-back ui-btn-icon-notext"></a>
         <div class="ui-field-contain">
 			<input id="search_bar" type="search" name="search_bar" placeholder="search for a shop" />
         </div>
         <a href="#recap_cart" id="shopping_cart" class="ui-btn ui-btn-right ui-corner-all ui-mini ui-icon-cart ui-btn-icon-notext"></a>
 		</div>
     </div>
-	   
+    
+    <!-- Login page -->
+    <div id="login" data-type="page">
+        <div class="ui-content">
+            <h1>Welcome to livero</h1>
+            <form action="" method="post" id="login_form">
+                <input type="text" name="username" class="username" placeholder="Username">
+                <input type="password" name="password" class="password" placeholder="Password">
+                <button id="login_form_btn" type="submit">Lets's Shop</button>
+            </form>
+            <p id="login_result"></p>
+            <p><a id="login_register" href="#register"> Don't have an account?</a></p>
+            <div class="connect">
+                <p>Or connect with:</p>
+                <p>
+                    <a class="facebook" href=""></a>
+                    <a class="twitter" href=""></a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register" data-type="page">
+        <div class="ui-content">
+            <div class="agile">
+                <div class="signin-form profile">
+                    <p><a href="#">Livero</a></p>
+                    <div class="register_form_div">
+                        <form action="#" method="post" id="register_form">
+                            <legend>E-Mail*</legend>
+                            <input type="text" name="textinput-f" id="email_r" placeholder="E-mail" value="">
+                            <legend>First Name*</legend>
+                            <input type="text" name="textinput-f" id="first" placeholder="First Name" value="">
+                            <legend>Lastname Name*</legend>
+                            <input type="text" name="textinput-f" id="last" placeholder="Last Name" value="">
+                            <legend>Date of Birth*</legend>
+                            <input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">
+                            <legend>Address*</legend>
+                            <input type="text" name="textinput-f" id="address" placeholder="Address" value="">
+                            <legend>Phone*</legend>
+                            <input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
+                            <legend>Password*</legend>
+                            <input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
+                            <legend>Confirm Password*</legend>
+                            <input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
+                            <span id="resgitration_result"></span>
+                            <button id="register_form_btn" name="textinput-f" value="submit">Register</button>
+                        </form>
+                    </div>
+                    <p><a href="#"> By clicking register, I agree to your terms</a></p>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <!--//signin-form-->
+            <div class="copyright">
+                <p> &copy; 2017 Register Login Livero. All rights reserved | Design by Livero</p>
+            </div>
+        </div>
+    </div>
     <!-- main app division -->
     <div data-role="page" id="main">
         <h1>Shops in your area</h1>
@@ -54,7 +112,7 @@
             <div class="map_canvas">
                 <!-- Google Maps widget -->
             </div>
-            <input type="range" name="slider-fill" id="distance_value" value="10" min="0" max="50" data-highlight="true" />
+            <input type="range" name="slider-fill" id="distance_value" value="10" min="0" max="100" data-highlight="true" />
 			<ul id="main_shop_list" data-role="listview"></ul>
         </div>
     </div>
@@ -166,12 +224,17 @@
     <div id="qr_code_page" data-role="page">
         
         <div class="ui-content">
+            <div id="qr_code_up_text">
+                <h3 id="qr_shop_name"></h3>
+                <h3 id="qr_deliverer_name"></h3>
+                <h4 id="qr_order_id"></h4>
+            </div>
             <p class="qr_code_text">This QR code will be scanned by the deliverer once you get your order</p>
             <div id="qr_code">
 
             </div>
             <h3 id="qr_order_id"></h3>
-            <div class="qr_code_advice" data-role="page">
+            <div class="qr_code_advice">
                 <h4 class="qr_code_advice_label">Advice:</h4>
                 <p class="qr_code_advice_text"></p>
             </div>
@@ -186,6 +249,8 @@
             <div id="deliverer_map_canvas">
 
             </div>
+            <button id="btn_return_qr_code">return to QR code</button>
+
         </div>
     </div>
     <!-- Optionnal: delivery rating -->
@@ -218,7 +283,6 @@
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<!--<script src="scripts/cart.js"></script>-->
     <script src="scripts/index.js"></script>
-    
 	
 </body>
 </html>
