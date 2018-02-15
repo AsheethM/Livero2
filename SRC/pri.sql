@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS user
   birthdate DATE NOT NULL ,
   phone VARCHAR(10) NOT NULL,
   phone_token VARCHAR(255),
-  #role INT NOT NULL COMMENT ' 1: customer | 2:shop | 4:deliverer | 3:customer-shop | 5: customer-deliverer | 6: shop-deliverer | 7 : all roles',
   creation_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   lastlogin TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)

@@ -4,20 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta  name="viewport" content="width=device-width, initial-scale=1">
     <title>Livero</title>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" href="css/index.css" />
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
     <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
 </head>
 <body onload="onLoad()">
+
     <!-- side menu -->
     <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a" >
        <div class="ui-panel-inner">
 			<ul data-role="listview" class="ui-listview">
 				<li class="ui-first-child">
-					<a href="#shops" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Shops</a>
+					<a href="#home" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Home</a>
 				</li>
+                <li>
+                    <a href="#shops" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Shops</a>
+                </li>
 				<li>
 					<a href="#history" class="ui-btn ui-icon-carat-r ui-btn-icon-right">History</a>
 				</li>
@@ -37,7 +41,7 @@
     <!-- top toolbar -->
     <div class="top_toolbar" data-role="header" data-position="fixed" >
         <div id="title_toolbar">
-			<h1 id="liveroo_app_title" class="ui-title">Liveroo</h1>
+            <h1 id="liveroo_app_title" class="ui-title"><img src="img/mini_logo2.png"></h1>
         </div>
 		<div id="toolbar">
             <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
@@ -45,25 +49,18 @@
 		</div>
     </div>
 
-
     <div data-role="page" id="login" >
         <div class="ui-content">
             <h1>Welcome to livero</h1>
-            <form action="">
+            <img src="img/logo.png">
+            <div>
                 <input type="text" name="username" id="email" class="username" placeholder="Username">
                 <input type="password" name="password" id="password" class="password" placeholder="Password">
                 <span id="login_result"></span>
-                <button type="button" onclick="login_normal()">Lets's Shop</button>
-            </form>
+                <button id="login_btn" type="button">Lets's Shop</button>
+            </div>
 
             <p><a href="#"  id="register_btn"> Don't have an account?</a></p>
-            <div class="connect">
-                <p>Or connect with:</p>
-                <p>
-                    <a class="facebook" href="">Facebook</a>
-                    <a class="twitter" href="">Twitter</a>
-                </p>
-            </div>
         </div>
     </div>
 
@@ -86,7 +83,7 @@
                 <input type="text" name="textinput-f" id="address" placeholder="Address" value="">
 
                 <legend>Phone</legend>    
-                <input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
+                <input type="tel" name="textinput-f" id="phone" placeholder="Phone" value="">
 
                 <legend>Password</legend>
                 <input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
@@ -95,7 +92,7 @@
                 <input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
 
                 <span id="resgitration_result"></span>
-                <input type="button" name="textinput-f"  onclick="registration_normal()" value="submit">
+                <input type="button" id="register_submit_btn" name="textinput-f" value="submit">
             </form>
 
             <div id="listTable"></div>
@@ -118,6 +115,7 @@
     <div data-role="page" id="shops">
         <div class="ui-content">
             <h1>Shops</h1>
+            <input type="range" name="slider-fill" id="distance_value" value="10" min="0" max="100" data-highlight="true" />
             <ul id="shops_list" data-role="listview" data-inset="true">
             </ul>
             <div id="shops_message"></div>
@@ -245,7 +243,21 @@
     <div data-role="page" id="history">
         <div class="ui-content">
             <h1>History</h1>
+            <ul id="History_Orders_list" data-role="listview" data-inset="true">
+            </ul>
+            <p id="History_message"></p>
+        </div>
+    </div>
 
+    <div data-role="page" id="history_Order_Instance">
+        <div class="ui-content">
+            <h1>Order Information</h1>
+            <div> <!-- Transaction DIV-->
+                <p>Customer Name : <span id="history_order_customer_name"></span></p>
+                <p>Shop Name : <span id="history_order_shop_name"></span></p>
+                <p> Status : <span id="history_order_status"></span></p>
+            </div>
+            <ul id="history_order_products_ul"></ul>
         </div>
     </div>
     <!-- History Section -->

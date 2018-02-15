@@ -1,5 +1,63 @@
 /*------------------------------------------------------------------------------------------*/
 
+function get_shops_nearby(position, distance) {
+    console.log(position);
+    var json = null;
+    var ajax_call = $.ajax({
+        url: "http://"+ server_ip + "SRC/Backend/Deliverer/get_gps_nearest.php",
+        data: { 'latitude': position.coords.latitude, 'longitude': position.coords.longitude, 'distance': distance},
+        type: 'POST',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            json = data;
+            /*$("#main_shop_list").html("");
+            for (var i in data.name) {
+                $("#main_shop_list").append(" <li><a href=\"#\">  <img src=\"" + data.logos[i] + "\">  <h2>" + data.name[i] + "</h2>   <p>" + data.latitude[i] + "__" + data.longitude[i] + "</p></a></li>");
+            }
+            $("#vendorlist").listview("refresh");
+            //  initializeMap(); */
+        },
+        error: function (jqXHR, exception) {
+            json = { success: false, message: "Request get shops nearby: KO" };
+        },
+        beforeSend: function () {
+            if (ajax_call != null) {
+                ajax_call.abort();
+            }
+        },
+        timeout: 13000
+    });
+    var shops = [];
+    for (var name in json.name) {
+        shops.push({
+                shop_id: json.id[name],
+                name: json.name[name],
+                logo: json.logos[name],
+            }
+        );
+    }
+    console.log(shops);
+    return shops;
+}
+
+function get_deliverer_history(url, user_id) {
+    var json = null;
+    $.ajax({
+        url : url,
+        method: 'post',
+        data: {'user_id': user_id},
+        dataType: 'json',
+        async : false,
+        success: function (data) {
+            json = data;
+        },
+        error: function () {
+            json = {success: false, message: "* Request Get Deliverer History: KO"};
+        }
+    });
+    return json;
+}
 
 function normal_login(url, email, password) {
         var json = null;
@@ -16,22 +74,23 @@ function normal_login(url, email, password) {
                 json = {success:false, message:"Request Get Connection  : KO"};
             }
         });
-
         return json;
 }
 
-function get_shops_nearby(url) {
+function register(url, email, password, lastname, firstname, phone, birthdate) {
     var json = null;
     $.ajax({
         url : url,
         method: "post",
+        data:{'email' : email, 'password':password, 'lastname' : lastname, 'firstname' : firstname,
+            'phone' : phone, 'birthdate' : birthdate},
         dataType: "json",
         async: false,
         success: function (data) {
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Shops: KO"};
+            json = {success:false, message:"Request Get Connection  : KO"};
         }
     });
     return json;
@@ -177,12 +236,19 @@ function get_deliverer_account(url, deliverer_id){
 
 function update_deliverer_account(url, deliverer_id, phone_number, licence, vehicule)
 {
+    console.log("UPDATE");
+    console.log(licence);
+    console.log(vehicule);
+    console.log(phone_number);
+    console.log(deliverer_id);
+    console.log("END UPDATE");
     var json = null;
     $.ajax({
         url : url,
         method: "post",
         data:{'user_id':deliverer_id, 'phone' : phone_number, 'licence' : licence, 'vehicule' : vehicule},
         dataType: "json",
+        async : false,
         success: function (data) {
             json = data;
             console.log(json.message);

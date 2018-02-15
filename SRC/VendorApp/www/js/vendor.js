@@ -7,23 +7,22 @@ The Json object will always contain (as key):
 If we do a request to get something from the database, the Json Obect will contain another key:
     - results which will be a Json Array containing the specific fields we need.
  ----------------------------------------------------------------------------- */
-
-// This function will be deleted when we'll integrate the user management module
 function get_connection(url, login, password)
 {
+
     var json = null;
-    alert(login);
     $.ajax({
         url : url,
+        type : 'POST',
         method: 'post',
-        data: {'login': login, 'password': password},
+        data: {'email': login, 'password' : password},
         dataType: 'json',
         async : false,
         success: function (data) {
             json = data;
         },
         error: function () {
-            json = {success: false, message: "Request Get Connection: KO"};
+            json = {success: false, message: "* Request Get Connection: KO"};
         }
     });
     return json;
@@ -42,7 +41,25 @@ function get_information_with_id(url, user_id) {
             json = data;
         },
         error: function () {
-            json = {success: false, message: "Request Get Information User: KO"};
+            json = {success: false, message: "* Request Get Information User: KO"};
+        }
+    });
+    return json;
+}
+
+function get_shop_history(url, user_id) {
+    var json = null;
+    $.ajax({
+        url : url,
+        method: 'post',
+        data: {'user_id': user_id},
+        dataType: 'json',
+        async : false,
+        success: function (data) {
+            json = data;
+        },
+        error: function () {
+            json = {success: false, message: "* Request Get Shop History: KO"};
         }
     });
     return json;
@@ -79,8 +96,6 @@ function get_information_with_id(url, user_id) {
  */
 function get_account(url, user_id, shop_id) {
     var json = null;
-    alert(user_id);
-    alert(shop_id);
     $.ajax({
         url : url,
         method: "post",
@@ -91,7 +106,7 @@ function get_account(url, user_id, shop_id) {
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Account : KO"};
+            json = {success:false, message:"* Request Get Account : KO"};
         }
     });
     return json;
@@ -136,7 +151,7 @@ function update_account(url, user_id, shop_id, user_firstname, user_lastname, us
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Update Account  : KO"};
+            json = {success:false, message:"* Request Update Account  : KO"};
         }
     });
     return json;
@@ -177,7 +192,7 @@ function get_products_with_shop_id(url, shop_id)
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Products  : KO"};
+            json = {success:false, message:"* Request Get Products  : KO"};
         }
     });
     return json;
@@ -250,7 +265,7 @@ function update_product(url, shop_id, product_id, product_name, product_price, p
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Update Product: KO"};
+            json = {success:false, message:"* Request Update Product: KO"};
         }
     });
     return json;
@@ -281,7 +296,7 @@ function delete_product(url, shop_id, id_product)
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Delete Product: KO"};
+            json = {success:false, message:"* Request Delete Product: KO"};
         }
     });
     return json;
@@ -303,6 +318,8 @@ function delete_product(url, shop_id, id_product)
  */
 function add_product(url, shop_id, product_name, product_price, product_description)
 {
+    console.log("ADD_PRODUCT");
+    console.log("/ADD_PRODUCT");
     var json = null;
     $.ajax({
         url : url,
@@ -315,7 +332,7 @@ function add_product(url, shop_id, product_name, product_price, product_descript
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Add Product: KO"};
+            json = {success:false, message:"* Request Add Product: KO"};
         }
     });
     return json;
@@ -334,6 +351,8 @@ function add_product(url, shop_id, product_name, product_price, product_descript
 function get_transactions_with_shop_id(url, shop_id)
 {
     var json = null;
+    console.log(url);
+    console.log(shop_id);
     $.ajax({
         url : url,
         method: "post",
@@ -344,7 +363,7 @@ function get_transactions_with_shop_id(url, shop_id)
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Transactions: KO"};
+            json = {success:false, message:"* Request Get Transactions: KO"};
         }
     });
     return json;
@@ -371,7 +390,7 @@ function get_informations_about_transaction_with_id(url, transaction_id, shop_id
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Transaction With ID: KO"};
+            json = {success:false, message:"* Request Get Transaction With ID: KO"};
         }
     });
     return json;
@@ -397,7 +416,7 @@ function get_transaction_products_with_transaction_id_and_shop_id(url, transacti
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Get Transaction_Products: KO"};
+            json = {success:false, message:"* Request Get Transaction_Products: KO"};
         }
     });
     return json;
@@ -425,7 +444,7 @@ function update_shop_quantity_on_transaction_with_product_id(url, transaction_id
             console.log(json.message);
         },
         error: function () {
-            json = {success:false, message:"Request Update Vendor Quantity: KO"};
+            json = {success:false, message:"* Request Update Vendor Quantity: KO"};
             console.log(json.message);
         }
     });
@@ -451,7 +470,7 @@ function vendor_transaction_confirmation(url, shop_id, transaction_id) {
             json = data;
         },
         error: function () {
-            json = {success:false, message:"Request Vendor Transaction Confirmation: KO"};
+            json = {success:false, message:"* Request Vendor Transaction Confirmation: KO"};
         }
     });
     return json;
