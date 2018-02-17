@@ -1,5 +1,37 @@
+﻿// Pour obtenir une présentation du modèle Vide, consultez la documentation suivante :
+// http://go.microsoft.com/fwlink/?LinkID=397704
+// Pour déboguer du code durant le chargement d'une page dans cordova-simulate ou sur les appareils/émulateurs Android, lancez votre application, définissez des points d'arrêt, 
+// puis exécutez "window.location.reload()" dans la console JavaScript.
+(function () {
+    "use strict";
+
+    document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
+
+    function onDeviceReady() {
+        // Gérer les événements de suspension et de reprise Cordova
+        document.addEventListener( 'pause', onPause.bind( this ), false );
+        document.addEventListener( 'resume', onResume.bind( this ), false );
+        
+        // TODO: Cordova a été chargé. Effectuez l'initialisation qui nécessite Cordova ici.
+        var parentElement = document.getElementById('deviceready');
+        var listeningElement = parentElement.querySelector('.listening');
+        var receivedElement = parentElement.querySelector('.received');
+        listeningElement.setAttribute('style', 'display:none;');
+        receivedElement.setAttribute('style', 'display:block;');
+    };
+
+    function onPause() {
+        // TODO: cette application a été suspendue. Enregistrez l'état de l'application ici.
+    };
+
+    function onResume() {
+        // TODO: cette application a été réactivée. Restaurez l'état de l'application ici.
+    };
+})();
+
 var customer_id = localStorage.getItem('customer_id');
-var server_ip = 'http://green.projectyogisha.com/';
+var server_ip = 'http://localhost/'; //'http://green.projectyogisha.com/';
+var cus_ip = 'pri/SRC/Backend/Customer/';
 var wto; // slidebar variable
 var vendor_item_number = 0;
 var ajax_call = null;
@@ -14,7 +46,7 @@ function refresh_coordinates(position) {
 function get_shops_nearby(position) {
     var json = null;
     var ajax_call = $.ajax({
-        url: server_ip + "get_gps_nearest.php",
+        url: server_ip + cus_ip + "get_gps_nearest.php",
         data: { 'latitude': position.coords.latitude, 'longitude': position.coords.longitude, 'distance': $("#distance_value").val() },
         type: 'POST',
         dataType: 'json',
@@ -39,8 +71,7 @@ function get_shops_nearby(position) {
         timeout: 13000
     });
     var shops = [];
-    for (var name in json.name)
-    {
+    for (var name in json.name) {
         shops.push({
             shop_id: json.id[name],
             name: json.name[name],
@@ -53,14 +84,12 @@ function get_shops_nearby(position) {
 }
 
 function retrieve_items_from_db(shop_id) {
-    //
-    // REQUEST TODO
-    //
+   
     var json = null;
 
     ajax_call = $.ajax({
 
-        url: server_ip /*+ "CustomerApp/"*/ + "fetch_shop_items.php",
+        url: server_ip + cus_ip + "fetch_shop_items.php",
         data: { 'vendor_id': shop_id, 'offset': vendor_item_number },
         type: 'POST',
         dataType: 'json',
@@ -85,45 +114,49 @@ function retrieve_items_from_db(shop_id) {
         },
         timeout: 13000
     });
-    vendor_item_number += 2;
 
     var shop_list = [];
-    for (var name in json.product) {
+    console.log(json);
+    for (var i = 0; i < json.product.length; i++) {
+        console.log(json.product[i]);
         shop_list.push({
-            item_id: json.id_items[name],
-            item_name: json.product[name],
-            item_price: json.price[name],
-            item_desc: json.des[name]
-         //   item_img: json.img[name]
+            item_id: json.product[i].id,
+            item_name: json.product[i].product_name,
+            item_price: json.product[i].price,
+            item_desc: json.product[i].description,
+            item_img: json.product[i].image
         });
     }
 
-    console.log(vendor_item_number);
+    console.log(shop_list);
     return shop_list;
 }
 
-function send_order_to_serv(order, shop_id, price){
+function send_order_to_serv(order, shop_id, price, address) {
     // TODO
     // check server response
     //
     navigator.geolocation.getCurrentPosition(refresh_coordinates, onError);
+    console.log(order);
     ajax_call = $.ajax({
         //########### TMP FIELD ##########
-        url: server_ip + "set_order.php",
+        url: server_ip + cus_ip + "set_item_list.php",
         //################################
         data: {
             'items_and_quantity': order,
             'shop_id': shop_id,
-            'user_id': customer_id,
+            'customer_id': customer_id,
             'user_lat': coordlat,
-            'user_lon': coordlon,
-            'price': price
+            'user_long': coordlon,
+            'price': price,
+            'address': address
         },
         type: 'POST',
         dataType: 'json',
         async: false,
         success: function (data) {
             alert("Your order has been succesfully registered.");
+            return true;
         },
 
         beforeSend: function () {
@@ -136,7 +169,7 @@ function send_order_to_serv(order, shop_id, price){
             if (jqXHR.aborted)
                 return;
             alert(exception);
-
+            return false;
         },
         timeout: 13000
     });
@@ -147,9 +180,9 @@ function get_qr_code_info(order_id) {
 
     ajax_call = $.ajax({
         //########### TMP FIELD ##########
-        url: server_ip + "get_qr_code_token.php",
+        url: server_ip + cus_ip + "get_customer_token.php",
         //################################
-        data: { 'transaction_id': order_id, 'client_id': customer_id },
+        data: { 'transaction_id': order_id, 'customer_id': customer_id },
         type: 'POST',
         dataType: 'json',
         async: false,
@@ -178,7 +211,7 @@ function get_qr_code_info(order_id) {
             shop_id: json.shop_id[0],
             deliverer_name: json.deliverer_name[0],
             deliverer_id: json.deliverer_id[0],
-            order_id:json.transaction_id[0]
+            order_id: json.transaction_id[0]
         };
         return order;
     }
@@ -188,10 +221,11 @@ function get_qr_code_info(order_id) {
 
 
 function get_order_ready(order_id) {
-    
+    var json = null;
+
     ajax_call = $.ajax({
         // ########### TMP FIELD ##########
-        url: server_ip + "get_transaction_status.php",
+        url: server_ip + cus_ip + "get_transaction_status.php",
         // ################################
         data: { 'transaction_id': order_id, 'user_id': customer_id },
         type: 'POST',
@@ -219,7 +253,7 @@ function get_order_ready(order_id) {
     var req = json;
 
     if (req.length === 1) {
-        if (order.status === 3){
+        if (order.status === 3) {
             if (order.complete) {
                 $.mobile.pageContainer.pagecontainer('change', '#order_ready', { content: order_id, transition: 'slide' });
             }
@@ -231,14 +265,14 @@ function get_order_ready(order_id) {
     }
 }
 
-/* request that retrieve a list of orders of the customer */ 
+/* request that retrieve a list of orders of the customer */
 function retrieve_orders_from_server() {
     //********************************
     // TODO clarity fields returned
     //********************************
     ajax_call = $.ajax({
         //########### TMP FIELD ##########
-        url: server_ip + "get_transaction_status.php",
+        url: server_ip + cus_ip + "get_transaction_status.php",
         //################################
         data: { 'transaction_id': order_id, 'user_id': customer_id },
         type: 'POST',
@@ -266,38 +300,38 @@ function retrieve_orders_from_server() {
     var req = json;
 
 
-/*    var ord = {
-        id: 123,
-        shop_name: "Lidl",
-        transaction_date: "date",
-        price: 25,
-        status: 5,
-        complete: false
-    };
-
-
-    console.log("avant ajout");
-    var req = [ord];*/
+    /*    var ord = {
+            id: 123,
+            shop_name: "Lidl",
+            transaction_date: "date",
+            price: 25,
+            status: 5,
+            complete: false
+        };
+    
+    
+        console.log("avant ajout");
+        var req = [ord];*/
 
     clear_list("#orders_list");
     $.each(req, function (idx, item) {
         var order = item;
-        if ($('#orders_list li[data-orderid="' + + '"]').length <= 0){
+        if ($('#orders_list li[data-orderid="' + + '"]').length <= 0) {
             $("#orders_list")
                 .append($('<li>').attr('data-orderid', order.id)
                     .append($('<h3>').append(order.id))
                     .append($('<h4>').append(order.shop_name))
                     .append($('<p>').append(order.transaction_date))
                     .append($('<p>').append(order.price)));
-           var str = translate_status_toString(order.id, order.status);
+            var str = translate_status_toString(order.id, order.status);
         }
     });
 }
 
-function get_list_almost_ready(order_id){
+function get_list_almost_ready(order_id) {
     ajax_call = $.ajax({
         //########### TMP FIELD ##########
-        url: server_ip + "get_order_almost_ready.php",
+        url: server_ip + cus_ip + "get_order_almost_ready.php",
         //################################
         data: { 'transaction_id': order_id, 'client_id': customer_id },
         type: 'POST',
@@ -335,10 +369,10 @@ function generate_shops_nearby(position) {
             .append($('<button>')
                 .attr('class', 'shop_btn ui-btn ui-icon-carat-r ui-btn-icon-right')
                 .attr('data-shopid', shops[i].shop_id.toString())
-                .append($('<img>').attr('class','lvr_shop_img').attr('src', shops[i].logo))
+                .append($('<img>').attr('class', 'lvr_shop_img').attr('src', shops[i].logo))
                 .append($('<h3>').append(shops[i].name))));
-                //.append($('<p>').append('<strong>Distance</strong>'))
-                //.append($('<p>').append(get_distance(shops[i].distance)))));
+        //.append($('<p>').append('<strong>Distance</strong>'))
+        //.append($('<p>').append(get_distance(shops[i].distance)))));
         $('.shop_btn[data-shopid="' + shops[i].shop_id.toString() + '"]').click(function () {
             generate_items_from_shop(shops[i].shop_id, shops[i].name);
             define_shop_list_confirm_click();
@@ -353,9 +387,8 @@ function generate_shops_nearby(position) {
     }
 }
 
-function translate_status_toString(order_id, status){
-    switch (status)
-    {
+function translate_status_toString(order_id, status) {
+    switch (status) {
         case 1:
             return "Waiting for vendor confirmation";
         case 2:
@@ -383,11 +416,11 @@ function translate_status_toString(order_id, status){
 function generate_link_to_qrcode(order_id) {
     $('#orders_list li[data-orderid="' + order_id + '"]')
         .append($("<a>").attr('href', '#qr_code_page').attr('class', 'ui-btn').attr("data-orderid", order_id)
-        .append("In delivery!"));
+            .append("In delivery!"));
     console.log("done");
 }
 
-function generate_link_to_order_ready(order_id){
+function generate_link_to_order_ready(order_id) {
     if ($('#orders_list li[data-orderid="' + order_id + '"]').length > 0) {
         $('#orders_list li[data-orderid="' + order_id + '"]')
             .append($("<a>").attr('href', '#order_ready').attr('class', 'ui-btn').attr('data-orderid', order_id)
@@ -404,7 +437,7 @@ function generate_link_to_order_ready(order_id){
             ////////////////////////////////////////////
 
             $.mobile.pageContainer.pagecontainer('change', '#qr_code_page', { content: order_id, transition: 'slide' });
-            
+
             ////////////////////////////////////////////
 
         });
@@ -413,10 +446,10 @@ function generate_link_to_order_ready(order_id){
         //  Test                                  //  
         ////////////////////////////////////////////
 
-       /* var order = {
-            id: 123,
-            amount: 54.50
-        };*/
+        /* var order = {
+             id: 123,
+             amount: 54.50
+         };*/
         ////////////////////////////////////////////
 
         //$("#order_ready_amount").text(order.amount);
@@ -493,38 +526,41 @@ function generate_list_almost_ready(order_id) {
 }
 
 /* Take a distance in metters and returns the distance wether in Km or m */
-function get_distance(d)
-{
+function get_distance(d) {
     //supposed distance in metters
     if (d < 1000) return d.toString() + "m";
-	else return (d / 1000).toString() + "km";
-	
+    else return (d / 1000).toString() + "km";
+
 }
 
-function clear_list(list_id){
-	$(list_id).empty();
+function clear_list(list_id) {
+    $(list_id).empty();
 }
 
 /* gets the items of the shop and complete the shop_store page */
-function generate_items_from_shop(shop_id, shop_name)
-{
+function generate_items_from_shop(shop_id, shop_name) {
     $('#shop_store_list').empty();
     $('#recap_shop_list').empty();
-	/* get the list of items sold by vendor */
-	var shop_list = retrieve_items_from_db(shop_id);
-    
+    /* get the list of items sold by vendor */
+    var shop_list = retrieve_items_from_db(shop_id);
+
     $("#shop_store_name").attr('data-shopid', shop_id).text(shop_name);
-	for(let i = 0; i < shop_list.length; i++)
-    {
+    if (shop_list.length == 0) {
+        $("#shop_store_empty").html("Sorry, we have no items in this shop. You can try another one or come back later!");
+    }
+    else {
+        $("#shop_store_empty").html("");
+    }
+    for (let i = 0; i < shop_list.length; i++) {
         //each iteration creates an element of the shop list
         if ($('#shop_item_' + shop_list[i].item_id.toString()).length === 0) {
-           
+
             $("#shop_store_list").append($('<li>').attr('id', 'shop_item_' + shop_list[i].item_id.toString())
-                .append($('<img>').attr('id', 'img_' + shop_list[i].item_id).attr('src',''))
+                .append($('<img>').attr('id', 'img_' + shop_list[i].item_id).attr('src', ''))
                 .append($('<h3>').attr('id', 'name_' + shop_list[i].item_id).append(shop_list[i].item_name))
                 .append($('<p>').attr('id', 'desc_' + shop_list[i].item_id).append(shop_list[i].item_desc))
                 .append($('<p>').attr('id', 'price_' + shop_list[i].item_id).append(shop_list[i].item_price.toString() + '€'))
-                .append($('<div>').attr('data-role', 'controlgroup').attr('data-type', 'horizontal').attr('data-mini','true').attr('class','ui-controlgroup ui-controlgroup-horizontal ui-corner-all ui-mini')
+                .append($('<div>').attr('data-role', 'controlgroup').attr('data-type', 'horizontal').attr('data-mini', 'true').attr('class', 'ui-controlgroup ui-controlgroup-horizontal ui-corner-all ui-mini')
                     .append($('<p>').attr('id', 'qty_' + shop_list[i].item_id).append('0'))
                     .append($('<button>').attr('class', 'ui-first-child ui-btn ui-btn-icon-notext ui-icon-minus ui-btn-corner-all').click(function () {
                         var qty = parseInt($('#qty_' + shop_list[i].item_id).text());
@@ -539,11 +575,10 @@ function generate_items_from_shop(shop_id, shop_name)
                 )
             );
         }
-	}	
+    }
 }
 /* recap things */
-function update_recap_field(item)
-{
+function update_recap_field(item) {
     if (item.item_qty === 0) $('#recap_item_' + item.item_id).remove();
     else $('#recap_qty_' + item.item_id).text(item.item_qty);
 }
@@ -596,6 +631,26 @@ function get_recap_order() {
     return order;
 }
 
+function get_recap_adress() {
+    if ($("#recap_address").val() == "") {
+        $("#address_error").html("please fill the adress field.");
+        return null;
+    }
+    else if ($("#recap_zipcode").val() == "") {
+        $("#address_error").html("please fill the zipcode field.");
+        return null;
+    }
+    else if ($("#recap_city").val() == "") {
+        $("#address_error").html("please fill the city field.");
+        return null;
+    }
+    var adress = "" + $("#recap_address").val() + " " +
+        $("#recap_zipcode").val() + " " +
+        $("#recap_city").val();
+    console.log(adress);
+    return adress;
+}
+
 /* click functions */
 
 /* the onClick action from the shop_list_confirm button */
@@ -618,12 +673,15 @@ function define_shop_list_confirm_click() {
         });
         $.mobile.pageContainer.pagecontainer('change', '#recap_cart', { content: recap_list, transition: 'slide' });
     });
+    $('#btn_shop_list_cancel').off().click(function () {
+        $.mobile.pageContainer.pagecontainer('change', '#main', { content: null, transition: 'slide' });
+    });
 }
 
 function define_my_orders_click() {
     $('#my_orders').off().click(function () {
         retrieve_orders_from_server();
-        $.mobile.pageContainer.pagecontainer('change', "#orders", {transition: 'slide' });
+        $.mobile.pageContainer.pagecontainer('change', "#orders", { transition: 'slide' });
     });
 };
 
@@ -631,14 +689,20 @@ function define_my_orders_click() {
 function define_btn_recap_confirm(shop_id, price) {
     $("#btn_recap_confirm").off().click(function () {
         var order = get_recap_order();
-        send_order_to_serv(order, shop_id, price);
-        $.mobile.pageContainer.pagecontainer('change', '#notification_anouncement', { content: null, transition: 'slide' });
+        var adress = get_recap_adress();
+        if (adress == null || adress == "") {
+            alert("please entre the adress you want to be delivered to.");
+            return null;
+        }
+        console.log(adress);
+        var success = send_order_to_serv(order, shop_id, price, adress);
+        if (success) $.mobile.pageContainer.pagecontainer('change', '#notification_anouncement', { content: null, transition: 'slide' });
     });
 };
 
 function define_btn_recap_modifiy() {
     $("#btn_recap_modify").off().click(function () {
-        $.mobile.pageContainer.pagecontainer('change', '#shop_store', { content: null, transition: 'slide'});
+        $.mobile.pageContainer.pagecontainer('change', '#shop_store', { content: null, transition: 'slide' });
     });
 }
 
@@ -676,10 +740,17 @@ function define_login_submit() {
     });
 }
 
+function define_register_livero_link() {
+    $("#register_livero").off().click(function () {
+        $.mobile.pageContainer.pagecontainer('change', "#login", { content: order_id, transition: 'slide' });
+    });
+}
 /* Page before change events */
 $(document).on('pagecontainerbeforechange', function (event, ui) {
     var content = ui.options.content;
     if (ui.toPage[0].id === 'main') {
+        if (panel_init == 0)
+            init_panel();
         clear_list('#main_shop_list');
         navigator.geolocation.getCurrentPosition(generate_shops_nearby, onError);
         console.log("yes");
@@ -689,38 +760,41 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
             generate_items_from_shop(content.shop_id, content.shop_name);
     }
     if (ui.toPage[0].id === 'recap_cart') {
-        if (content !== null && content.length > 0)
-        {
+        if (content !== null && content.length > 0) {
             fill_recap_list(content);
         }
     }
     if (ui.toPage[0].id === 'notification_anouncement') {
-        
+
     }
-    if (ui.toPage[0].id === 'qr_code_page')
-    {
+    if (ui.toPage[0].id === 'qr_code_page') {
         generate_qr_code_page(content, qr_token);
         define_btn_return_qr_code(content);
         define_btn_deliverer_pos(content);
     }
     if (ui.toPage[0].id === 'register') {
         define_register_submit();
+        define_register_livero_link();
         console.log("here");
     }
 
     if (ui.toPage[0].id === 'login') {
         define_register_link();
         define_login_submit();
+        console.log(server_ip + cus_ip + "Account/registration_normal.php");
     }
 });
 
-$(function () {
+var panel_init = 0;
+
+function init_panel() {
     /* add the data roles 'header' and 'footer' for the fixed toolbar / title */
     $("[data-role='header'], [data-role='footer']").toolbar({ theme: "a" });
     /* add the data-role 'panel' for the app panel */
     $("body>[data-role='panel']").panel();
     define_my_orders_click();
-});
+    panel_init = 1;
+}
 
 $(function () {
     $('#distance_value').change(function () {
@@ -734,9 +808,6 @@ $(function () {
 $(document).ready(function () {
     if (customer_id === null) {
         $.mobile.pageContainer.pagecontainer('change', "#login", { content: null, transition: 'slide' });
-        $("#register_livero").off().click(function () {
-            $.mobile.pageContainer.pagecontainer('change', "#login", { content: order_id, transition: 'slide' });
-        });
     }
 });
 
@@ -785,9 +856,11 @@ function login_normal() {
     var req = null;
     ajax_call = $.ajax({
 
-        url: server_ip + "login_normal.php",
-        data: { 'email': $("#email").val(), 'password': $("#password").val() },
+        url: server_ip + cus_ip + "login_normal.php",
+        data: { 'email': $("#login_email").val(), 'password': $("#login_password").val() },
         type: 'POST',
+        dataType: 'json',
+        async: false,
         success: function (data) {
             req = data;
         },
@@ -807,15 +880,16 @@ function login_normal() {
         },
         timeout: 13000
     });
-
-    if (req) {
+    console.log(req);
+    if (req.success) {
         localStorage.setItem("customer_id", req.customer_id);
+        console.log(req.message);
         $.mobile.pageContainer.pagecontainer('change', '#main', { content: null, transition: 'slide' });
     }
     else {
+        console.log(req.message);
         $("#login_result").html("user/name or password it wrong");
     }
-
 };
 
 function registration_normal() {
@@ -828,7 +902,7 @@ function registration_normal() {
     var pass = $("#password_r").val();
     var pass_com = $("#confirm_password_r").val();
     var phone = $("#phone").val()
-    if (!email.trim() || !first.trim() || !last.trim() || !dob.trim() || !address.trim() || !pass.trim() || !pass_com.trim()) {
+    if (!email.trim() || !first.trim() || !last.trim() || !dob.trim() || !pass.trim() || !pass_com.trim()) {
 
         $("#resgitration_result").html("<span style=\"color:red;\">Please enter the required fields</span>");
         return;
@@ -846,9 +920,11 @@ function registration_normal() {
     }
     var json = null;
     ajax_call = $.ajax({
-        url: server_ip + "registration_normal.php",
+        url: server_ip + cus_ip + "registration_normal.php",
         data: { 'email': email, 'actor': 3, 'first': first, 'last': last, 'dob': dob, 'address': address, 'phone': phone, 'password': pass },
         type: 'POST',
+        dataType: 'json',
+        async: false,
         success: function (data) {
             json = data;
         },
@@ -866,12 +942,13 @@ function registration_normal() {
         },
         timeout: 13000
     });
-    if (json == "1")
-    {
-        localStorage.setItem("customer_id", json.customer_id);
-        $.mobile.pageContainer.pagecontainer('change', '#main', { content: null, transition: 'slide' });
+    console.log(json);
+    if (json.success) {
+        console.log(json.message);
+        $.mobile.pageContainer.pagecontainer('change', '#login', { content: null, transition: 'slide' });
     }
     else {
+        console.log(json.message);
         $("#resgitration_result").html("<span style=\"color:red;\">An error has occured with the registration, please try again.</span>");
     }
 
