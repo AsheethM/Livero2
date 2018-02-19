@@ -45,7 +45,7 @@ function refresh_coordinates(position) {
 
 function get_shops_nearby(position) {
     var json = null;
-    var ajax_call = $.ajax({
+    ajax_call = $.ajax({
         url: server_ip + cus_ip + "get_gps_nearest.php",
         data: { 'latitude': position.coords.latitude, 'longitude': position.coords.longitude, 'distance': $("#distance_value").val() },
         type: 'POST',
@@ -64,7 +64,7 @@ function get_shops_nearby(position) {
             json = { success: false, message: "Request get shops nearby: KO" };
         },
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
@@ -100,7 +100,7 @@ function retrieve_items_from_db(shop_id) {
         },
 
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
@@ -160,7 +160,7 @@ function send_order_to_serv(order, shop_id, price, address) {
         },
 
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
@@ -191,7 +191,7 @@ function get_qr_code_info(order_id) {
         },
 
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
@@ -236,7 +236,7 @@ function get_order_ready(order_id) {
         },
 
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
@@ -283,7 +283,7 @@ function retrieve_orders_from_server() {
         },
 
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
@@ -342,7 +342,7 @@ function get_list_almost_ready(order_id) {
         },
 
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
@@ -494,7 +494,7 @@ function generate_link_to_deliverer_pos(order_id) {
 }
 
 
-/* Order almost ready! */ /******************************/
+/* Order almost ready! */
 function generate_list_almost_ready(order_id) {
     //
     // REQUEST TODO
@@ -545,7 +545,7 @@ function generate_items_from_shop(shop_id, shop_name) {
     var shop_list = retrieve_items_from_db(shop_id);
 
     $("#shop_store_name").attr('data-shopid', shop_id).text(shop_name);
-    if (shop_list.length == 0) {
+    if (shop_list.length === 0) {
         $("#shop_store_empty").html("Sorry, we have no items in this shop. You can try another one or come back later!");
     }
     else {
@@ -632,15 +632,15 @@ function get_recap_order() {
 }
 
 function get_recap_adress() {
-    if ($("#recap_address").val() == "") {
+    if ($("#recap_address").val() === "") {
         $("#address_error").html("please fill the adress field.");
         return null;
     }
-    else if ($("#recap_zipcode").val() == "") {
+    else if ($("#recap_zipcode").val() === "") {
         $("#address_error").html("please fill the zipcode field.");
         return null;
     }
-    else if ($("#recap_city").val() == "") {
+    else if ($("#recap_city").val() === "") {
         $("#address_error").html("please fill the city field.");
         return null;
     }
@@ -688,9 +688,9 @@ function define_my_orders_click() {
 /* click for the #btn_recap_confirm */
 function define_btn_recap_confirm(shop_id, price) {
     $("#btn_recap_confirm").off().click(function () {
-        var order = get_recap_order();
+        var order = get_recap_order().item_list;
         var adress = get_recap_adress();
-        if (adress == null || adress == "") {
+        if (adress === null || adress === "") {
             alert("please entre the adress you want to be delivered to.");
             return null;
         }
@@ -749,7 +749,7 @@ function define_register_livero_link() {
 $(document).on('pagecontainerbeforechange', function (event, ui) {
     var content = ui.options.content;
     if (ui.toPage[0].id === 'main') {
-        if (panel_init == 0)
+        if (panel_init === 0)
             init_panel();
         clear_list('#main_shop_list');
         navigator.geolocation.getCurrentPosition(generate_shops_nearby, onError);
@@ -764,9 +764,9 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
             fill_recap_list(content);
         }
     }
-    if (ui.toPage[0].id === 'notification_anouncement') {
+    /*if (ui.toPage[0].id === 'notification_anouncement') {
 
-    }
+    }*/
     if (ui.toPage[0].id === 'qr_code_page') {
         generate_qr_code_page(content, qr_token);
         define_btn_return_qr_code(content);
@@ -781,7 +781,6 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
     if (ui.toPage[0].id === 'login') {
         define_register_link();
         define_login_submit();
-        console.log(server_ip + cus_ip + "Account/registration_normal.php");
     }
 });
 
@@ -866,7 +865,7 @@ function login_normal() {
         },
 
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
@@ -936,7 +935,7 @@ function registration_normal() {
         },
 
         beforeSend: function () {
-            if (ajax_call != null) {
+            if (ajax_call !== null) {
                 ajax_call.abort();
             }
         },
