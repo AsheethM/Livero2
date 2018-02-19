@@ -18,10 +18,11 @@ $timer = date('Y-m-d H:i:s');
 $sql="INSERT INTO transaction (customer_id, customer_lat, customer_long, dest_address, description, shop_id, order_price, status, timer) VALUES (".$customer_id.",'".$customer_lat."','".$customer_long."','".$address."','".$description."',".$vendor_id.",".$price.",1, '".$timer."')";
 
 if ($conn->query($sql) === TRUE) {
-       print json_encode( "done");
+	$response["success"] = true;	
+	$response["message"] = "Insert query transaction: OK";
 } else {
-    print json_encode("fail");
-
+    $response["success"] = false;
+	$response["message"] = "Insert query transaction: OK";
 }
 
 $sql="SELECT max(id) as id FROM `transaction` WHERE customer_id ='".$customer_id."' AND shop_id='".$vendor_id."' ";
@@ -35,15 +36,17 @@ $sql="SELECT max(id) as id FROM `transaction` WHERE customer_id ='".$customer_id
 
 foreach($product_id as $key => $value){
 	if (is_array($value) || is_object($value)){
-		$sql = "INSERT INTO `transaction_product`( `product_id`, `transaction_id`, `customer_quantity`,`shop_quantity`) VALUES ('".$value["id"]."','".$id."','".$value["qty"]."','1')";	
+		$sql = "INSERT INTO `transaction_product`( `product_id`, `transaction_id`, `customer_quantity`,`shop_quantity`) VALUES ('".$value["id"]."','".$id."','".$value["qty"]."','".$value["qty"]."')";	
 	}
 	if ($conn->query($sql) === TRUE) {
-		print json_encode("done_for");
+		$response["success"] &= true;
+		$response["message"] .= "\n\rInsert query transaction_product for item ".$value["id"].": OK";
 	} else {
-		print json_encode( "failed");
+		$response["message"] .= "\n\rInsert query transaction_product for item ".$value["id"].": KO";
+		$response["success"] &= false;
 	}
 }
- 
+	echo json_encode($response);
   $conn->close();
 
 ?>

@@ -43,8 +43,14 @@ function refresh_coordinates(position) {
     coordlon = position.coords.longitude;
 }
 
+function get_date_from_sql(datetime) {
+    var tab = datetime.split(/[- :]/);
+    return tab[2] + "/" + tab[1] + "/" + tab[0];
+}
+
 function get_shops_nearby(position) {
     var json = null;
+
     ajax_call = $.ajax({
         url: server_ip + cus_ip + "get_gps_nearest.php",
         data: { 'latitude': position.coords.latitude, 'longitude': position.coords.longitude, 'distance': $("#distance_value").val() },
@@ -225,7 +231,7 @@ function get_order_ready(order_id) {
 
     ajax_call = $.ajax({
         // ########### TMP FIELD ##########
-        url: server_ip + cus_ip + "get_transaction_status.php",
+        url: server_ip + cus_ip + "get_transaction.php",
         // ################################
         data: { 'transaction_id': order_id, 'user_id': customer_id },
         type: 'POST',
@@ -272,9 +278,9 @@ function retrieve_orders_from_server() {
     //********************************
     ajax_call = $.ajax({
         //########### TMP FIELD ##########
-        url: server_ip + cus_ip + "get_transaction_status.php",
+        url: server_ip + cus_ip + "get_transactions.php",
         //################################
-        data: { 'transaction_id': order_id, 'user_id': customer_id },
+        data: {'user_id': customer_id },
         type: 'POST',
         dataType: 'json',
         async: false,
@@ -297,34 +303,23 @@ function retrieve_orders_from_server() {
         timeout: 13000
     });
 
-    var req = json;
-
-
-    /*    var ord = {
-            id: 123,
-            shop_name: "Lidl",
-            transaction_date: "date",
-            price: 25,
-            status: 5,
-            complete: false
-        };
-    
-    
-        console.log("avant ajout");
-        var req = [ord];*/
+    var req = json.results;
 
     clear_list("#orders_list");
     $.each(req, function (idx, item) {
         var order = item;
+        console.log(order);
         if ($('#orders_list li[data-orderid="' + + '"]').length <= 0) {
+            var str = translate_status_toString(order.id, order.status);
+            var date = get_date_from_sql(order.timer); 
             $("#orders_list")
                 .append($('<li>').attr('data-orderid', order.id)
-                    .append($('<h3>').append(order.id))
-                    .append($('<h4>').append(order.shop_name))
-                    .append($('<p>').append(order.transaction_date))
-                    .append($('<p>').append(order.price)));
-            var str = translate_status_toString(order.id, order.status);
-        }
+                    .append($('<h3>').html("Order #" + order.id))
+                    .append($('<h4>').html(order.shop_name))
+                    .append($('<p>').html(date))
+                    .append($('<p>').html(order.order_price + " €"))
+                    .append($('<p>').html(str)));
+            }
     });
 }
 
@@ -388,7 +383,7 @@ function generate_shops_nearby(position) {
 }
 
 function translate_status_toString(order_id, status) {
-    switch (status) {
+    switch (parseInt(status)) {
         case 1:
             return "Waiting for vendor confirmation";
         case 2:
