@@ -15,18 +15,18 @@ function onDeviceReady() {
     }, function(error) {
         localStorage.setItem("phone_token", "error");
     });*/
-
+    console.log("ici");
     if (localStorage.getItem('user_id') === null){
         $.mobile.pageContainer.pagecontainer('change','#login', {transition : 'slideup'});
     }
     else
     {
-        $.mobile.pageContainer.pagecontainer('change','#home', {transition : 'slideup'});
+        $.mobile.pageContainer.pagecontainer('change','#main', {transition : 'slideup'});
     }
 
 
 
-    localStorage.setItem('server_ip', 'localhost/PRI/');
+    //localStorage.setItem('server_ip', 'localhost/PRI/');
     //localStorage.setItem('server_ip', '192.168.1.32/PRI/');
     //localStorage.setItem('user_id', 2);
 

@@ -68,7 +68,44 @@
                 -->
                 </div>
             </div>
-
+        <!-- Register Page -->
+        <div id="api-register" data-type="page">
+            <div class="ui-content">
+                <div class="agile">
+                    <div class="signin-form profile">
+                        <p><a id="register_livero" href="#login">Livero</a></p>
+                        <div class="register_form_div">
+                            <form action="#" method="post" id="register_form">
+                                <legend>E-Mail*</legend>
+                                <input type="text" name="textinput-f" id="email_r" placeholder="E-mail" value="">
+                                <legend>First Name*</legend>
+                                <input type="text" name="textinput-f" id="first" placeholder="First Name" value="">
+                                <legend>Lastname Name*</legend>
+                                <input type="text" name="textinput-f" id="last" placeholder="Last Name" value="">
+                                <legend>Date of Birth*</legend>
+                                <input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">-->
+                                <!--<legend>Address*</legend>
+                            <input type="text" name="textinput-f" id="address" placeholder="Address" value="">
+                            -->
+                                <legend>Phone*</legend>
+                                <input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
+                                <legend>Password*</legend>
+                                <input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
+                                <legend>Confirm Password*</legend>
+                                <input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
+                                <span id="resgitration_result"></span>
+                                <button id="register_form_btn" name="textinput-f" value="submit">Register</button>
+                            </form>
+                        </div>
+                        <p><a href="#"> By clicking register, I agree to your terms</a></p>
+                    </div>
+                </div>
+                <!-- <div class="clear"></div> -->
+                <div class="copyright">
+                    <p> &copy; 2017 Register Login Livero. All rights reserved | Design by Livero</p>
+                </div>
+            </div>
+        </div>
             <!-- Login page -->
             <div id="login" data-type="page">
                 <div class="ui-content">
@@ -79,56 +116,11 @@
                         <button id="login_form_btn" type="submit">Lets's Shop</button>
                     </form>
                     <p id="login_result"></p>
-                    <p><a id="login_register" href="#register"> Don't have an account?</a></p>
-                    <div class="connect">
-                        <p>Or connect with:</p>
-                        <p>
-                            <a class="facebook" href=""></a>
-                            <a class="twitter" href=""></a>
-                        </p>
-                    </div>
+                    <p><a id="login_register" href="#api-register"> Don't have an account?</a></p>
                 </div>
             </div>
 
-            <!-- Register Page -->
-            <div id="register" data-type="page">
-                <div class="ui-content">
-                    <div class="agile">
-                        <div class="signin-form profile">
-                            <p><a id="register_livero" href="#login">Livero</a></p>
-                            <div class="register_form_div">
-                                <form action="#" method="post" id="register_form">
-                                    <legend>E-Mail*</legend>
-                                    <input type="text" name="textinput-f" id="email_r" placeholder="E-mail" value="">
-                                    <legend>First Name*</legend>
-                                    <input type="text" name="textinput-f" id="first" placeholder="First Name" value="">
-                                    <legend>Lastname Name*</legend>
-                                    <input type="text" name="textinput-f" id="last" placeholder="Last Name" value="">
-                                    <legend>Date of Birth*</legend>
-                                    <input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">
-                                    <!--<legend>Address*</legend>
-                                    <input type="text" name="textinput-f" id="address" placeholder="Address" value="">
-                                    -->
-                                    <legend>Phone*</legend>
-                                    <input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
-                                    <legend>Password*</legend>
-                                    <input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
-                                    <legend>Confirm Password*</legend>
-                                    <input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
-                                    <span id="resgitration_result"></span>
-                                    <button id="register_form_btn" name="textinput-f" value="submit">Register</button>
-                                </form>
-                            </div>
-                            <p><a href="#"> By clicking register, I agree to your terms</a></p>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                    <!--//signin-form-->
-                    <div class="copyright">
-                        <p> &copy; 2017 Register Login Livero. All rights reserved | Design by Livero</p>
-                    </div>
-                </div>
-            </div>
+            
             <!-- main app division -->
             <div data-role="page" id="main">
                 <h1>Shops in your area</h1>
@@ -309,6 +301,8 @@
         </div>
             <!-- scripts -->
             <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="scripts/before_load.js"></script>
+
             <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
             <!--<script src="scripts/cart.js"></script>-->
         <script src="scripts/config.js"></script>    

@@ -1,4 +1,5 @@
-﻿var panel_init = false;
+﻿
+var panel_init = true;
 var customer_id = localStorage.getItem('customer_id');
 var server_ip = 'http://192.168.43.128/';//'http://localhost/'; //'http://green.projectyogisha.com/';
 var cus_ip = 'PRI/SRC/Backend/Customer/';
@@ -793,7 +794,7 @@ function define_register_submit() {
 
 function define_register_link() {
     $("#login_register").off().click(function () {
-        $.mobile.pageContainer.pagecontainer('change', '#register', { content: null, transition: 'slide' });
+        $.mobile.pageContainer.pagecontainer('change', '#api-register', { content: null, transition: 'slide' });
     });
 }
 
@@ -820,26 +821,43 @@ function define_cancel_order_ready(order_id) {
     });
 }
 
+function main_function() {
+    if (panel_init === false)
+        init_panel();
+    clear_list('#main_shop_list');
+    navigator.geolocation.getCurrentPosition(generate_shops_nearby, onError);
+}
+
+function register_before_display() {
+    define_register_submit();
+    define_register_livero_link();
+}
+
+function login_before_display() {
+    define_register_link();
+    define_login_submit();
+}
+
 /* Page before change events */
 $(document).on('pagecontainerbeforechange', function (event, ui) {
     var content = ui.options.content;
-    if (ui.toPage[0].id === 'main') {
-        if (panel_init === false)
-            init_panel();
-        clear_list('#main_shop_list');
-        navigator.geolocation.getCurrentPosition(generate_shops_nearby, onError);
-        console.log("yes");
+    console.log(ui.toPage[0].id);
+    if (ui.toPage[0].id === 'login') {
+        login_before_display();
     }
-    if (ui.toPage[0].id === 'shop_store') {
+    else if (ui.toPage[0].id === 'main') {
+        main_function();
+    }
+    else if (ui.toPage[0].id === 'shop_store') {
         if ($('#shop_store_list li').length <= 0)
             generate_items_from_shop(content.shop_id, content.shop_name);
     }
-    if (ui.toPage[0].id === 'recap_cart') {
+    else if (ui.toPage[0].id === 'recap_cart') {
         if (content !== null && content.length > 0) {
             fill_recap_list(content);
         }
     }
-    if (ui.toPage[0].id === 'order_ready') {
+    else if (ui.toPage[0].id === 'order_ready') {
         generate_order_ready_infos(content);
         define_cancel_order_ready(content.order_id);
         
@@ -847,21 +865,16 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
     /*if (ui.toPage[0].id === 'notification_anouncement') {
 
     }*/
-    if (ui.toPage[0].id === 'qr_code_page') {
+    else if (ui.toPage[0].id === 'qr_code_page') {
         generate_qr_code_page(content);
         define_btn_return_qr_code(content);
         define_btn_deliverer_pos(content);
     }
-    if (ui.toPage[0].id === 'register') {
-        define_register_submit();
-        define_register_livero_link();
-        console.log("here");
+    else if (ui.toPage[0].id === 'api-register') {
+        register_before_display();
     }
 
-    if (ui.toPage[0].id === 'login') {
-        define_register_link();
-        define_login_submit();
-    }
+    
 });
 
 function init_panel() {
@@ -938,6 +951,7 @@ function login_normal() {
     });
     console.log(req);
     if (req.success) {
+        panel_init = false;
         localStorage.setItem("customer_id", req.customer_id);
         console.log(req.message);
         $.mobile.pageContainer.pagecontainer('change', '#main', { content: null, transition: 'slide' });
