@@ -1,14 +1,9 @@
 function onLoad() {
-    console.log("HELLO");
     //document.addEventListener("deviceready", onDeviceReady, false);
+    localStorage.clear();
     onDeviceReady();
 
 }
-
-function onBackKeyDown() {
-    go_back();
-}
-
 
 function onDeviceReady() {
     // Register the event listener
@@ -20,9 +15,6 @@ function onDeviceReady() {
     }, function(error) {
         localStorage.setItem("phone_token", "error");
     });*/
-
-    console.log("BEGINNING");
-    console.log(localStorage);
 
     if (localStorage.getItem('user_id') === null){
         $.mobile.pageContainer.pagecontainer('change','#login', {transition : 'slideup'});

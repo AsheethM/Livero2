@@ -14,6 +14,9 @@
        
         <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
         <link rel="stylesheet" href="css/index.css" />
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+        
         <title>Livero</title>
     </head>
     <body onload="onLoad()">
@@ -31,17 +34,20 @@
             <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a">
                 <div class="ui-panel-inner">
                     <ul data-role="listview" class="ui-listview">
-                        <li class="ui-first-child">
+                        <li>
                             <a href="#main" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Search for a shop</a>
                         </li>
                         <li>
                             <a id="my_orders" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My orders</a>
                         </li>
                         <li>
-                            <a href="#my_account" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My account</a>
+                            <a href="#my_account" class="ui-btn ui-icon-carat-r ui-btn-icon-right" hidden>My account</a>
                         </li>
-                        <li class="ui-last-child">
-                            <a href="#settings" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Settings</a>
+                        <li>
+                            <a href="#settings" class="ui-btn ui-icon-carat-r ui-btn-icon-right" hidden>Settings</a>
+                        </li>
+                        <li>
+                            <a href="#logout" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Log out</a>
                         </li>
                     </ul>
                 </div>
@@ -54,11 +60,12 @@
                 </div>
                 <div id="toolbar">
                     <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-inline ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
-                    <a id="return_icon" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-back ui-btn-icon-notext"></a>
+                    <!--<a id="return_icon" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-back ui-btn-icon-notext"></a>
                     <div class="ui-field-contain">
                         <input id="search_bar" type="search" name="search_bar" placeholder="search for a shop" />
                     </div>
                     <a href="#recap_cart" id="shopping_cart" class="ui-btn ui-btn-right ui-corner-all ui-mini ui-icon-cart ui-btn-icon-notext"></a>
+                -->
                 </div>
             </div>
 
@@ -138,6 +145,7 @@
             <div data-role="page" id="orders">
                 <div class="ui-content">
                     <h1>Your orders</h1>
+                    <p id="sorry_no_orders"></p>
                     <ul id="orders_list" data-role="listview"></ul>
                 </div>
             </div>
@@ -210,6 +218,7 @@
                     <p id="order_ready_amount">
 
                     </p>
+                    
                     <button id="btn_order_ready_pay">Pay</button>
                     <button id="btn_order_ready_cancel">Cancel</button>
                 </div>
@@ -255,8 +264,8 @@
                     <h3 id="qr_order_id"></h3>
                     <div class="qr_code_advice">
                         <h4 class="qr_code_advice_label">Advice:</h4>
-                        <p class="qr_code_advice_text"></p>
-                    </div>
+                       <!-- <p class="qr_code_advice_text"></p>
+                    --></div>
                     <button id="qr_code_deliverer">watch where the deliverer is</button>
                     <button id="qr_code_open_dispute">Open a dispute</button>
                 </div>

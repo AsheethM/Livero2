@@ -1,37 +1,7 @@
-﻿// Pour obtenir une présentation du modèle Vide, consultez la documentation suivante :
-// http://go.microsoft.com/fwlink/?LinkID=397704
-// Pour déboguer du code durant le chargement d'une page dans cordova-simulate ou sur les appareils/émulateurs Android, lancez votre application, définissez des points d'arrêt, 
-// puis exécutez "window.location.reload()" dans la console JavaScript.
-(function () {
-    "use strict";
-
-    document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
-
-    function onDeviceReady() {
-        // Gérer les événements de suspension et de reprise Cordova
-        document.addEventListener( 'pause', onPause.bind( this ), false );
-        document.addEventListener( 'resume', onResume.bind( this ), false );
-        
-        // TODO: Cordova a été chargé. Effectuez l'initialisation qui nécessite Cordova ici.
-        var parentElement = document.getElementById('deviceready');
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-    };
-
-    function onPause() {
-        // TODO: cette application a été suspendue. Enregistrez l'état de l'application ici.
-    };
-
-    function onResume() {
-        // TODO: cette application a été réactivée. Restaurez l'état de l'application ici.
-    };
-})();
-
+﻿var panel_init = false;
 var customer_id = localStorage.getItem('customer_id');
-var server_ip = 'http://localhost/'; //'http://green.projectyogisha.com/';
-var cus_ip = 'pri/SRC/Backend/Customer/';
+var server_ip = 'http://192.168.43.128/';//'http://localhost/'; //'http://green.projectyogisha.com/';
+var cus_ip = 'PRI/SRC/Backend/Customer/';
 var wto; // slidebar variable
 var vendor_item_number = 0;
 var ajax_call = null;
@@ -48,9 +18,12 @@ function get_date_from_sql(datetime) {
     return tab[2] + "/" + tab[1] + "/" + tab[0];
 }
 
+
+/*         AJAX QUERY      */
+
 function get_shops_nearby(position) {
     var json = null;
-
+    customer_id = localStorage.getItem('customer_id');
     ajax_call = $.ajax({
         url: server_ip + cus_ip + "get_gps_nearest.php",
         data: { 'latitude': position.coords.latitude, 'longitude': position.coords.longitude, 'distance': $("#distance_value").val() },
@@ -162,7 +135,6 @@ function send_order_to_serv(order, shop_id, price, address) {
         async: false,
         success: function (data) {
             alert("Your order has been succesfully registered.");
-            return true;
         },
 
         beforeSend: function () {
@@ -179,6 +151,8 @@ function send_order_to_serv(order, shop_id, price, address) {
         },
         timeout: 13000
     });
+    return true;
+
 };
 
 function get_qr_code_info(order_id) {
@@ -186,7 +160,7 @@ function get_qr_code_info(order_id) {
 
     ajax_call = $.ajax({
         //########### TMP FIELD ##########
-        url: server_ip + cus_ip + "get_customer_token.php",
+        url: server_ip + cus_ip + "get_infos_abt_transaction_with_token.php",
         //################################
         data: { 'transaction_id': order_id, 'customer_id': customer_id },
         type: 'POST',
@@ -210,14 +184,17 @@ function get_qr_code_info(order_id) {
         },
         timeout: 13000
     });
+
+    console.log(json);
     if (json.success) {
         var order = {
-            qr_token: json.tokens[0],
-            shop_name: json.shop_name[0],
-            shop_id: json.shop_id[0],
-            deliverer_name: json.deliverer_name[0],
-            deliverer_id: json.deliverer_id[0],
-            order_id: json.transaction_id[0]
+            qr_token: json.results[0].customer_token,
+            shop_name: json.results[0].shop_name,
+            shop_id: json.results[0].shop_id,
+            deliverer_firstname: json.results[0].firstname,
+            deliverer_lastname: json.results[0].lastname,
+            deliverer_id: json.results[0].deliverer_id,
+            order_id: order_id
         };
         return order;
     }
@@ -271,6 +248,27 @@ function get_order_ready(order_id) {
     }
 }
 
+function generate_necessary_link_for_order(order_id, item) {
+    console.log(item.status);
+    switch (parseInt(item.status)) {
+        case 3:
+            generate_link_to_order_ready(order_id, item);
+            break;
+        case 4:
+            generate_link_to_deliverer_pos(order_id, item);
+            break;
+        case 5:
+            generate_link_to_deliverer_pos(order_id, item);
+            generate_link_to_qrcode(order_id, item);
+            break;
+        case 6:
+            // link to recap of delivery
+            generate_link_to_recap_order(order_id);
+            break;
+    }
+}
+
+
 /* request that retrieve a list of orders of the customer */
 function retrieve_orders_from_server() {
     //********************************
@@ -280,7 +278,7 @@ function retrieve_orders_from_server() {
         //########### TMP FIELD ##########
         url: server_ip + cus_ip + "get_transactions.php",
         //################################
-        data: {'user_id': customer_id },
+        data: { 'user_id': customer_id },
         type: 'POST',
         dataType: 'json',
         async: false,
@@ -306,21 +304,28 @@ function retrieve_orders_from_server() {
     var req = json.results;
 
     clear_list("#orders_list");
-    $.each(req, function (idx, item) {
-        var order = item;
-        console.log(order);
-        if ($('#orders_list li[data-orderid="' + + '"]').length <= 0) {
-            var str = translate_status_toString(order.id, order.status);
-            var date = get_date_from_sql(order.timer); 
-            $("#orders_list")
-                .append($('<li>').attr('data-orderid', order.id)
-                    .append($('<h3>').html("Order #" + order.id))
-                    .append($('<h4>').html(order.shop_name))
-                    .append($('<p>').html(date))
-                    .append($('<p>').html(order.order_price + " €"))
-                    .append($('<p>').html(str)));
+    console.log(json.isTransactions);
+    if (json.isTransactions === true) { 
+        $("#sorry_no_orders").html("");
+        $.each(req, function (idx, item) {
+            var order = item;
+            if ($('#orders_list li[data-orderid="' + + '"]').length <= 0) {
+                var str = translate_status_toString(order.id, order.status, item);
+                var date = get_date_from_sql(order.timer);
+                $("#orders_list")
+                    .append($('<li>').attr('data-orderid', order.id)
+                        .append($('<h3>').html("Order #" + order.id))
+                        .append($('<h4>').html(order.shop_name))
+                        .append($('<p>').html(date))
+                        .append($('<p>').html(order.order_price + " €"))
+                        .append($('<p>').html(str)));
+                generate_necessary_link_for_order(order.id, item);
             }
-    });
+        });
+    }
+    else {
+        $("#sorry_no_orders").html("sorry, we don't have any order to display here because we didn't find any for you.");
+    }
 }
 
 function get_list_almost_ready(order_id) {
@@ -354,6 +359,70 @@ function get_list_almost_ready(order_id) {
     return json; // TODO treat the recieved query
 }
 
+function cancel_order(order_id) {
+    ajax_call = $.ajax({
+        //########### TMP FIELD ##########
+        url: server_ip + cus_ip + "cancel_order.php",
+        //################################
+        data: { 'transaction_id': order_id, 'client_id': customer_id },
+        type: 'POST',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            json = data;
+        },
+
+        beforeSend: function () {
+            if (ajax_call !== null) {
+                ajax_call.abort();
+            }
+        },
+
+        error: function (jqXHR, exception) {
+            if (jqXHR.aborted)
+                return;
+            alert(exception);
+
+        },
+        timeout: 13000
+    });
+
+    return json;
+}
+
+function pay_order(order_id) {
+    ajax_call = $.ajax({
+        //########### TMP FIELD ##########
+        url: server_ip + cus_ip + "pay_order.php",
+        //################################
+        data: { 'transaction_id': order_id, 'client_id': customer_id },
+        type: 'POST',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            json = data;
+        },
+
+        beforeSend: function () {
+            if (ajax_call !== null) {
+                ajax_call.abort();
+            }
+        },
+
+        error: function (jqXHR, exception) {
+            if (jqXHR.aborted)
+                return;
+            alert(exception);
+
+        },
+        timeout: 13000
+    });
+    console.log(json.message);
+    return json.success;
+}
+/*         !AJAX QUERY      */
+
+
 function generate_shops_nearby(position) {
     var shops = get_shops_nearby(position);
     $("#main_shop_list").empty();
@@ -382,7 +451,7 @@ function generate_shops_nearby(position) {
     }
 }
 
-function translate_status_toString(order_id, status) {
+function translate_status_toString(order_id, status, item) {
     switch (parseInt(status)) {
         case 1:
             return "Waiting for vendor confirmation";
@@ -390,64 +459,46 @@ function translate_status_toString(order_id, status) {
             return "waiting for a deliverer";
         case 3:
             // link to order ready/almost ready
-            generate_link_to_order_ready(order_id);
-
             return "order ready";
         case 4:
-            generate_link_to_deliverer_pos(order_id);
             return "deliverer going to the shop";
         case 5:
-            generate_qr_code(order_id);
-            generate_link_to_deliverer_pos(order_id);
-            generate_link_to_qrcode(order_id);
+          
             return "in delivery";
         case 6:
             // link to recap of delivery
-            generate_link_to_recap_order(order_id);
             return "delivered";
     }
 }
 
-function generate_link_to_qrcode(order_id) {
+function generate_link_to_qrcode(order_id, item) {
     $('#orders_list li[data-orderid="' + order_id + '"]')
-        .append($("<a>").attr('href', '#qr_code_page').attr('class', 'ui-btn').attr("data-orderid", order_id)
+        .append($("<a>").attr('id', 'btn_qr_code_' + order_id + "").attr('href', '#').attr('class', 'ui-btn').attr("data-orderid", order_id)
             .append("In delivery!"));
+    $("#btn_qr_code_" + order_id + "").off().click(function () {
+        $.mobile.pageContainer.pagecontainer('change', '#qr_code_page', { content: { "order_id": order_id, "info": item }, transition: 'slide' });
+    });
     console.log("done");
 }
 
-function generate_link_to_order_ready(order_id) {
+function generate_link_to_order_ready(order_id, item) {
+    
     if ($('#orders_list li[data-orderid="' + order_id + '"]').length > 0) {
         $('#orders_list li[data-orderid="' + order_id + '"]')
-            .append($("<a>").attr('href', '#order_ready').attr('class', 'ui-btn').attr('data-orderid', order_id)
+            .append($("<a>").attr('id', 'btn_to_order_ready' + order_id).attr('href', '#').attr('class', 'ui-btn').attr('data-orderid', order_id)
                 .append("Order ready!"));
-        $("#btn_order_ready_pay").off().click(function () {
-            //
-            //
-            // Generate link to payement gataway HERE!
-            // 
-            //
-
-            ////////////////////////////////////////////
-            //  Test                                  //  
-            ////////////////////////////////////////////
-
-            $.mobile.pageContainer.pagecontainer('change', '#qr_code_page', { content: order_id, transition: 'slide' });
-
-            ////////////////////////////////////////////
-
+        $("#btn_to_order_ready" + order_id + "").off().click(function(){
+            $.mobile.pageContainer.pagecontainer('change', '#order_ready', { content: { "order_id" : order_id, "info" : item }, transition: 'slide' });
         });
-
-        ////////////////////////////////////////////
-        //  Test                                  //  
-        ////////////////////////////////////////////
-
-        /* var order = {
-             id: 123,
-             amount: 54.50
-         };*/
-        ////////////////////////////////////////////
-
-        //$("#order_ready_amount").text(order.amount);
+        $("#btn_order_ready_pay").off().click(function () {
+            res = pay_order(order_id);
+            if (res === true){
+                $.mobile.pageContainer.pagecontainer('change', '#qr_code_page', { content: order_id, transition: 'slide' });
+            }
+            else {
+                alert("An error has occured with your payement, please try again or contact the support team.");
+            }
+        });
     }
 }
 
@@ -461,17 +512,19 @@ function generate_qr_code_page(content) {
     order id
 
     */
-    var order = get_qr_code_info(content);
+    console.log(content);
+    var order = get_qr_code_info(content.order_id);
 
     var qr_token = order.qr_token;
+    console.log(order);
     $('#qr_shop_name').attr('data-shopid', order.shop_id).html(order.shop_name);
-    $('#qr_deliverer_name').attr('data-delivererid', order.deliverer_id).html(order.deliverer_name);
+    $('#qr_deliverer_name').attr('data-delivererid', order.deliverer_id).html(order.deliverer_firstname + " " + order.deliverer_lastname);
     $('#qr_order_id').attr('data-orderid', order.order_id).html('Order #: ' + order.order_id);
-    load_qr_code(qr_token);
+    load_qr_code(order.order_id, qr_token);
 }
 
-function load_qr_code(qr_token) {
-    var img = 'https://api.qrserver.com/v1/create-qr-code/?data=' + qr_token + '&amp;size=360x360';
+function load_qr_code(order_id, qr_token) {
+    var img = 'https://api.qrserver.com/v1/create-qr-code/?data=' + qr_token + '&amp;size=180x180';
     if (img === 'Error') {
         $('#qr_code').attr('data-qrtoken', qr_token).html('<p>An error occured while loading qr_code</p> <button id="reload_qr">reload QR code</button>');
         $('#reload_qr').click
@@ -480,7 +533,7 @@ function load_qr_code(qr_token) {
         });
     }
     else {
-        $('#qr_code').attr('orderid', order_id).html('<img src="' + img + '">');
+        $('#qr_code').attr('orderid', order_id).html('<img class="qr_code_img" src="' + img + '">');
     }
 }
 
@@ -519,6 +572,23 @@ function generate_list_almost_ready(order_id) {
             .append($('<p>').append("shop's quantity: " + req_item.vendor_quantity));
     });
 }
+
+/* Ordre ready function to generate the useful infos */
+function generate_order_ready_infos(content) {
+    console.log(content);
+    var order_price = content.info.order_price;
+    var deliverer_price = content.info.deliverer_price;
+    if (deliverer_price === null) {
+        alert("An error has occured with the deliverer price, please contact support for more informations.");
+        $.mobile.pageContainer.pagecontainer('change', '#orders', { content: null, transition: 'slide' });
+    }
+    var total_price = parseFloat(order_price) + parseFloat(deliverer_price);
+    $("#order_ready_amount").html("");
+    $("#order_ready_amount").append($('<p>').html("Order price: " + order_price + "€"))
+        .append($('<p>').html("Deliverer price: " + deliverer_price + "€"))
+        .append($('<p>').html("Total Price: " + total_price + "€"));
+}
+
 
 /* Take a distance in metters and returns the distance wether in Km or m */
 function get_distance(d) {
@@ -642,7 +712,6 @@ function get_recap_adress() {
     var adress = "" + $("#recap_address").val() + " " +
         $("#recap_zipcode").val() + " " +
         $("#recap_city").val();
-    console.log(adress);
     return adress;
 }
 
@@ -689,9 +758,9 @@ function define_btn_recap_confirm(shop_id, price) {
             alert("please entre the adress you want to be delivered to.");
             return null;
         }
-        console.log(adress);
         var success = send_order_to_serv(order, shop_id, price, adress);
-        if (success) $.mobile.pageContainer.pagecontainer('change', '#notification_anouncement', { content: null, transition: 'slide' });
+
+        if (success === true) $.mobile.pageContainer.pagecontainer('change', '#notification_anouncement', { content: null, transition: 'slide' });
     });
 };
 
@@ -740,11 +809,22 @@ function define_register_livero_link() {
         $.mobile.pageContainer.pagecontainer('change', "#login", { content: order_id, transition: 'slide' });
     });
 }
+
+function define_cancel_order_ready(order_id) {
+    $("#btn_order_ready_cancel").off().click(function () {
+        if (confirm("Are you sure that you want to cancel this order?"))
+        {
+            cancel_order(order_id);
+            $.mobile.pageContainer.pagecontainer('change', "#orders", { content: null, transition: 'slide' });
+        }
+    });
+}
+
 /* Page before change events */
 $(document).on('pagecontainerbeforechange', function (event, ui) {
     var content = ui.options.content;
     if (ui.toPage[0].id === 'main') {
-        if (panel_init === 0)
+        if (panel_init === false)
             init_panel();
         clear_list('#main_shop_list');
         navigator.geolocation.getCurrentPosition(generate_shops_nearby, onError);
@@ -759,11 +839,16 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
             fill_recap_list(content);
         }
     }
+    if (ui.toPage[0].id === 'order_ready') {
+        generate_order_ready_infos(content);
+        define_cancel_order_ready(content.order_id);
+        
+    }
     /*if (ui.toPage[0].id === 'notification_anouncement') {
 
     }*/
     if (ui.toPage[0].id === 'qr_code_page') {
-        generate_qr_code_page(content, qr_token);
+        generate_qr_code_page(content);
         define_btn_return_qr_code(content);
         define_btn_deliverer_pos(content);
     }
@@ -779,15 +864,13 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
     }
 });
 
-var panel_init = 0;
-
 function init_panel() {
     /* add the data roles 'header' and 'footer' for the fixed toolbar / title */
     $("[data-role='header'], [data-role='footer']").toolbar({ theme: "a" });
     /* add the data-role 'panel' for the app panel */
     $("body>[data-role='panel']").panel();
     define_my_orders_click();
-    panel_init = 1;
+    panel_init = true;
 }
 
 $(function () {
@@ -824,27 +907,6 @@ function onError(position) { };
 **
 **
 */
-
-function login_facebook() {
-
-
-    CordovaFacebook.login({
-        permissions: ['email'],
-        onSuccess: function (result) {
-            if (result.declined.length > 0) {
-                alert("The User declined something!");
-            }
-            /* ... */
-        },
-        onFailure: function (result) {
-            if (result.cancelled) {
-                alert("The user doesn't like my app");
-            } else if (result.error) {
-                alert("There was an error:" + result.errorLocalized);
-            }
-        }
-    });
-};
 
 function login_normal() {
     var req = null;
