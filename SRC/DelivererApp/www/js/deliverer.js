@@ -3,20 +3,23 @@
 function get_shops_nearby(position, distance) {
     console.log(position);
     var json = null;
-    var ajax_call = $.ajax({
+    $.ajax({
         url: "http://"+ server_ip + "SRC/Backend/Deliverer/get_gps_nearest.php",
         data: { 'latitude': position.coords.latitude, 'longitude': position.coords.longitude, 'distance': distance},
         type: 'POST',
         dataType: 'json',
         async: false,
-        success: function (data) {
-            json = data;
-            /*$("#main_shop_list").html("");
-            for (var i in data.name) {
-                $("#main_shop_list").append(" <li><a href=\"#\">  <img src=\"" + data.logos[i] + "\">  <h2>" + data.name[i] + "</h2>   <p>" + data.latitude[i] + "__" + data.longitude[i] + "</p></a></li>");
+        success: function (json) {
+            var shops = [];
+            for (var name in json.name) {
+                shops.push({
+                        shop_id: json.id[name],
+                        name: json.name[name],
+                        logo: json.logos[name],
+                    }
+                );
             }
-            $("#vendorlist").listview("refresh");
-            //  initializeMap(); */
+            console.log(shops);
         },
         error: function (jqXHR, exception) {
             json = { success: false, message: "Request get shops nearby: KO" };
@@ -28,17 +31,7 @@ function get_shops_nearby(position, distance) {
         },
         timeout: 13000
     });
-    var shops = [];
-    for (var name in json.name) {
-        shops.push({
-                shop_id: json.id[name],
-                name: json.name[name],
-                logo: json.logos[name],
-            }
-        );
-    }
-    console.log(shops);
-    return shops;
+
 }
 
 function get_deliverer_history(url, user_id) {

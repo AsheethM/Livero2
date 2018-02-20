@@ -174,6 +174,7 @@ function generate_shops_nearby(position) {
     var distance = $("#distance_value").val();
     var shops = get_shops_nearby(position, distance);
     $("#shops_list").empty();
+    $('#shops_message').empty();
     vendor_item_number = 0;
     /* then complete the list from the main_shop_list page */
     if (shops.length > 0) {
@@ -196,7 +197,7 @@ function generate_shops_nearby(position) {
                     },
                     transition: 'slide'
                 });*/
-                var content = {id:shop_id};
+                var content = {id:shops[i].shop_id.toString()};
                 $.mobile.pageContainer.pagecontainer('change','#shop_orders', {content : content , transition : 'slideup'});
             });
         });

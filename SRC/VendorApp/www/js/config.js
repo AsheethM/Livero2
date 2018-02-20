@@ -1,6 +1,7 @@
 function onLoad() {
-    document.addEventListener("deviceready", onDeviceReady, false);
-    //onDeviceReady();
+    localStorage.clear(); // A enlever
+    //document.addEventListener("deviceready", onDeviceReady, false);
+    onDeviceReady();
 
 }
 
@@ -21,7 +22,6 @@ function onDeviceReady() {
         localStorage.setItem("phone_token", "error");
     });*/
 
-    //localStorage.clear();
     if (localStorage.getItem('user_id') === null){
         $.mobile.pageContainer.pagecontainer('change','#login', {transition : 'slideup'});
     }
@@ -32,7 +32,8 @@ function onDeviceReady() {
 
 
 
-    localStorage.setItem('server_ip', 'localhost/PRI');
+    //localStorage.setItem('server_ip', 'localhost/PRI');
     //localStorage.setItem('server_ip', '192.168.1.32/PRI');
+
 }
 

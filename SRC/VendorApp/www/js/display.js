@@ -1,5 +1,6 @@
 server_ip = localStorage.getItem('server_ip');
 user_id = localStorage.getItem('user_id');
+
 function onBackKeyDown() {
     go_back();
 }

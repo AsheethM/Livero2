@@ -72,7 +72,7 @@ function get_shop_qrcode(url, transaction_id, shop_id)
     if (json.success)
     {
         var token = json.results[0].shop_token;
-        res +=  '<img src="https://api.qrserver.com/v1/create-qr-code/?data='+token+'&amp;size=100x100" alt="" title="" />';
+        res +=  '<img class="qr_code_img" src="https://api.qrserver.com/v1/create-qr-code/?data='+token+'&amp;size=100x100" alt="" title="" />';
     }
     else
         res += 'Error';
