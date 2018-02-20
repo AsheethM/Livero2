@@ -1,6 +1,7 @@
 <?php
 /* File that shows to the deliverer the different transaction in a shop */
 header('Content-Type: application/json');
+require_once('../Shared/connexion.php');
 $response = array();
 $success = false;
 $message = "";
@@ -8,8 +9,6 @@ $message = "";
 if (isset($_POST['deliverer_id']) && !empty($_POST['deliverer_id']))
 {
     $deliverer_id = $_POST['deliverer_id'];
-
-    require_once('../Shared/connexion.php');
 
      $req_str = 'SELECT * FROM transaction WHERE deliverer_id = ? AND status >= 4 AND status < 6';
      $request = $pdo->prepare($req_str);

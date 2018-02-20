@@ -1,5 +1,6 @@
 <?php
-//header('Content-Type: application/json');
+header('Content-Type: application/json');
+require_once('../Shared/connexion.php');
 $response = array();
 $success = false;
 $message = "";
@@ -9,8 +10,6 @@ if (isset($_POST['transaction_id']) && !empty($_POST['transaction_id'])
 {
     $deliverer_id = $_POST['deliverer_id'];
     $transaction_id = $_POST['transaction_id'];
-
-    require_once('../Shared/connexion.php');
 
     $req_str = 'SELECT * FROM transaction WHERE deliverer_id = ? AND id = ?';
     $request = $pdo->prepare($req_str);

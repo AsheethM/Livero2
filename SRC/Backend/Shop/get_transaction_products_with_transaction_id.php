@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $success = false;
     $message = "";
@@ -9,7 +10,6 @@
     {
         $shop_id = $_POST["shop_id"];
         $transaction_id = $_POST["transaction_id"];
-        require_once ('../Shared/connexion.php');
         $req_str = 'SELECT * FROM transaction_product tp JOIN product p ON tp.product_id = p.id'.
             ' WHERE tp.transaction_id =  ?';
         $request = $pdo->prepare($req_str);

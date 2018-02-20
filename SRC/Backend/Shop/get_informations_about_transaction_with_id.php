@@ -1,6 +1,7 @@
 <?php
 /* This file allows for a shop to get information about a transaction */
     header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $success = false;
     $message = "";
@@ -10,7 +11,6 @@
     {
         $transaction_id = $_POST['transaction_id'];
         $shop_id = $_POST['shop_id'];
-        require_once('../Shared/connexion.php');
 
         $req_str = 'SELECT * FROM transaction WHERE id = ? AND shop_id = ?';
         $request = $pdo->prepare($req_str);

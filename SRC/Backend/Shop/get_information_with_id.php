@@ -9,7 +9,7 @@ if (isset($_POST["user_id"]) && !empty($_POST["user_id"]))
 {
     $user_id = $_POST["user_id"];
 
-    $req_str = "SELECT * FROM user u JOIN deliverer d ON u.id = d.id WHERE u.id =  ?";
+    $req_str = "SELECT * FROM user u WHERE u.id =  ?";
     $request = $pdo->prepare($req_str);
     $request->bindParam(1, $user_id, PDO::PARAM_INT);
     $request->execute();

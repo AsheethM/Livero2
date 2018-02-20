@@ -1,5 +1,7 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+
 try
 {
     //$pdo = new PDO('mysql:host=localhost;dbname=PRI;', 'root', 'Regis93130');

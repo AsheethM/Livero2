@@ -1,9 +1,8 @@
 <?php
 
     header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
-
-    require_once ("../Shared/connexion.php");
 
     if (isset($_POST['login']) && isset($_POST['password']))
     {

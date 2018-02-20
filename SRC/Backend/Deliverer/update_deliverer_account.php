@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/json');
+require_once('../Shared/connexion.php');
 $response = array();
 $success = false;
 $message = "";
@@ -13,8 +14,7 @@ if (isset($_POST["user_id"]) && !empty($_POST["user_id"])
     $licence = ($_POST["licence"] === '2') ? 0 : 1;
     $phone = $_POST["phone"];
     $vehicule = $_POST["vehicule"];
-
-    require_once("../Shared/connexion.php");
+    
     $req_str = "UPDATE user SET phone = ? WHERE id = ?";
     $request = $pdo->prepare($req_str);
     $request->bindParam(1, $phone);

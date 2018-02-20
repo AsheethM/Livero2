@@ -18,26 +18,22 @@ if ($conn->connect_error) {
 } 
 
 
-  
-$sql  = "SELECT email,name,logo, latitude, longitude, SQRT(
+
+$sql  = "SELECT id, shop_name,logo, latitude, longitude, SQRT(
 POW(69.1 * (latitude - ".$_POST["latitude"]."), 2) +
 POW(69.1 * (".$_POST["longitude"]." - longitude) * COS(latitude / 57.3), 2)) AS distance
-FROM vendor HAVING distance < ".$_POST["distance"]." ORDER BY distance";
-  
- 
+FROM shop HAVING distance < ".$_POST["distance"]." ORDER BY distance";
+
     $result =  mysqli_query($conn, $sql);
- 
- 
- 
- 
- while ($row = mysqli_fetch_array($result))
+
+
+while ($row = mysqli_fetch_array($result))
 {
       $lat[]= $row['latitude'];         
       $long[] = $row['longitude'];
-      $name[] = $row['name'];
+      $name[] = $row['shop_name'];
       $logos[]= $row['logo'];
-      $id[]= $row['email'];
-
+      $id[] = $row['id'];
  } 
   $conn->close();
 

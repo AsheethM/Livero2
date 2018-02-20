@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/json');
+require_once('../Shared/connexion.php');
 $response = array();
 $success = false;
 $message = "";
@@ -9,7 +10,6 @@ if (isset($_POST["user_id"]) && !empty($_POST["user_id"]))
 {
     $user_id = $_POST["user_id"];
 
-    require_once("../Shared/connexion.php");
     $req_str = "SELECT * FROM transaction t WHERE t.deliverer_id = ? AND status = 6 ORDER BY t.id DESC LIMIT 5";
     $request = $pdo->prepare($req_str);
     $request->bindParam(1, $user_id, PDO::PARAM_INT);

@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $success = false;
     $message = "";
@@ -14,7 +15,7 @@
 
         $req_str = 'SELECT customer_token FROM TRANSACTION WHERE id = ? AND deliverer_id = ?';
 
-        require_once('../Shared/connexion.php');
+
         $request = $pdo->prepare($req_str);
         $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
         $request->bindParam(2, $deliverer_id, PDO::PARAM_INT);
@@ -24,12 +25,22 @@
             $dbb_token = $request->fetchAll()[0]['customer_token'];
             if ($dbb_token == $token)
             {
-                $success = true;
-                $message = "Request Check customer Token : OK";
+                $req_str = 'UPDATE TRANSACTION SET status = 6 WHERE id = ? AND deliverer_id = ?';
+                $request = $pdo->prepare($req_str);
+                $request->bindParam(1, $transaction_id, PDO::PARAM_INT);
+                $request->bindParam(2, $deliverer_id, PDO::PARAM_INT);
+
+                if ($request->execute())
+                {
+                    $success = true;
+                    $message = "Request Check Client Token : OK";
+                }
+                else
+                    $message = "Request Check Client Token : K0";
             }
             else
             {
-                $message = "Request Check customer Token : KO";
+                $message = "Pas le même token";
             }
         }
         else

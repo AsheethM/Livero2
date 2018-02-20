@@ -1,5 +1,6 @@
 <?php
     header ('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $success = false;
     $message = "";
@@ -14,7 +15,6 @@
         $product_id = $_POST['product_id'];
         $shop_quantity = $_POST['shop_quantity'];
 
-        require_once ('../Shared/connexion.php');
 
         $verif_str = 'SELECT * FROM transaction WHERE id = ? AND shop_id = ?';
         $request = $pdo->prepare($verif_str);

@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $message = "";
     $success = false;
@@ -15,8 +16,6 @@
         $product_name = $_POST['product_name'];
         $product_price = $_POST['product_price'];
         $product_description = $_POST['product_description'];
-
-        require_once("../Shared/connexion.php");
 
         $request = $pdo->prepare("UPDATE product SET product_name = ?, price = ?, description = ? WHERE id = ? AND shop_id = ?");
         $request->bindParam(1, $product_name, PDO::PARAM_STR);

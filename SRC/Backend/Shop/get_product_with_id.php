@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $message = "";
     $success =false;
@@ -9,8 +10,6 @@
     {
         $id_shop = $_POST['id_shop'];
         $product_id = $_POST['product_id'];
-
-        require_once("../Shared/connexion.php");
 
         $request = $pdo->prepare("SELECT p.id, p.product_name, p.description, p.price FROM product p WHERE p.id = ? AND p.shop_id = ?");
         $request->bindParam(1, $product_id, PDO::PARAM_INT);

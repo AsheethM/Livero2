@@ -1,27 +1,29 @@
 <?php
     header('Content-Type: application/json');
-    require_once('../Shared/connexion.php');
     $response = array();
-    $success = false;
-    $message = "";
+    $err = true;
 
     if (isset($_POST['user_id']) && !empty($_POST['user_id'])
         && isset($_POST['user_firstname']) && !empty($_POST['user_firstname'])
         && isset($_POST['user_lastname']) && !empty($_POST['user_lastname'])
         && isset($_POST['user_email']) && !empty($_POST['user_email'])
         && isset($_POST['user_phone']) && !empty($_POST['user_phone'])
-        && isset($_POST['user_birthdate']) && !empty($_POST['user_birthdate'])
+        //&& isset($_POST['user_birthdate']) && !empty($_POST['user_birthdate'])
         && isset($_POST['shop_id']) && !empty($_POST['shop_id'])
         && isset($_POST['shop_name']) && !empty($_POST['shop_name'])
-        && isset($_POST['shop_street']) && !empty($_POST['shop_street'])
+        && isset($_POST['shop_address']) && !empty($_POST['shop_address'])
         && isset($_POST['shop_postcode']) && !empty($_POST['shop_postcode'])
         && isset($_POST['shop_town']) && !empty($_POST['shop_town'])
         && isset($_POST['shop_phone']) && !empty($_POST['shop_phone']))
     {
         $user_id = $_POST['user_id'];
-        $shop_id = $user_id;
-        $shop_address = $_POST['shop_street'].' , '.$_POST['shop_postcode'].' , '.$_POST['shop_town'];
+        $shop_id = $_POST['shop_id'];
 
+
+        require_once("../../Shared/connexion.php");
+
+        $tmp = "firstname = ?, lastname = ?";
+        $tmp2 = ", email = ?, phone = ?, birthdate = ?";
 
         $request = $pdo->prepare("UPDATE user SET firstname = ?, lastname = ?, email = ?, phone = ?, birthdate = ? WHERE id = ?");
         $request->bindParam(1, $_POST["user_firstname"], PDO::PARAM_STR);
@@ -35,27 +37,30 @@
 
         if ($request->execute())
         {
-            $request = $pdo->prepare("UPDATE shop SET shop_name = ?, address = ?, phone = ? WHERE id = ?");
+            $request = $pdo->prepare("UPDATE shop SET shop_name = ?, address = ?, postcode = ?, town = ?, phone = ? WHERE id = ?");
             $request->bindParam(1, $_POST["shop_name"], PDO::PARAM_STR);
-            $request->bindParam(2, $shop_address, PDO::PARAM_STR);;
+            $request->bindParam(2, $_POST["shop_address"], PDO::PARAM_STR);
+            $request->bindParam(3, $_POST["shop_postcode"], PDO::PARAM_STR);
+            $request->bindParam(4, $_POST["shop_town"], PDO::PARAM_STR);
             $request->bindParam(5, $_POST["shop_phone"], PDO::PARAM_STR);
             $request->bindParam(6, $shop_id, PDO::PARAM_INT);
 
             if ($request->execute())
-            {
-                $success = true;
-                $message = 'Request Update User Information : OK';
-            }
-            else
-                $message = 'Update Shop did not work';
-        }else
-            $message = 'Update User did not work';
+                $err = false;
+        }
+    }
+
+    if ($err)
+    {
+        $response["success"] = false;
+        $response["message"] = "Request Update Account : KO";
     }
     else
-        $message = 'Parameters Error';
+    {
+        $response["success"] = true;
+        $response["message"] = "Request Update Account : OK";
+    }
 
-    $response["success"] = $success;
-    $response["message"] = $message;
     echo json_encode($response);
 
 ?>

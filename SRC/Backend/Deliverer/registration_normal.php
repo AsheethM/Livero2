@@ -1,10 +1,9 @@
 <?php
 header('Content-Type: application/json');
+require_once('../Shared/connexion.php');
 $response = array();
 $success = false;
 $message = "";
-
-require_once("../Shared/connexion.php");
 
 if (isset($_POST["email"]) && !empty($_POST["email"])
     && isset($_POST["password"]) && !empty($_POST["password"])

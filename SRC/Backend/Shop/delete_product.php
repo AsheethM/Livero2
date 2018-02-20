@@ -1,5 +1,6 @@
 <?php
     header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $success = false;
     $message = "";
@@ -9,8 +10,6 @@
     {
         $product_id = $_POST['product_id'];
         $shop_id = $_POST['id_shop'];
-
-        require_once("../Shared/connexion.php");
 
         $request = $pdo->prepare("DELETE FROM product WHERE id = ? AND shop_id = ?");
         $request->bindParam(1, $product_id, PDO::PARAM_INT);

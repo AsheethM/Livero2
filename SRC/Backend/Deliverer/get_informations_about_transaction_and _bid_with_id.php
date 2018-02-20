@@ -1,6 +1,7 @@
 <?php
     /* This file allows for a deliverer to get information about the current best bid on a transaction and get the transaction_time */
     header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $success = false;
     $message = "";
@@ -10,8 +11,6 @@
     {
         $deliverer_id = $_POST['deliverer_id'];
         $transaction_id = $_POST['transaction_id'];
-
-        require_once('../Shared/connexion.php');
 
         $verif_str = 'SELECT * FROM deliverer WHERE id = ?';
         $request = $pdo->prepare($verif_str);

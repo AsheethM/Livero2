@@ -1,6 +1,7 @@
 <?php
 
-    //header('Content-Type: application/json');
+    header('Content-Type: application/json');
+    require_once('../Shared/connexion.php');
     $response = array();
     $success = false;
     $message = "";
@@ -12,7 +13,6 @@
         $deliverer_id = $_POST['deliverer_id'];
         $transaction_id = $_POST['transaction_id'];
         $bid = $_POST['bid'];
-        require_once('../Shared/connexion.php');
 
         $verif_str = 'SELECT * FROM deliverer WHERE id = ?';
         $request = $pdo->prepare($verif_str);
