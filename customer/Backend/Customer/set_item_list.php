@@ -28,8 +28,8 @@ if ($conn->query($sql) === TRUE) {
 $sql="SELECT max(id) as id FROM `transaction` WHERE customer_id ='".$customer_id."' AND shop_id='".$vendor_id."' ";
 
     $result =  mysqli_query($conn, $sql);
-	$transaction_id = $result["id"];
-	$customer_token = $shop_id.rand().rand()."-_-".$transaction_id;
+	$transaction_id = mysqli_fetch_array($result)["id"];
+	$customer_token = $vendor_id.rand().rand()."-_-".$transaction_id;
             $shop_token = $customer_id.rand().rand()."-_-".$transaction_id;
             $request = $pdo->prepare('UPDATE transaction SET customer_token = ?, shop_token = ?'.
                 ' WHERE id = ?');
@@ -39,15 +39,15 @@ $sql="SELECT max(id) as id FROM `transaction` WHERE customer_id ='".$customer_id
 	if($request->execute())
 	{
 		$response["success"] &= true;
-		$response["message"] .= "\n\rUpdate query transaction for item ".$value["id"].": OK";
+		$response["message"] .= "\n\rUpdate query transaction for item ".$transaction_id.": OK";
 	} else {
-		$response["message"] .= "\n\rUpdate query transaction for item ".$value["id"].": KO";
+		$response["message"] .= "\n\rUpdate query transaction for item ".$transaction_id.": KO";
 		$response["success"] &= false;
 	}
 	
 foreach($product_id as $key => $value){
 	if (is_array($value) || is_object($value)){
-		$sql = "INSERT INTO `transaction_product`( `product_id`, `transaction_id`, `customer_quantity`,`shop_quantity`) VALUES ('".$value["id"]."','".$id."','".$value["qty"]."','".$value["qty"]."')";	
+		$sql = "INSERT INTO `transaction_product`( `product_id`, `transaction_id`, `customer_quantity`,`shop_quantity`) VALUES ('".$value["id"]."','".$transaction_id."','".$value["qty"]."','".$value["qty"]."')";
 	}
 	if ($conn->query($sql) === TRUE) {
 		$response["success"] &= true;

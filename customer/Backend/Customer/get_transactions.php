@@ -13,7 +13,7 @@ if (isset($_POST['user_id']) && !empty($_POST['user_id']))
 
     require_once('../Shared/connexion.php');
 
-    $req_str = 'SELECT transaction.id as id, shop_name, status, order_price, timer FROM transaction JOIN shop ON shop.id = transaction.shop_id WHERE customer_id = ?';
+    $req_str = 'SELECT transaction.id as id, shop_name, status, order_price, timer, deliverer_price FROM transaction JOIN shop ON shop.id = transaction.shop_id WHERE customer_id = ?';
     $request = $pdo->prepare($req_str);
     $request->bindParam(1, $user_id, PDO::PARAM_INT);
     if ($request->execute())
