@@ -15,12 +15,15 @@
         $isComplete = ($_POST["same"] === '2') ? 0 : 1;
         $total_price = $_POST['total_price'];
 
-        $req_str = 'UPDATE transaction SET status = 2, isComplete = ?, order_price = ? WHERE id = ? AND shop_id = ?';
+        $timer = date("Y-m-d H:i:s", strtotime(date("Y-m-d H:i:s")." +05 minutes"));
+
+        $req_str = 'UPDATE transaction SET status = 2, isComplete = ?, order_price = ?, timer = ? WHERE id = ? AND shop_id = ?';
         $request = $pdo->prepare($req_str);
         $request->bindParam(1, $isComplete, PDO::PARAM_INT);
         $request->bindParam(2, $total_price);
-        $request->bindParam(3, $transaction_id, PDO::PARAM_INT);
-        $request->bindParam(4, $shop_id, PDO::PARAM_INT);
+        $request->bindParam(3, $timer);
+        $request->bindParam(4, $transaction_id, PDO::PARAM_INT);
+        $request->bindParam(5, $shop_id, PDO::PARAM_INT);
 
         if ($request->execute())
         {
