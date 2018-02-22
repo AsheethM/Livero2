@@ -1,8 +1,8 @@
 ﻿
-var panel_init = true;
+var panel_init = false;
 var customer_id = localStorage.getItem('customer_id');
-var server_ip = 'http://192.168.43.128/';//'http://localhost/'; //'http://green.projectyogisha.com/';
-var cus_ip = 'PRI/SRC/Backend/Customer/';
+var server_ip = 'http://192.168.1.58/'; //'http://localhost/'; //'http://green.projectyogisha.com/';
+var cus_ip = 'pri/src/Backend/Customer/';
 var wto; // slidebar variable
 var vendor_item_number = 0;
 var ajax_call = null;
@@ -440,6 +440,7 @@ function generate_shops_nearby(position) {
         //.append($('<p>').append(get_distance(shops[i].distance)))));
         $('.shop_btn[data-shopid="' + shops[i].shop_id.toString() + '"]').click(function () {
             generate_items_from_shop(shops[i].shop_id, shops[i].name);
+            console.log("define_shop_list_click");
             define_shop_list_confirm_click();
             $.mobile.pageContainer.pagecontainer('change', '#shop_store', {
                 content: {
@@ -621,24 +622,24 @@ function generate_items_from_shop(shop_id, shop_name) {
         //each iteration creates an element of the shop list
         if ($('#shop_item_' + shop_list[i].item_id.toString()).length === 0) {
 
-            $("#shop_store_list").append($('<li>').attr('id', 'shop_item_' + shop_list[i].item_id.toString())
+            $("#shop_store_list").append($('<li>').attr('id', 'shop_item_' + shop_list[i].item_id.toString()).attr('class','ui-field-contain')
                 .append($('<img>').attr('id', 'img_' + shop_list[i].item_id).attr('src', ''))
                 .append($('<h3>').attr('id', 'name_' + shop_list[i].item_id).append(shop_list[i].item_name))
                 .append($('<p>').attr('id', 'desc_' + shop_list[i].item_id).append(shop_list[i].item_desc))
                 .append($('<p>').attr('id', 'price_' + shop_list[i].item_id).append(shop_list[i].item_price.toString() + '€'))
-                .append($('<div>').attr('data-role', 'controlgroup').attr('data-type', 'horizontal').attr('data-mini', 'true').attr('class', 'ui-controlgroup ui-controlgroup-horizontal ui-corner-all ui-mini')
-                    .append($('<p>').attr('id', 'qty_' + shop_list[i].item_id).append('0'))
-                    .append($('<button>').attr('class', 'ui-first-child ui-btn ui-btn-icon-notext ui-icon-minus ui-btn-corner-all').click(function () {
+                .append($('<div>').attr('data-role','controlgroup').attr('data-type','horizontal').attr('class','ui-controlgroup ui-controlgroup-horizontal ui-corner-all').attr('data-mini','true').append(
+                $('<button>').attr('class', 'ui-btn ui-btn-icon-notext ui-btn-inline ui-icon-minus ui-corner-all').click(function () {
                         var qty = parseInt($('#qty_' + shop_list[i].item_id).text());
                         if (qty > 0) qty--;
                         $('#qty_' + shop_list[i].item_id).text(qty);
-                    }))
-                    .append($('<button>').attr('class', 'ui-last-child ui-btn ui-btn-icon-notext ui-icon-plus ui-btn-corner-all').click(function () {
+                }))
+                    .append($('<button>').attr('class', 'ui-btn ui-btn-icon-notext ui-btn-inline ui-icon-plus ui-corner-all').click(function () {
                         var qty = parseInt($('#qty_' + shop_list[i].item_id).text());
                         if (qty < 99) qty++;
                         $('#qty_' + shop_list[i].item_id).text(qty);
-                    }))
-                )
+                })))
+                .append($('<span>').attr('class', 'ui-li-count').attr('id', 'qty_' + shop_list[i].item_id).html('0'))
+
             );
         }
     }
@@ -725,31 +726,34 @@ function define_shop_list_confirm_click() {
         var recap_list = [];
         $.each(list, function () {
             var item = $(this);
-            console.log(item.attr('id'));
             var id_split = item.attr('id').split('_');
             var id = id_split[id_split.length - 1];
-            var quantity = item.find('div').find('#qty_' + id).text();
-            if (parseInt(quantity) > 0 || $('#recap_item_' + id).length > 0) {
+            var quantity = item.find('#qty_' + id).text();
+            if (parseInt(quantity) > 0) {
                 var name = item.find('#name_' + id).text();
                 var description = item.find('#desc_' + id).text();
                 var price = item.find('#price_' + id).text();
                 recap_list.push({ item_id: id, item_name: name, item_qty: quantity, item_desc: description, item_price: price });
             }
         });
-        $.mobile.pageContainer.pagecontainer('change', '#recap_cart', { content: recap_list, transition: 'slide' });
+        $("#recap_total_price").html("0€");
+        $("#recap_shop_name").html($("#shop_store_name").html());
+        if (recap_list.length === 0) alert("You didn't select anything?! You can't make an empty order.");
+        else {
+            $("#recap_shop_list").empty();
+            $.mobile.pageContainer.pagecontainer('change', '#recap_cart', { content: recap_list, transition: 'slide' });
+        }
     });
     $('#btn_shop_list_cancel').off().click(function () {
         $.mobile.pageContainer.pagecontainer('change', '#main', { content: null, transition: 'slide' });
     });
 }
-
 function define_my_orders_click() {
     $('#my_orders').off().click(function () {
         retrieve_orders_from_server();
         $.mobile.pageContainer.pagecontainer('change', "#orders", { transition: 'slide' });
     });
 };
-
 /* click for the #btn_recap_confirm */
 function define_btn_recap_confirm(shop_id, price) {
     $("#btn_recap_confirm").off().click(function () {
@@ -764,19 +768,16 @@ function define_btn_recap_confirm(shop_id, price) {
         if (success === true) $.mobile.pageContainer.pagecontainer('change', '#notification_anouncement', { content: null, transition: 'slide' });
     });
 };
-
 function define_btn_recap_modifiy() {
     $("#btn_recap_modify").off().click(function () {
         $.mobile.pageContainer.pagecontainer('change', '#shop_store', { content: null, transition: 'slide' });
     });
 }
-
 function define_btn_return_qr_code(content) {
     $("#btn_return_qr_code").off().click(function () {
         $.mobile.pageContainer.pagecontainer('change', '#qr_code_page', { content: content, transition: 'slide' });
     });
 }
-
 function define_btn_deliverer_pos(content) {
     /***************** TODO ADD call to google map api *****************/
     $("#qr_code_deliverer").off().click(function () {
@@ -790,27 +791,22 @@ function define_register_submit() {
         console.log("register_form submit");
     });
 }
-
-
 function define_register_link() {
     $("#login_register").off().click(function () {
-        $.mobile.pageContainer.pagecontainer('change', '#api-register', { content: null, transition: 'slide' });
+        $.mobile.pageContainer.pagecontainer('change', '#api-register', { transition: 'slide' });
     });
 }
-
 function define_login_submit() {
     $("#login_form_btn").off().click(function () {
         event.preventDefault();
         login_normal();
     });
 }
-
 function define_register_livero_link() {
     $("#register_livero").off().click(function () {
-        $.mobile.pageContainer.pagecontainer('change', "#login", { content: order_id, transition: 'slide' });
+        $.mobile.pageContainer.pagecontainer('change', "#login", {transition: 'slide' });
     });
 }
-
 function define_cancel_order_ready(order_id) {
     $("#btn_order_ready_cancel").off().click(function () {
         if (confirm("Are you sure that you want to cancel this order?"))
@@ -820,7 +816,21 @@ function define_cancel_order_ready(order_id) {
         }
     });
 }
-
+function define_search_for_a_shop_click() {
+    $("#search_for_a_shop").off().click(function () {
+        $.mobile.pageContainer.pagecontainer('change', "#main", { content: null, transition: 'slide' });
+    });
+}
+function define_my_account_click() {
+    $("#my_account_btn").off().click(function () {
+        $.mobile.pageContainer.pagecontainer('change', "#my_account", { content: null, transition: 'slide' });
+    });
+}
+function define_logout_click() {
+    $("#logout").off().click(function () {
+        logout();
+    });
+}
 function main_function() {
     if (panel_init === false)
         init_panel();
@@ -848,10 +858,10 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
     else if (ui.toPage[0].id === 'main') {
         main_function();
     }
-    else if (ui.toPage[0].id === 'shop_store') {
+    /*else if (ui.toPage[0].id === 'shop_store') {
         if ($('#shop_store_list li').length <= 0)
             generate_items_from_shop(content.shop_id, content.shop_name);
-    }
+    }*/
     else if (ui.toPage[0].id === 'recap_cart') {
         if (content !== null && content.length > 0) {
             fill_recap_list(content);
@@ -882,7 +892,10 @@ function init_panel() {
     $("[data-role='header'], [data-role='footer']").toolbar({ theme: "a" });
     /* add the data-role 'panel' for the app panel */
     $("body>[data-role='panel']").panel();
+    define_search_for_a_shop_click();
+    define_my_account_click();
     define_my_orders_click();
+    define_logout_click();
     panel_init = true;
 }
 
@@ -893,12 +906,6 @@ $(function () {
             navigator.geolocation.getCurrentPosition(generate_shops_nearby, onError);
         }, 500);
     });
-});
-
-$(document).ready(function () {
-    if (customer_id === null) {
-        $.mobile.pageContainer.pagecontainer('change', "#login", { content: null, transition: 'slide' });
-    }
 });
 
 function set_return(btn_id, url) {
@@ -951,14 +958,15 @@ function login_normal() {
     });
     console.log(req);
     if (req.success) {
-        panel_init = false;
         localStorage.setItem("customer_id", req.customer_id);
-        console.log(req.message);
+        if (panel_init)
+            $("#top_toolbar").toolbar("option","disabled","false");
+        else init_panel();
         $.mobile.pageContainer.pagecontainer('change', '#main', { content: null, transition: 'slide' });
     }
     else {
         console.log(req.message);
-        $("#login_result").html("user/name or password it wrong");
+        $("#login_result").html("username or password it wrong");
     }
 };
 
@@ -1023,3 +1031,9 @@ function registration_normal() {
     }
 
 };
+
+function logout() {
+    localStorage.clear();
+    $("#top_toolbar").toolbar("option", "disabled", "true");
+    $.mobile.pageContainer.pagecontainer('change', '#login', { content: null, transition: 'slidedown' });
+}

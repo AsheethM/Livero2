@@ -12,10 +12,12 @@
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
        
-        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-        <link rel="stylesheet" href="css/index.css" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+        <script src="scripts/jquery-1.11.1.min.js"></script>
+        <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+        <link rel="stylesheet" href="css/index.css" />
         
         <title>Livero</title>
     </head>
@@ -32,31 +34,28 @@
     -->
             <!-- side menu -->
             <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a">
-                <div class="ui-panel-inner">
+                <div class="ui-panel-inner"> 
                     <ul data-role="listview" class="ui-listview">
                         <li>
-                            <a href="#main" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Search for a shop</a>
+                            <a id="search_for_a_shop" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Search for a shop</a>
                         </li>
                         <li>
                             <a id="my_orders" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My orders</a>
                         </li>
                         <li>
-                            <a href="#my_account" class="ui-btn ui-icon-carat-r ui-btn-icon-right" hidden>My account</a>
+                            <a id="my_account_btn" class="ui-btn ui-icon-carat-r ui-btn-icon-right" hidden>My account</a>
                         </li>
                         <li>
-                            <a href="#settings" class="ui-btn ui-icon-carat-r ui-btn-icon-right" hidden>Settings</a>
-                        </li>
-                        <li>
-                            <a href="#logout" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Log out</a>
+                            <a id="logout" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Log out</a>
                         </li>
                     </ul>
                 </div>
             </div>
 
             <!-- top toolbar -->
-            <div class="top_toolbar" data-role="header" data-position="fixed">
+            <div id="top_toolbar" data-role="header" data-position="fixed">
                 <div id="title_toolbar">
-                    <h1 id="liveroo_app_title" class="ui-title">Livero</h1>
+                    <h1 id="liveroo_app_title" class="ui-title"><img src="images/livero_logo_only.png" style="max-height:26px; width:26px"/>Livero</h1>
                 </div>
                 <div id="toolbar">
                     <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-inline ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
@@ -68,68 +67,65 @@
                 -->
                 </div>
             </div>
-        <!-- Register Page -->
-        <div id="api-register" data-type="page">
+        <!-- Login page -->
+        <div id="login" data-role="page">
             <div class="ui-content">
-                <div class="agile">
-                    <div class="signin-form profile">
-                        <p><a id="register_livero" href="#login">Livero</a></p>
-                        <div class="register_form_div">
-                            <form action="#" method="post" id="register_form">
-                                <legend>E-Mail*</legend>
+                <h1><img src="images/logo.png" style="display:block; margin: auto"/></h1>
+                <form action="" method="post" id="login_form">
+                    <input id="login_email" type="text" name="username" class="username" placeholder="Username">
+                    <input id="login_password" type="password" name="password" class="password" placeholder="Password">
+                    <button id="login_form_btn" type="submit">Lets's Shop</button>
+                </form>
+                <p id="login_result" style="margin:0px"></p>
+                <p><a id="login_register"> Don't have an account? Register here!</a></p>
+            </div>
+        </div>
+        <!-- Register Page -->
+        <div id="api-register" data-role="page" >
+            <div class="ui-content">
+                    <h2>Register</h2>
+                            <form>
+                                <label>E-Mail*</label>
                                 <input type="text" name="textinput-f" id="email_r" placeholder="E-mail" value="">
-                                <legend>First Name*</legend>
+                                <label>First Name*</label>
                                 <input type="text" name="textinput-f" id="first" placeholder="First Name" value="">
-                                <legend>Lastname Name*</legend>
+                                <label>Lastname Name*</label>
                                 <input type="text" name="textinput-f" id="last" placeholder="Last Name" value="">
-                                <legend>Date of Birth*</legend>
-                                <input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">-->
+                                <label>Date of Birth*</label>
+                                <input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">
                                 <!--<legend>Address*</legend>
                             <input type="text" name="textinput-f" id="address" placeholder="Address" value="">
                             -->
-                                <legend>Phone*</legend>
+                                <label>Phone*</label>
                                 <input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
-                                <legend>Password*</legend>
+                                <label>Password*</label>
                                 <input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
-                                <legend>Confirm Password*</legend>
+                                <label>Confirm Password*</label>
                                 <input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
                                 <span id="resgitration_result"></span>
                                 <button id="register_form_btn" name="textinput-f" value="submit">Register</button>
                             </form>
-                        </div>
+                <button id="register_livero">Return to login</button>
                         <p><a href="#"> By clicking register, I agree to your terms</a></p>
-                    </div>
-                </div>
-                <!-- <div class="clear"></div> -->
-                <div class="copyright">
+                   
+                <!-- <div class="clear"></div> 
+               --> <div class="copyright">
                     <p> &copy; 2017 Register Login Livero. All rights reserved | Design by Livero</p>
                 </div>
             </div>
         </div>
-            <!-- Login page -->
-            <div id="login" data-type="page">
-                <div class="ui-content">
-                    <h1>Welcome to livero</h1>
-                    <form action="" method="post" id="login_form">
-                        <input id="login_email" type="text" name="username" class="username" placeholder="Username">
-                        <input id="login_password" type="password" name="password" class="password" placeholder="Password">
-                        <button id="login_form_btn" type="submit">Lets's Shop</button>
-                    </form>
-                    <p id="login_result"></p>
-                    <p><a id="login_register" href="#api-register"> Don't have an account?</a></p>
-                </div>
-            </div>
+            
 
             
             <!-- main app division -->
             <div data-role="page" id="main">
                 <h1>Shops in your area</h1>
-                <div class="ui-content jqm-content jqm-fullwidth">
+                <div class="ui-content">
                     <div class="map_canvas">
                         <!-- Google Maps widget -->
                     </div>
                     <input type="range" name="slider-fill" id="distance_value" value="10" min="0" max="100" data-highlight="true" />
-                    <ul id="main_shop_list" data-role="listview"></ul>
+                    <ul id="main_shop_list" data-role="listview" data-inset="true"></ul>
                 </div>
             </div>
             <!--ITEMS FROM SIDE MENU-->
@@ -138,7 +134,7 @@
                 <div class="ui-content">
                     <h1>Your orders</h1>
                     <p id="sorry_no_orders"></p>
-                    <ul id="orders_list" data-role="listview"></ul>
+                    <ul id="orders_list" data-role="listview" data-inset="true"></ul>
                 </div>
             </div>
             <!-- when an order has been-->
@@ -152,7 +148,7 @@
                 <div class="ui-content">
                     <h2 id="shop_store_name"></h2>
                     <p id="shop_store_empty"></p>
-                    <ul id="shop_store_list" data-role="listview"></ul>
+                    <ul id="shop_store_list" data-role="listview" data-inset="true"></ul>
                     <button id="btn_shop_list_confirm">confirm</button>
                     <button id="btn_shop_list_cancel">return to shop list</button>
                 </div>
@@ -164,7 +160,7 @@
                 <div class="ui-content">
                     <h2 id="recap_shop_name"></h2>
                     <div class="recap_shop_scrollpane">
-                        <ul id="recap_shop_list" data-role="listview"></ul>
+                        <ul id="recap_shop_list" data-role="listview" data-inset="true"></ul>
                     </div>
                     <div id="recap_total_price_div">
                         <h4 id="recap_total_price">price: 0€</h4>
@@ -180,7 +176,6 @@
                -->
                 <label class="recap_adress_label">adress:</label>
                 <input type="text" name="textinput_addr" id="recap_address" placeholder="address" value="">
-                <p id="recap_adress_first_part"></p>
                 <label id="recap_adress_zipcode">Zipcode:</label>
                 <input type="text" name="textinput_zip" id="recap_zipcode" placeholder="zipcode" value="">
                 <label id="recap_adress_city">city:</label>
@@ -223,7 +218,7 @@
                     <h2 class="order_almost_ready_title">Your order is almost ready!</h2>
                     <p class="order_almost_ready_text">the vendor is missing these articles from your order</p>
                     <div id="order_almost_ready_scrollpane">
-                        <ul id="order_almost_ready_list" data-role="listview"></ul>
+                        <ul id="order_almost_ready_list" data-role="listview" data-inset="true"></ul>
                     </div>
                     <label class="order_almost_ready_new_total">New Total:</label>
                     <label class="order_almost_ready_new_amount"></label>
@@ -300,10 +295,6 @@
             </div>
         </div>
             <!-- scripts -->
-            <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script type="text/javascript" src="scripts/before_load.js"></script>
-
-            <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
             <!--<script src="scripts/cart.js"></script>-->
         <script src="scripts/config.js"></script>    
         <script src="scripts/index.js"></script>

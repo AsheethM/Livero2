@@ -31,6 +31,9 @@ p {
 
 }
 
+.inline-control{
+    display:inline-block;
+}
 .connect a.facebook {
     background: url(../img/facebook.png) center center no-repeat;
 }

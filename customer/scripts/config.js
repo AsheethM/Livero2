@@ -1,6 +1,6 @@
 function onLoad() {
     //document.addEventListener("deviceready", onDeviceReady, false);
-    localStorage.clear();
+  //  localStorage.clear();
     onDeviceReady();
 
 }
@@ -15,12 +15,13 @@ function onDeviceReady() {
     }, function(error) {
         localStorage.setItem("phone_token", "error");
     });*/
-    console.log("ici");
-    if (localStorage.getItem('user_id') === null){
-        $.mobile.pageContainer.pagecontainer('change','#login', {transition : 'slideup'});
+    if (localStorage.getItem('customer_id') === null){
+        console.log('user id === null');
+        $.mobile.pageContainer.pagecontainer('change', '#login');
     }
     else
     {
+        console.log('user id !== null');
         $.mobile.pageContainer.pagecontainer('change','#main', {transition : 'slideup'});
     }
 
