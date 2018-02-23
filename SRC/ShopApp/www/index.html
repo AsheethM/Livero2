@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta  name="viewport" content="width=device-width, initial-scale=1">
+    <title>Livero</title>
+    <link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+</head>
+<body onload="onLoad()">
+
+<!-- side menu -->
+<div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a" >
+    <div class="ui-panel-inner">
+        <ul data-role="listview" class="ui-listview" id="panel_listview">
+            <li class="ui-first-child">
+                <a href="#home" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Home</a>
+            </li>
+            <li>
+                <a href="#myShop" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My Shop</a>
+            </li>
+            <li>
+                <a href="#history" class="ui-btn ui-icon-carat-r ui-btn-icon-right">History</a>
+            </li>
+            <li>
+                <a href="#myOrders" class="ui-btn ui-icon-carat-r ui-btn-icon-right" >My Orders</a>
+            </li>
+            <li>
+                <a href="#my_account" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My account</a>
+            </li>
+            <li class="ui-last-child">
+                <a href="#settings" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Settings</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- top toolbar -->
+<div class="top_toolbar" id="livero_toolbar" data-role="header" data-theme="b" data-position="fixed" >
+    <div id="title_toolbar">
+        <h1 id="liveroo_app_title" class="ui-title"><img src="img/mini_logo2.png"></h1>
+    </div>
+    <div id="toolbar">
+        <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
+        <a class="ui-btn ui-shadow ui-mini ui-icon-power  ui-btn-right ui-corner-all  ui-btn-icon-notext" onclick="log_off()">Back</a>
+    </div>
+</div>
+
+<div data-role="page" id="login">
+    <div id="login-ui" class="ui-content">
+        <h1>Welcome to livero</h1>
+        <img src="img/logo.png">
+        <div>
+            <input type="text" name="username" id="email" class="username" placeholder="Username">
+            <input type="password" name="password" id="password" class="password" placeholder="Password">
+            <span id="login_result"></span>
+            <button id="login_btn" type="button">Lets's Shop</button>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="home">
+    <div id="home-ui" class="ui-content">
+        <h1>Home</h1>
+        <p>
+            This is Livero-Vendor
+        </p>
+        <p>
+            How does it work ?
+        </p>
+    </div>
+</div>
+
+<div data-role="page" id="myShop">
+    <div class="ui-content">
+        <h1>My Shop</h1>
+        <ul id="myShop_list" data-role="listview" data-inset="true">
+            <li><a class="ui-btn ui-icon-carat-r ui-btn-icon-right" href="#myShop_Information">Shop Information</a></li>
+            <li><a class="ui-btn ui-icon-carat-r ui-btn-icon-right" href="#myShop_Items">My Items</a></li>
+        </ul>
+    </div>
+</div>
+
+<div data-role="page" id="myShop_Information">
+    <div class="ui-content">
+        <h1>My Shop Information</h1>
+        <div id="div_shop_information">
+            <p>Shop Name : <span id="shop_name"></span></p>
+            <p>Address : <span id="shop_address"></span></p>
+            <p>Phone Number : <span id="shop_phone"></span>
+        </div>
+        <div>
+            <span>Shop Schedule:</span>
+            <ui id="ul_shop_schedule">
+            </ui>
+            <a class="ui-btn" href="#myShop_schedule"> Add a day</a>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="myShop_schedule">
+    <div class="ui-content">
+        <h1>My Shop Schedule</h1>
+        <form>
+            <div class="ui-field-contain">
+                <label for="myShop_schedule_select">Day : </label>
+                <select  id="myShop_schedule_select" data-mini="true">
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                    <option value="7">Sunday</option>
+                </select>
+            </div>
+            <div>Opening Hour : <input id="myShop_schedule_opening_time" type="time" data-mini="true" value="00:00"></div>
+            <div>Closing Hour : <input id="myShop_schedule_closing_time" type="time" data-mini="true" value="23:59"></div>
+            <a class="ui-btn" href="#" id="myShop_schedule_update">Add to the Shop Schedule</a>
+        </form>
+        <div id="myShop_schedule_error">
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="myShop_Items">
+    <div class="ui-content">
+        <h1>My Items</h1>
+        <ul id="myShop_ItemsList" data-role="listview" data-inset="true"></ul>
+        <div id="myShop_ItemsMessage"></div>
+        <a class="ui-btn" href="#myShop_ItemAdd">Add a Product</a>
+    </div>
+</div>
+
+<div data-role="page" id="myShop_ItemInformation">
+    <div class="ui-content">
+        <h1>Item</h1>
+        <div>
+            <p>Product Name : <input type="text" id="item_product_name"></input></p>
+            <p>Product Price : <input type="number" id="item_product_price"></input></p>
+            <p>Product Description : <input type="text" id="item_product_description"></input></p>
+            <p><button id="item_update_btn"> Update</button> <button id="item_delete_btn"> Delete</button></p>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="myShop_ItemAdd">
+    <div class="ui-content">
+        <h1>Item</h1>
+        <div>
+            <p>Product Name : <input type="text" id="item_add_product_name"></input></p>
+            <p>Product Price : <input type="number" id="item_add_product_price"></input></p>
+            <p>Product Description : <input type="text" id="item_add_product_description"></input></p>
+            <p><button id="item_add_btn"> Add </button></p>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="myOrders">
+    <div class="ui-content">
+        <h1>My Orders</h1>
+        <ul id="myOrders_list" data-role="listview" data-inset="true">
+            <li><a class="ui-btn ui-icon-carat-r ui-btn-icon-right" href="#myOrders_Newest">Newest Orders</a></li>
+            <li><a class="ui-btn ui-icon-carat-r ui-btn-icon-right" href="#myOrders_Validated">Validated Orders</a></li>
+        </ul>
+    </div>
+</div>
+
+<div data-role="page" id="myOrders_Newest">
+    <div class="ui-content">
+        <h1>Newest Orders</h1>
+        <ul id="NewestOrders_list" data-role="listview" data-inset="true"></ul>
+        <div id="myOrders_Newest_message"></div>
+    </div>
+</div>
+
+<div data-role="page" id="myOrders_Newest_Instance">
+    <div class="ui-content">
+        <h1>Order Information</h1>
+        <div> <!-- Customer DIV-->
+            <p>Customer Name : <span id="newest_order_customer_name"></span></p>
+        </div>
+        <ul id="newest_order_products_ul">
+        </ul>
+        <!--<div>
+            <p>Total Price :<span id="newest_order_total_price"></span></p>
+        </div>-->
+        <p id="myOrders_Newest_Instance_message"></p>
+        <button id="myOrders_Newest_Instance_validation_btn">Validate</button>
+    </div>
+</div>
+
+<div data-role="page" id="myOrders_Validated">
+    <div class="ui-content">
+        <h1>Validated Orders</h1>
+        <ul id="ValidatedOrders_list" data-role="listview" data-inset="true"></ul>
+        <div id="myOrders_Validated_message"></div>
+    </div>
+</div>
+
+<div data-role="page" id="myOrders_Validated_Instance">
+    <div class="ui-content">
+        <h1>Order Information</h1>
+        <div> <!-- Transaction DIV-->
+            <p>Customer Name : <span id="validated_order_customer_name"></span></p>
+            <p>Deliverer Name : <span id="validated_order_deliverer_name"></span></p>
+            <p> Status : <span id="validated_order_status"></span></p>
+        </div>
+        <ul id="validated_order_products_ul"></ul>
+        <p id="validated_shop_qrcode"></p>
+    </div>
+</div>
+
+<div data-role="page" id="history">
+    <div class="ui-content">
+        <h1>History</h1>
+        <ul id="History_Orders_list" data-role="listview" data-inset="true">
+        </ul>
+        <p id="History_message"></p>
+    </div>
+</div>
+
+<div data-role="page" id="history_Order_Instance">
+    <div class="ui-content">
+        <h1>Order Information</h1>
+        <div> <!-- Transaction DIV-->
+            <p>Customer Name : <span id="history_order_customer_name"></span></p>
+            <p>Deliverer Name : <span id="history_order_deliverer_name"></span></p>
+            <p> Status : <span id="history_order_status"></span></p>
+        </div>
+        <ul id="history_order_products_ul"></ul>
+    </div>
+</div>
+
+<div data-role="page" id="my_account">
+    <div class="ui-content">
+        <h1>My Account</h1>
+        <div id="div_account">
+            <p>Name : <span id="account_name"></span></p>
+            <p>Email : <span id="account_email"></span></p>
+            <p>Birthdate : <span id="account_birthdate"></span></p>
+            <p>Phone Number : <span id="account_phone"></span><!--<input type="tel" id="account_phone">--></p>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="settings">
+    <div class="ui-content">
+        <h1>Settings</h1>
+    </div>
+</div>
+
+<!-- scripts -->
+<script src="js/config.js"></script>
+<script src="js/vendor_display.js"></script>
+<script src="js/vendor.js"></script>
+<!--<script src="js/qrcode.js"></script>-->
+</body>
+</html>
