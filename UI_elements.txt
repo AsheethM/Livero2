@@ -3,14 +3,16 @@ app frontpage
 search field + googlemaps 
 side menu -
 	shops -
-		list of shops or GPS things
+		list of shops or GPS things -> shopping cart -> continue -> confirm screen -> "we will notiy you when the shop keeper accepts"
+		when notified -> ^confirmation screen -> payment gateway -> paid -> QR Code generation  !!!!+ map to see where the deliverer is !!!!!-> QR code view
 	recent orders
 	my account 
 	logout
 
 shopkeeper
 	app frontpage
-	list of people ordering -> clicks on an order -> confimation page
+	list of people ordering -> clicks on an order -> confimation page -> wait for the notification
+	when notified -> QR code generation -> QR code view 
 side menu
 	list items you sell -> add remove
 	my account
@@ -19,7 +21,9 @@ side menu
 deliverer
 	-- if a deliverer is logged in, he works --
 	option easy = list of orders -> click on an order -> bidding system exclusive - can stop bidding to go on another one
-	option 2 = google maps with shops apearing when someone order in this shop -> list of delivery to bid on -> bidding system
+	option 2 = google maps with shops apearing when someone order in this shop -> !!!!list of delivery to bid on !!!!!-> bidding system -> wait notification
+	when notified -> "click here to scan the QR code" vendor first -> google maps way to go -> "arrived?" -> "scan the client QR code! get credited"
 	my account 
 	logout
 	
+look and feel

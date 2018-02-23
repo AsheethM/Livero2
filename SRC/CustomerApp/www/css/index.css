@@ -1,0 +1,51 @@
+.ui-icon-cart:after {
+	background-image: url("../../images/shopping-cart.svg");
+}
+.lvr_shop_img {
+    width: auto;
+    height: auto;
+    max-width: 128px;
+    max-height: 128px;
+}
+.connect {
+    width: 305px;
+    margin: 35px auto 0 auto;
+    font-size: 18px;
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+
+    .connect a {
+        display: inline-block;
+        width: 32px;
+        height: 35px;
+        margin-top: 15px;
+        -o-transition: all .2s;
+        -moz-transition: all .2s;
+        -webkit-transition: all .2s;
+        -ms-transition: all .2s;
+    }
+
+p {
+    padding: 5%;
+
+}
+
+.inline-control{
+    display:inline-block;
+}
+.connect a.facebook {
+    background: url(../img/facebook.png) center center no-repeat;
+}
+
+.connect a.twitter {
+    background: url(../img/twitter.png) center center no-repeat;
+}
+
+.connect a:hover {
+    background-position: center bottom;
+}
+
+.top_toolbar{
+    backgroung: #00ff21;
+}

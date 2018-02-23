@@ -1,0 +1,302 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+    <!--
+        Personnalisez la stratégie de sécurité de contenu dans la balise meta ci-dessous selon vos besoins. Ajoutez 'unsafe-inline' à default-src pour activer JavaScript directement dans les lignes.
+        Pour obtenir des détails, consultez http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+       <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        -->
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+       
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+        <script src="scripts/jquery-1.11.1.min.js"></script>
+        <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+        <link rel="stylesheet" href="css/index.css" />
+        
+        <title>Livero</title>
+    </head>
+    <body onload="onLoad()">
+            <!--<h1>Apache Cordova</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connexion à l'appareil</p>
+                <p class="event received">L'appareil est prêt</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+        <script type="text/javascript" src="scripts/index.js"></ript>
+    -->
+            <!-- side menu -->
+            <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a">
+                <div class="ui-panel-inner"> 
+                    <ul data-role="listview" class="ui-listview">
+                        <li>
+                            <a id="search_for_a_shop" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Search for a shop</a>
+                        </li>
+                        <li>
+                            <a id="my_orders" class="ui-btn ui-icon-carat-r ui-btn-icon-right">My orders</a>
+                        </li>
+                        <li>
+                            <a id="my_account_btn" class="ui-btn ui-icon-carat-r ui-btn-icon-right" hidden>My account</a>
+                        </li>
+                        <li>
+                            <a id="logout" class="ui-btn ui-icon-carat-r ui-btn-icon-right">Log out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- top toolbar -->
+            <div id="top_toolbar" data-role="header" data-position="fixed">
+                <div id="title_toolbar">
+                    <h1 id="liveroo_app_title" class="ui-title"><img src="images/livero_logo_only.png" style="max-height:26px; width:26px"/>Livero</h1>
+                </div>
+                <div id="toolbar">
+                    <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-inline ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
+                    <!--<a id="return_icon" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-mini ui-icon-back ui-btn-icon-notext"></a>
+                    <div class="ui-field-contain">
+                        <input id="search_bar" type="search" name="search_bar" placeholder="search for a shop" />
+                    </div>
+                    <a href="#recap_cart" id="shopping_cart" class="ui-btn ui-btn-right ui-corner-all ui-mini ui-icon-cart ui-btn-icon-notext"></a>
+                -->
+                </div>
+            </div>
+        <!-- Login page -->
+        <div id="login" data-role="page">
+            <div class="ui-content">
+                <h1><img src="images/logo.png" style="display:block; margin: auto"/></h1>
+                <form action="" method="post" id="login_form">
+                    <input id="login_email" type="text" name="username" class="username" placeholder="Username">
+                    <input id="login_password" type="password" name="password" class="password" placeholder="Password">
+                    <button id="login_form_btn" type="submit">Lets's Shop</button>
+                </form>
+                <p id="login_result" style="margin:0px"></p>
+                <p><a id="login_register"> Don't have an account? Register here!</a></p>
+            </div>
+        </div>
+        <!-- Register Page -->
+        <div id="api-register" data-role="page" >
+            <div class="ui-content">
+                    <h2>Register</h2>
+                            <form>
+                                <label>E-Mail*</label>
+                                <input type="text" name="textinput-f" id="email_r" placeholder="E-mail" value="">
+                                <label>First Name*</label>
+                                <input type="text" name="textinput-f" id="first" placeholder="First Name" value="">
+                                <label>Lastname Name*</label>
+                                <input type="text" name="textinput-f" id="last" placeholder="Last Name" value="">
+                                <label>Date of Birth*</label>
+                                <input type="date" name="textinput-f" id="dob" placeholder="D.O.B" value="">
+                                <!--<legend>Address*</legend>
+                            <input type="text" name="textinput-f" id="address" placeholder="Address" value="">
+                            -->
+                                <label>Phone*</label>
+                                <input type="number" name="textinput-f" id="phone" placeholder="Phone" value="">
+                                <label>Password*</label>
+                                <input type="password" name="textinput-f" id="password_r" placeholder="password" value="">
+                                <label>Confirm Password*</label>
+                                <input type="password" name="textinput-f" id="confirm_password_r" placeholder="confirm password" value="">
+                                <span id="resgitration_result"></span>
+                                <button id="register_form_btn" name="textinput-f" value="submit">Register</button>
+                            </form>
+                <button id="register_livero">Return to login</button>
+                        <p><a href="#"> By clicking register, I agree to your terms</a></p>
+                   
+                <!-- <div class="clear"></div> 
+               --> <div class="copyright">
+                    <p> &copy; 2017 Register Login Livero. All rights reserved | Design by Livero</p>
+                </div>
+            </div>
+        </div>
+            
+
+            
+            <!-- main app division -->
+            <div data-role="page" id="main">
+                <h1>Shops in your area</h1>
+                <div class="ui-content">
+                    <div class="map_canvas">
+                        <!-- Google Maps widget -->
+                    </div>
+                    <input type="range" name="slider-fill" id="distance_value" value="10" min="0" max="100" data-highlight="true" />
+                    <ul id="main_shop_list" data-role="listview" data-filter="true" data-filter-placeholder="Search a shop..." data-inset="true"></ul>
+                </div>
+            </div>
+            <!--ITEMS FROM SIDE MENU-->
+            <!-- all the orders by chronological order -->
+            <div data-role="page" id="orders">
+                <div class="ui-content">
+                    <h1>Your orders</h1>
+                    <p id="sorry_no_orders"></p>
+                    <ul id="orders_list" data-role="listview" data-inset="true"></ul>
+                </div>
+            </div>
+            <!-- when an order has been-->
+            <div data-role="page" id="orders_recap_an_order">
+
+            </div>
+            <!--/ITEMS FROM SIDE MENU-->
+            <!-- shop list of items -->
+            <div id="shop_store" data-role="page">
+                <h1>Shop store</h1>
+                <div class="ui-content">
+                    <h2 id="shop_store_name"></h2>
+                    <p id="shop_store_empty"></p>
+                    <ul id="shop_store_list" data-role="listview" data-filter="true" data-filter-placeholder="Search a product..." data-inset="true"></ul>
+                    <button id="btn_shop_list_confirm">confirm</button>
+                    <button id="btn_shop_list_cancel">return to shop list</button>
+                </div>
+            </div>
+
+            <!-- recap cart -->
+            <div id="recap_cart" data-role="page">
+                <h1>Recap</h1>
+                <div class="ui-content">
+                    <h2 id="recap_shop_name"></h2>
+                    <div class="recap_shop_scrollpane">
+                        <ul id="recap_shop_list" data-role="listview" data-inset="true"></ul>
+                    </div>
+                    <div id="recap_total_price_div">
+                        <h4 id="recap_total_price">price: 0€</h4>
+                    </div>
+                    <!--<div id="recap_prefered_way_of_del">
+                <h4 class="">prefered way of delivery:</h4>
+                <img id="recap_prefered_way_img" />
+                <select name="recap_prefered_way_select" id="recap_prefered_way_select" data-mini="true" data-inline="true">
+                    <!-- options ... -->
+                    <!--</select>
+                <label class="recap_avg_time_label">average time of the delivery:</label>
+                <label id="recap_avg_time_display">Infinity</label>
+               -->
+                <label class="recap_adress_label">adress:</label>
+                <input type="text" name="textinput_addr" id="recap_address" placeholder="address" value="">
+                <label id="recap_adress_zipcode">Zipcode:</label>
+                <input type="text" name="textinput_zip" id="recap_zipcode" placeholder="zipcode" value="">
+                <label id="recap_adress_city">city:</label>
+                <input type="text" name="textinput_addr" id="recap_city" placeholder="city" value="">
+                <p id="address_error" style="color : red"></p>
+                    <button id="btn_recap_modify">Modify</button>
+                    <button id="btn_recap_confirm">Confirm</button>
+                </div>
+
+            </div>
+
+            <!-- notification announcement page -->
+            <div id="notification_anouncement" data-role="page">
+                <div class="ui-content">
+                    <p class="notification_anouncement_text">Thank you for ordering with our application!</p>
+                    <p class="notification_anouncement_text">We wil notify you once your order is ready!</p>
+                    <button id="btn-notification_anouncement_dashboard" onclick="window.location.href = '#'">Return to dashboard</button>
+                </div>
+            </div>
+
+            <!-- order ready -->
+            <div id="order_ready" data-role="page">
+                <h1>Order ready!</h1>
+                <div class="ui-content">
+                    <h2 class="order_ready_title">Your order is ready!</h2>
+                    <p class="order_ready_text">In order to continue and get delivered, we invite you to pay the amount for your order</p>
+                    <p id="order_ready_amount">
+
+                    </p>
+                    
+                    <button id="btn_order_ready_pay">Pay</button>
+                    <button id="btn_order_ready_cancel">Cancel</button>
+                </div>
+            </div>
+
+            <!-- order almost ready -->
+            <div id="order_almost_ready" data-role="page">
+                <h1>Order almost ready!</h1>
+                <div class="ui-content">
+                    <h2 class="order_almost_ready_title">Your order is almost ready!</h2>
+                    <p class="order_almost_ready_text">the vendor is missing these articles from your order</p>
+                    <div id="order_almost_ready_scrollpane">
+                        <ul id="order_almost_ready_list" data-role="listview" data-inset="true"></ul>
+                    </div>
+                    <label class="order_almost_ready_new_total">New Total:</label>
+                    <label class="order_almost_ready_new_amount"></label>
+                    <button id="order_almost_ready_pay">Pay</button>
+                    <button id="order_almost_ready_cancel">Cancel order</button>
+                </div>
+
+            </div>
+            <!-- payment gateaway -->
+            <div id="payment_gateway" data-role="page">
+
+                <div class="ui-content">
+                    <!-- placeholder -->
+                </div>
+
+            </div>
+            <!-- QR code -->
+            <div id="qr_code_page" data-role="page">
+
+                <div class="ui-content">
+                    <div id="qr_code_up_text">
+                        <h3 id="qr_shop_name"></h3>
+                        <h3 id="qr_deliverer_name"></h3>
+                        <h4 id="qr_order_id"></h4>
+                    </div>
+                    <p class="qr_code_text">This QR code will be scanned by the deliverer once you get your order</p>
+                    <div id="qr_code">
+
+                    </div>
+                    <h3 id="qr_order_id"></h3>
+                    <div class="qr_code_advice">
+                        <h4 class="qr_code_advice_label">Advice:</h4>
+                       <!-- <p class="qr_code_advice_text"></p>
+                    --></div>
+                    <button id="qr_code_deliverer">watch where the deliverer is</button>
+                    <button id="qr_code_open_dispute">Open a dispute</button>
+                </div>
+
+            </div>
+            <!-- deliverer position when the order is ready and confirmed by all part -->
+            <div id="deliverer_pos" data-role="page">
+                <div class="ui-content jqm-content jqm-fullwidth">
+                    <div id="deliverer_map_canvas">
+
+                    </div>
+                    <button id="btn_return_qr_code">return to QR code</button>
+
+                </div>
+            </div>
+            <!-- Optionnal: delivery rating -->
+            <div id="delivery_rating" data-role="page">
+
+                <div class="ui-content">
+                    <h2 class="delivery_rating_title">Rate your delivery!</h2>
+                    <label class="delivery_rating_time_label">Delivery time</label>
+                    <label id="delivery_rating_time"></label>
+                    <div>
+                        <h4 class="delivery_rating_deliverer_title"></h4>
+                    </div>
+                </div>
+            <div id="dispute" data-type="page">
+                <div class="ui-content">
+                    <h2>Send us a request</h2>
+                    <p>
+                        Please tell us what is your concern about your delivery.
+                        <br />
+                        The Livero team will study your submission and answer as soon as possible.
+                    </p>
+                    <input type="text" id="dispute_title" placeholder="title" />
+                    <textarea id="dispute_text" draggable="false" placeholder="explain to us here...">
+           </textarea>
+                    <button id="btn_dispute_submit">submit</button>
+                </div>
+            </div>
+        </div>
+            <!-- scripts -->
+            <!--<script src="scripts/cart.js"></script>-->
+        <script src="scripts/config.js"></script>    
+        <script src="scripts/index.js"></script>
+    </body>
+</html>
