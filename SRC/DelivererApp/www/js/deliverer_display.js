@@ -1,6 +1,6 @@
 //localStorage.setItem('server_ip', 'localhost/');
-localStorage.setItem('server_ip', '192.168.1.32/');
-//localStorage.setItem('server_ip', '192.168.43.128/');
+//localStorage.setItem('server_ip', '192.168.1.32/');
+localStorage.setItem('server_ip', '192.168.43.128/');
 localStorage.setItem('path', 'PRI/SRC/Backend/Deliverer/');
 var user_id ;
 var server_ip = localStorage.getItem('server_ip');
@@ -72,6 +72,18 @@ function display_login()
                     localStorage.setItem('user_id', res.results[0].user_id);
                     $('#panel_listview .ui-btn').removeClass('ui-state-disabled');
                     user_id = res.results[0].user_id;
+                    var phone_token = localStorage.getItem("phone_token");
+                    $.ajax(
+                        {
+                            url : "http://"+pathToServer+"add_phone_token.php",
+                            method : "post",
+                            data : {'user_id' : user_id, 'phone_token' : phone_token},
+                            dataType: "json",
+                            success: function (result) {},
+                            error: function () {}
+                        }
+                    );
+
                     $.mobile.pageContainer.pagecontainer('change','#home', {transition : 'slideup'});
                 }
                 else
@@ -96,11 +108,10 @@ function registration_normal ()
     var first = $("#first").val();
     var last = $("#last").val();
     var dob = $("#dob").val();
-    var address = $("#address").val();
     var pass = $("#password_r").val();
     var pass_com = $("#confirm_password_r").val();
     var phone = $("#phone").val();
-    if (!email.trim() ||!first.trim()||!last.trim()||!dob.trim()||!address.trim()||!pass.trim()||!pass_com.trim())
+    if (!email.trim() ||!first.trim()||!last.trim()||!dob.trim()||!pass.trim()||!pass_com.trim())
     {
 
         $("#resgitration_result").html("<span style=\"color:red;\">Please enter the required fields</span>");
@@ -404,12 +415,26 @@ function display_order_instance(content) {
                     if (order_status == 4)
                     {
                         var url = "http://"+pathToServer+"check_shop_token.php";
-                        scan(url, transaction_id, user_id, false);
+                        var is_done = scan(url, transaction_id, user_id, false);
+                        if (is_done)
+                        {
+                            var new_content = {id: transaction_id, status: 5};
+                            $.mobile.pageContainer.pagecontainer('change', '#order_instance', {
+                                content: new_content,
+                                transition: 'slideup'
+                            });
+                        }
                     }
                     else if (order_status == 5)
                     {
                         var url = "http://"+pathToServer+"check_customer_token.php";
-                        scan(url, transaction_id, user_id, true);
+                        var is_done = scan(url, transaction_id, user_id, true);
+                        if (is_done)
+                        {
+                            $.mobile.pageContainer.pagecontainer('change', '#home', {
+                                transition: 'slideup'
+                            });
+                        }
                     }
                 });
             }

@@ -11,14 +11,15 @@ function onBackKeyDown() {
 
 function onDeviceReady() {
     // Register the event listener
+
     document.addEventListener("backbutton", onBackKeyDown, true);
 
-/*  window.FirebasePlugin.getToken(function(token) {
-        alert("TOKEN:"+token);
-        localStorage.setItem("phone_token", token);
+
+     window.FirebasePlugin.getToken(function(token) {
+         localStorage.setItem("phone_token", token);
     }, function(error) {
-        localStorage.setItem("phone_token", "error");
-    });*/
+         alert("error");
+    });
 
 
     if (localStorage.getItem('user_id') === null){
