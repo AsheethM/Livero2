@@ -135,7 +135,10 @@ function send_order_to_serv(order, shop_id, price, address) {
         dataType: 'json',
         async: false,
         success: function (data) {
-            alert("Your order has been succesfully registered.");
+            if (data.success){
+				alert("Your order has been succesfully registered.");
+			}
+			
         },
 
         beforeSend: function () {
@@ -237,13 +240,13 @@ function get_order_ready(order_id) {
     var req = json;
 
     if (req.length === 1) {
-        if (order.status === 3) {
-            if (order.complete) {
-                $.mobile.pageContainer.pagecontainer('change', '#order_ready', { content: order_id, transition: 'slide' });
+        if (req.status === 3) {
+            if (req.complete) {
+                $.mobile.pageContainer.pagecontainer('change', '#order_ready', { content: req, transition: 'slide' });
             }
             else {
                 generate_list_almost_ready(order.id);
-                $.mobile.pageContainer.pagecontainer('change', '#order_almost_ready', { content: order_id, transition: 'slide' });
+                $.mobile.pageContainer.pagecontainer('change', '#order_almost_ready', { content: req, transition: 'slide' });
             }
         }
     }
@@ -264,8 +267,10 @@ function generate_necessary_link_for_order(order_id, item) {
             break;
         case 6:
             // link to recap of delivery
-            generate_link_to_recap_order(order_id);
+            generate_link_to_recap_order(order_id, item);
             break;
+        case 7:
+            generate_link_to_canceled_order(order_id, item);
     }
 }
 
@@ -332,7 +337,7 @@ function retrieve_orders_from_server() {
 function get_list_almost_ready(order_id) {
     ajax_call = $.ajax({
         //########### TMP FIELD ##########
-        url: server_ip + cus_ip + "get_order_almost_ready.php",
+        url: server_ip + cus_ip + "get_.php",
         //################################
         data: { 'transaction_id': order_id, 'client_id': customer_id },
         type: 'POST',
@@ -470,6 +475,8 @@ function translate_status_toString(order_id, status, item) {
         case 6:
             // link to recap of delivery
             return "delivered";
+        case 7:
+            return "order canceled";
     }
 }
 
@@ -551,16 +558,6 @@ function generate_list_almost_ready(order_id) {
     //  This request gets the informations about the items of the order where customer_quantity != vendor_quantity
     var req = get_list_almost_ready(order_id);
 
-    /* var item = {
-        item_id: 505,
-        item_name: 'Lays Classic',
-        item_price: 2.59,
-        item_desc: 'delicious chips',
-        item_img: '',
-        customer_quantity: 5,
-        vendor_quantity: 4
-    }; */
-
     clear_list('#order_almost_ready_list');
     $.each(req, function () {
         req_item = $(this);
@@ -591,6 +588,9 @@ function generate_order_ready_infos(content) {
         .append($('<p>').html("Total Price: " + total_price + "€"));
 }
 
+function generate_order_almost_ready_infos(content) {
+
+}
 
 /* Take a distance in metters and returns the distance wether in Km or m */
 function get_distance(d) {
@@ -831,6 +831,11 @@ function define_logout_click() {
         logout();
     });
 }
+function define_btn_notification_anouncement_dashboard(){
+    $("#btn-notification_anouncement_dashboard").off().click(function () {
+        $.mobile.pageContainer.pagecontainer('change', "#main", { content: null, transition: 'slide' });
+    });
+}
 function main_function() {
     if (panel_init === false)
         init_panel();
@@ -867,6 +872,9 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
             fill_recap_list(content);
         }
     }
+    else if (ui.toPage[0].id === 'order_almost_ready') {
+        generate_order_almost_ready_infos(content);
+    }
     else if (ui.toPage[0].id === 'order_ready') {
         generate_order_ready_infos(content);
         define_cancel_order_ready(content.order_id);
@@ -883,7 +891,9 @@ $(document).on('pagecontainerbeforechange', function (event, ui) {
     else if (ui.toPage[0].id === 'api-register') {
         register_before_display();
     }
-
+    else if (ui.toPage[0].id === 'notification_anouncement'){
+        define_btn_notification_anouncement_dashboard();
+    }
     
 });
 
@@ -959,9 +969,23 @@ function login_normal() {
     console.log(req);
     if (req.success) {
         localStorage.setItem("customer_id", req.customer_id);
+		customer_id = req.customer_id;
         if (panel_init)
             $("#top_toolbar").toolbar("option","disabled","false");
         else init_panel();
+        var phone_token = localStorage.getItem("phone_token");
+        // if it fails, cant recieve notifications
+        $.ajax(
+            {
+                url: server_ip + cus_ip + "add_phone_token.php",
+                method: "post",
+				async:false,
+                data: { 'user_id': customer_id, 'phone_token': phone_token },
+                dataType: "json",
+                success: function (result) {},
+                error: function () { }
+            }
+        );
         $.mobile.pageContainer.pagecontainer('change', '#main', { content: null, transition: 'slide' });
     }
     else {
@@ -1035,5 +1059,8 @@ function registration_normal() {
 function logout() {
     localStorage.clear();
     $("#top_toolbar").toolbar("option", "disabled", "true");
-    $.mobile.pageContainer.pagecontainer('change', '#login', { content: null, transition: 'slidedown' });
+    $.mobile.pageContainer.pagecontainer('change', '#login', {
+        transition: 'none'
+    });
+    location.reload();
 }

@@ -11,8 +11,9 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-       
-        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+        <link rel="stylesheet" href="css/livero-theme.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
         <script src="scripts/jquery-1.11.1.min.js"></script>
         <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
@@ -33,7 +34,7 @@
         <script type="text/javascript" src="scripts/index.js"></ript>
     -->
             <!-- side menu -->
-            <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="a">
+            <div data-role="panel" id="side_menu" data-position="left" data-display="overlay" data-theme="b">
                 <div class="ui-panel-inner"> 
                     <ul data-role="listview" class="ui-listview">
                         <li>
@@ -53,7 +54,7 @@
             </div>
 
             <!-- top toolbar -->
-            <div id="top_toolbar" data-role="header" data-position="fixed">
+            <div id="top_toolbar" data-role="header" data-position="fixed" class="ui-bar-b">
                 <div id="title_toolbar">
                     <h1 id="liveroo_app_title" class="ui-title"><img src="images/livero_logo_only.png" style="max-height:26px; width:26px"/>Livero</h1>
                 </div>
@@ -68,9 +69,9 @@
                 </div>
             </div>
         <!-- Login page -->
-        <div id="login" data-role="page">
+        <div id="login" data-role="page" data-theme="b">
             <div class="ui-content">
-                <h1><img src="images/logo.png" style="display:block; margin: auto"/></h1>
+                <h1><img src="images/logo.png" style="display:block; max-width: 70%; max-height:40%; margin: auto"/></h1>
                 <form action="" method="post" id="login_form">
                     <input id="login_email" type="text" name="username" class="username" placeholder="Username">
                     <input id="login_password" type="password" name="password" class="password" placeholder="Password">
@@ -81,7 +82,7 @@
             </div>
         </div>
         <!-- Register Page -->
-        <div id="api-register" data-role="page" >
+        <div id="api-register" data-role="page" data-theme="b">
             <div class="ui-content">
                     <h2>Register</h2>
                             <form>
@@ -118,7 +119,7 @@
 
             
             <!-- main app division -->
-            <div data-role="page" id="main">
+            <div data-role="page" id="main" data-theme="b">
                 <h1>Shops in your area</h1>
                 <div class="ui-content">
                     <div class="map_canvas">
@@ -130,7 +131,7 @@
             </div>
             <!--ITEMS FROM SIDE MENU-->
             <!-- all the orders by chronological order -->
-            <div data-role="page" id="orders">
+            <div data-role="page" id="orders" data-theme="b">
                 <div class="ui-content">
                     <h1>Your orders</h1>
                     <p id="sorry_no_orders"></p>
@@ -138,12 +139,12 @@
                 </div>
             </div>
             <!-- when an order has been-->
-            <div data-role="page" id="orders_recap_an_order">
+            <div data-role="page" id="orders_recap_an_order" data-theme="b">
 
             </div>
             <!--/ITEMS FROM SIDE MENU-->
             <!-- shop list of items -->
-            <div id="shop_store" data-role="page">
+            <div id="shop_store" data-role="page" data-theme="b">
                 <h1>Shop store</h1>
                 <div class="ui-content">
                     <h2 id="shop_store_name"></h2>
@@ -155,7 +156,7 @@
             </div>
 
             <!-- recap cart -->
-            <div id="recap_cart" data-role="page">
+            <div id="recap_cart" data-role="page" data-theme="b">
                 <h1>Recap</h1>
                 <div class="ui-content">
                     <h2 id="recap_shop_name"></h2>
@@ -181,23 +182,23 @@
                 <label id="recap_adress_city">city:</label>
                 <input type="text" name="textinput_addr" id="recap_city" placeholder="city" value="">
                 <p id="address_error" style="color : red"></p>
-                    <button id="btn_recap_modify">Modify</button>
                     <button id="btn_recap_confirm">Confirm</button>
+                    <button id="btn_recap_modify">Modify</button>
                 </div>
 
             </div>
 
             <!-- notification announcement page -->
-            <div id="notification_anouncement" data-role="page">
+            <div id="notification_anouncement" data-role="page" data-theme="b">
                 <div class="ui-content">
                     <p class="notification_anouncement_text">Thank you for ordering with our application!</p>
                     <p class="notification_anouncement_text">We wil notify you once your order is ready!</p>
-                    <button id="btn-notification_anouncement_dashboard" onclick="window.location.href = '#'">Return to dashboard</button>
+                    <button id="btn-notification_anouncement_dashboard" >Return to dashboard</button>
                 </div>
             </div>
 
             <!-- order ready -->
-            <div id="order_ready" data-role="page">
+            <div id="order_ready" data-role="page" data-theme="b">
                 <h1>Order ready!</h1>
                 <div class="ui-content">
                     <h2 class="order_ready_title">Your order is ready!</h2>
@@ -212,7 +213,7 @@
             </div>
 
             <!-- order almost ready -->
-            <div id="order_almost_ready" data-role="page">
+            <div id="order_almost_ready" data-role="page" data-theme="b">
                 <h1>Order almost ready!</h1>
                 <div class="ui-content">
                     <h2 class="order_almost_ready_title">Your order is almost ready!</h2>
@@ -228,7 +229,7 @@
 
             </div>
             <!-- payment gateaway -->
-            <div id="payment_gateway" data-role="page">
+            <div id="payment_gateway" data-role="page" data-theme="b">
 
                 <div class="ui-content">
                     <!-- placeholder -->
@@ -236,7 +237,7 @@
 
             </div>
             <!-- QR code -->
-            <div id="qr_code_page" data-role="page">
+            <div id="qr_code_page" data-role="page" data-theme="b">
 
                 <div class="ui-content">
                     <div id="qr_code_up_text">
@@ -259,8 +260,8 @@
 
             </div>
             <!-- deliverer position when the order is ready and confirmed by all part -->
-            <div id="deliverer_pos" data-role="page">
-                <div class="ui-content jqm-content jqm-fullwidth">
+            <div id="deliverer_pos" data-role="page" data-theme="b">
+                <div class="ui-content">
                     <div id="deliverer_map_canvas">
 
                     </div>
@@ -269,7 +270,7 @@
                 </div>
             </div>
             <!-- Optionnal: delivery rating -->
-            <div id="delivery_rating" data-role="page">
+            <div id="delivery_rating" data-role="page" data-theme="b">
 
                 <div class="ui-content">
                     <h2 class="delivery_rating_title">Rate your delivery!</h2>
@@ -279,7 +280,7 @@
                         <h4 class="delivery_rating_deliverer_title"></h4>
                     </div>
                 </div>
-            <div id="dispute" data-type="page">
+            <div id="dispute" data-type="page"  data-theme="b">
                 <div class="ui-content">
                     <h2>Send us a request</h2>
                     <p>
