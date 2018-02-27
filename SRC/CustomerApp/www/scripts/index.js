@@ -1,8 +1,8 @@
 ﻿
 var panel_init = false;
 var customer_id = localStorage.getItem('customer_id');
-var server_ip = 'http://192.168.1.58/'; //'http://localhost/'; //'http://green.projectyogisha.com/';
-var cus_ip = 'pri/src/Backend/Customer/';
+var server_ip = 'http://192.168.43.128/'//'http://green.projectyogisha.com/';
+var cus_ip = 'pri/src/backend/Customer/';
 var wto; // slidebar variable
 var vendor_item_number = 0;
 var ajax_call = null;
@@ -55,7 +55,7 @@ function get_shops_nearby(position) {
         shops.push({
             shop_id: json.id[name],
             name: json.name[name],
-            logo: json.logos[name],
+            logo: server_ip + json.logos[name],
         }
         );
     }
@@ -104,7 +104,7 @@ function retrieve_items_from_db(shop_id) {
             item_name: json.product[i].product_name,
             item_price: json.product[i].price,
             item_desc: json.product[i].description,
-            item_img: json.product[i].image
+            item_img: server_ip + json.product[i].image
         });
     }
 
@@ -323,7 +323,7 @@ function retrieve_orders_from_server() {
                         .append($('<h3>').html("Order #" + order.id))
                         .append($('<h4>').html(order.shop_name))
                         .append($('<p>').html(date))
-                        .append($('<p>').html(order.order_price + " €"))
+                        .append($('<p>').attr('class','ui-li-aside').html(order.order_price + " €"))
                         .append($('<p>').html(str)));
                 generate_necessary_link_for_order(order.id, item);
             }
@@ -423,7 +423,6 @@ function pay_order(order_id) {
         },
         timeout: 13000
     });
-    console.log(json.message);
     return json.success;
 }
 /*         !AJAX QUERY      */
@@ -501,8 +500,10 @@ function generate_link_to_order_ready(order_id, item) {
         });
         $("#btn_order_ready_pay").off().click(function () {
             res = pay_order(order_id);
+			console.log(res);
             if (res === true){
-                $.mobile.pageContainer.pagecontainer('change', '#qr_code_page', { content: order_id, transition: 'slide' });
+				alert("Thank you for paying this Order. The Deliverer has to get your order at the shop. Once it's done you will be notified.");
+                $.mobile.pageContainer.pagecontainer('change', '#main', { transition: 'slide' });
             }
             else {
                 alert("An error has occured with your payement, please try again or contact the support team.");
@@ -542,7 +543,7 @@ function load_qr_code(order_id, qr_token) {
         });
     }
     else {
-        $('#qr_code').attr('orderid', order_id).html('<img class="qr_code_img" src="' + img + '">');
+        $('#qr_code').attr('orderid', order_id).html('<img class="qr_code_img" style="margin:auto" src="' + img + '">');
     }
 }
 
