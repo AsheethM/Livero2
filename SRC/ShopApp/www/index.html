@@ -4,7 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta  name="viewport" content="width=device-width, initial-scale=1">
     <title>Livero</title>
-    <link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/livero-theme.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
     <link rel="stylesheet" href="css/index.css" />
     <script src="jquery/jquery-1.11.1.min.js"></script>
     <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
@@ -39,9 +41,9 @@
 </div>
 
 <!-- top toolbar -->
-<div class="top_toolbar" id="livero_toolbar" data-role="header" data-theme="b" data-position="fixed" >
+<div class="top_toolbar" class="ui-bar-c" id="livero_toolbar" data-role="header" data-theme="b" data-position="fixed" >
     <div id="title_toolbar">
-        <h1 id="liveroo_app_title" class="ui-title"><img src="img/mini_logo2.png"></h1>
+        <h1 id="liveroo_app_title" class="ui-title"><img src="images/livero_logo_only.png" style="max-width: 26px"></h1>
     </div>
     <div id="toolbar">
         <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
@@ -49,7 +51,7 @@
     </div>
 </div>
 
-<div data-role="page" id="login">
+<div data-role="page" data-theme="c"id="login">
     <div id="login-ui" class="ui-content">
         <h1>Welcome to livero</h1>
         <img src="img/logo.png">
@@ -62,7 +64,7 @@
     </div>
 </div>
 
-<div data-role="page" id="home">
+<div data-role="page" data-theme="c"id="home">
     <div id="home-ui" class="ui-content">
         <h1>Home</h1>
         <p>
@@ -74,7 +76,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myShop">
+<div data-role="page" data-theme="c"id="myShop">
     <div class="ui-content">
         <h1>My Shop</h1>
         <ul id="myShop_list" data-role="listview" data-inset="true">
@@ -84,7 +86,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myShop_Information">
+<div data-role="page" data-theme="c"id="myShop_Information">
     <div class="ui-content">
         <h1>My Shop Information</h1>
         <div id="div_shop_information">
@@ -101,7 +103,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myShop_schedule">
+<div data-role="page" data-theme="c"id="myShop_schedule">
     <div class="ui-content">
         <h1>My Shop Schedule</h1>
         <form>
@@ -126,7 +128,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myShop_Items">
+<div data-role="page" data-theme="c"id="myShop_Items">
     <div class="ui-content">
         <h1>My Items</h1>
         <ul id="myShop_ItemsList" data-role="listview" data-inset="true"></ul>
@@ -135,7 +137,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myShop_ItemInformation">
+<div data-role="page" data-theme="c"id="myShop_ItemInformation">
     <div class="ui-content">
         <h1>Item</h1>
         <div>
@@ -147,7 +149,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myShop_ItemAdd">
+<div data-role="page" data-theme="c"id="myShop_ItemAdd">
     <div class="ui-content">
         <h1>Item</h1>
         <div>
@@ -159,7 +161,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myOrders">
+<div data-role="page" data-theme="c"id="myOrders">
     <div class="ui-content">
         <h1>My Orders</h1>
         <ul id="myOrders_list" data-role="listview" data-inset="true">
@@ -169,7 +171,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myOrders_Newest">
+<div data-role="page" data-theme="c"id="myOrders_Newest">
     <div class="ui-content">
         <h1>Newest Orders</h1>
         <ul id="NewestOrders_list" data-role="listview" data-inset="true"></ul>
@@ -177,7 +179,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myOrders_Newest_Instance">
+<div data-role="page" data-theme="c"id="myOrders_Newest_Instance">
     <div class="ui-content">
         <h1>Order Information</h1>
         <div> <!-- Customer DIV-->
@@ -193,7 +195,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myOrders_Validated">
+<div data-role="page" data-theme="c"id="myOrders_Validated">
     <div class="ui-content">
         <h1>Validated Orders</h1>
         <ul id="ValidatedOrders_list" data-role="listview" data-inset="true"></ul>
@@ -201,7 +203,7 @@
     </div>
 </div>
 
-<div data-role="page" id="myOrders_Validated_Instance">
+<div data-role="page" data-theme="c"id="myOrders_Validated_Instance">
     <div class="ui-content">
         <h1>Order Information</h1>
         <div> <!-- Transaction DIV-->
@@ -214,7 +216,7 @@
     </div>
 </div>
 
-<div data-role="page" id="history">
+<div data-role="page" data-theme="c"id="history">
     <div class="ui-content">
         <h1>History</h1>
         <ul id="History_Orders_list" data-role="listview" data-inset="true">
@@ -223,7 +225,7 @@
     </div>
 </div>
 
-<div data-role="page" id="history_Order_Instance">
+<div data-role="page" data-theme="c"id="history_Order_Instance">
     <div class="ui-content">
         <h1>Order Information</h1>
         <div> <!-- Transaction DIV-->
@@ -235,7 +237,7 @@
     </div>
 </div>
 
-<div data-role="page" id="my_account">
+<div data-role="page" data-theme="c"id="my_account">
     <div class="ui-content">
         <h1>My Account</h1>
         <div id="div_account">
@@ -247,7 +249,7 @@
     </div>
 </div>
 
-<div data-role="page" id="settings">
+<div data-role="page" data-theme="c"id="settings">
     <div class="ui-content">
         <h1>Settings</h1>
     </div>

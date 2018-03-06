@@ -97,6 +97,7 @@ function check_customer_qrcode(url, transaction_id, deliverer_id, token)
             json = {success: false, message: "Request Get customer Token: KO"};
         }
     });
+    alert(json.message);
     return json.success;
 }
 
@@ -111,6 +112,7 @@ function check_customer_qrcode(url, transaction_id, deliverer_id, token)
  */
 function check_shop_qrcode(url, transaction_id, deliverer_id, token)
 {
+
     var json = null;
     $.ajax({
         url : url,

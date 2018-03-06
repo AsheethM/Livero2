@@ -1,7 +1,9 @@
 //localStorage.setItem('server_ip', 'localhost/');
+//localStorage.setItem('server_ip', '192.168.43.128/');
 //localStorage.setItem('server_ip', '192.168.1.32/');
-localStorage.setItem('server_ip', '192.168.43.128/');
-localStorage.setItem('path', 'PRI/SRC/Backend/Deliverer/');
+//localStorage.setItem('path', 'PRI/SRC/Backend/Deliverer/');
+localStorage.setItem('server_ip', 'green.projectyogisha.com/');
+localStorage.setItem('path','Deliverer/');
 var user_id ;
 var server_ip = localStorage.getItem('server_ip');
 var path = localStorage.getItem('path');
@@ -215,7 +217,9 @@ function generate_shops_nearby(position) {
                         .append($('<button>')
                             .attr('class', 'shop_btn ui-btn ui-icon-carat-r ui-btn-icon-right')
                             .attr('data-shopid', shops[i].shop_id.toString())
-                            .append($('<img>').attr('class', 'lvr_shop_img').attr('src', shops[i].logo))
+                            .append($('<img>').attr('class', 'lvr_shop_img')
+                                .attr('src', "http://"+server_ip+shops[i].logo)
+                                .attr('style', 'max-width:50px'))
                             .append($('<h3>').append(shops[i].name))));
                     $('.shop_btn[data-shopid="' + shops[i].shop_id.toString() + '"]').click(function () {
                         var content = {id:shops[i].shop_id.toString()};

@@ -295,7 +295,6 @@ function update_shop_quantity_on_transaction_with_product_id(url, transaction_id
         dataType: "json",
         success: function (data) {
             json = data;
-            console.log(json.message);
         },
         error: function () {
             json = {success:false, message:"* Request Update Vendor Quantity: KO"};

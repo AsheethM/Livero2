@@ -105,7 +105,6 @@ function check_customer_qrcode(url, transaction_id, deliverer_id, token)
             json = {success: false, message: "Request Get customer Token: KO"};
         }
     });
-    alert (json.message);
     return json.success;
 }
 
@@ -134,7 +133,6 @@ function check_shop_qrcode(url, transaction_id, deliverer_id, token)
             json = {success: false, message: "Request Get customer Token: KO"};
         }
     });
-    alert (json.message);
     return json.success;
 }
 
@@ -151,10 +149,8 @@ function scan(url, transaction_id, deliverer_id, is_customer)
 {
     var res = false;
     var token = "";
-    alert ("Hello");
     cordova.plugins.barcodeScanner.scan(
         function (result) {
-            alert("World");
             if(!result.cancelled)
             {
                 if(result.format == "QR_CODE")
@@ -167,11 +163,9 @@ function scan(url, transaction_id, deliverer_id, is_customer)
         function (error) {
             res = false;
             token = "error";
-            alert("Scanning failed: " + error);
         }
     );
 
-    alert('lalalalla');
     if (res)
     {
         if (is_customer)

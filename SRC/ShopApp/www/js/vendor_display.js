@@ -1,7 +1,7 @@
 //localStorage.setItem('server_ip', 'localhost/');
 //localStorage.setItem('server_ip', '192.168.43.128/');
-localStorage.setItem('server_ip', '192.168.1.32/');
-localStorage.setItem('path', 'PRI/SRC/Backend/Shop/');
+localStorage.setItem('server_ip', 'green.projectyogisha.com/');
+localStorage.setItem('path', 'Shop/');
 var user_id ;
 var server_ip = localStorage.getItem('server_ip');
 var path = localStorage.getItem('path');
@@ -106,15 +106,26 @@ function display_login() {
                     $('#panel_listview .ui-btn').removeClass('ui-state-disabled');
                     localStorage.setItem('user_id', res.results[0].user_id);
                     user_id = res.results[0].user_id;
+                    var phone_token = localStorage.getItem("phone_token");
+                    $.ajax(
+                        {
+                            url : "http://"+pathToServer+"add_phone_token.php",
+                            method : "post",
+                            data : {'user_id' : user_id, 'phone_token' : phone_token},
+                            dataType: "json",
+                            success: function (result) {},
+                            error: function () {}
+                        }
+                    );
+
                     $.mobile.pageContainer.pagecontainer('change','#home', {transition : 'slideup'});
                 }
                 else
                 {
-                    console.log(res);
+                    alert("Wrong Login or Password");
                 }
             },
             error: function () {
-                alert("Error Login");
                 console.log("* Request Get Connection: KO");
             }
         });
@@ -654,7 +665,7 @@ function display_myordersNewestInstance(content) {
                                     dataType: 'json',
 
                                     success: function (customer) {
-                                        alert("Requete réusssi");
+                                        console.log("Requete réusssi");
                                     },
                                     error: function () {
                                         console.log("* Request Update Deliverer: KO");
@@ -681,7 +692,6 @@ function display_myordersNewestInstance(content) {
 }
 
 function display_myordersValidated() {
-    alert("LALALA1");
     $("#ValidatedOrders_list").empty();
     $("#myOrders_Validated_message").empty();
 
@@ -698,9 +708,7 @@ function display_myordersValidated() {
         success: function (res) {
             if (res.success)
             {
-                alert("LALALA2");
                 if (res.isTransactions) {
-                    alert("LALALA3");
                     $.each(res.results, function (index, value) {
                         var order = value;
                         if (order.status >= 2 && order.status <= 5)

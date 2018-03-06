@@ -4,7 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta  name="viewport" content="width=device-width, initial-scale=1">
     <title>Livero</title>
-    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/livero-theme.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
     <link rel="stylesheet" href="css/index.css" />
     <script src="js/jquery-1.11.1.min.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
@@ -39,9 +41,10 @@
 	</div>
 
     <!-- top toolbar -->
-    <div class="top_toolbar" data-role="header" data-position="fixed" >
+    <div class="top_toolbar" class="ui-bar-a" data-role="header" data-position="fixed" >
         <div id="title_toolbar">
-            <h1 id="liveroo_app_title" class="ui-title"><img src="img/mini_logo2.png"></h1>
+            <h1 id="liveroo_app_title" class="ui-title">
+                <img src="images/livero_logo_only.png" style="max-width: 26px"></h1>
         </div>
 		<div id="toolbar">
             <a id="side_menu_icon" href="#side_menu" class="ui-btn ui-btn-left ui-shadow ui-corner-all ui-mini ui-icon-bars ui-btn-icon-notext"></a>
@@ -49,7 +52,7 @@
 		</div>
     </div>
 
-    <div data-role="page" id="login" >
+    <div data-role="page" data-theme="a" id="login" data-theme="a">
         <div class="ui-content">
             <h1>Welcome to livero</h1>
             <img src="img/logo.png">
@@ -64,7 +67,7 @@
         </div>
     </div>
 
-    <div data-role="page" id="api-registration" >
+    <div data-role="page" data-theme="a" id="api-registration" >
         <div class="ui-content">
             <form>      
                 <legend>E-Mail</legend>
@@ -96,7 +99,7 @@
         </div>
     </div> <!----end of registration-->
 
-    <div data-role="page" id="home">
+    <div data-role="page" data-theme="a" id="home">
         <h1>Home</h1>
         <div class="ui-content">
             <p>
@@ -109,7 +112,7 @@
     </div>
 
     <!-- Transaction Section -->
-    <div data-role="page" id="shops">
+    <div data-role="page" data-theme="a" id="shops">
         <div class="ui-content">
             <h1>Shops</h1>
             <input type="range" name="slider-fill" id="distance_value" value="0" min="0" max="100" data-highlight="true" />
@@ -119,7 +122,7 @@
         </div>
     </div>
 
-    <div data-role="page" id="shop_orders">
+    <div data-role="page" data-theme="a" id="shop_orders">
         <div class="ui-content">
             <h1>Shop Orders:</h1>
             <ul id="shop_orders_list" data-role="listview" data-inset="true">
@@ -128,7 +131,7 @@
         </div>
     </div>
 
-    <div data-role="page" id="shop_order_instance">
+    <div data-role="page" data-theme="a" id="shop_order_instance">
         <div class="ui-content">
             <div>
                 <h1>Bidding</h1>
@@ -152,7 +155,7 @@
         </div>
     </div>
 
-    <div data-role="page" id="after_bid">
+    <div data-role="page" data-theme="a" id="after_bid">
         <div class="ui-content">
             <div>
                 <p>
@@ -167,12 +170,12 @@
     <!-- Transaction Section -->
 
     <!-- Settings Section -->
-    <div data-role="page" id="settings">
+    <div data-role="page" data-theme="a" id="settings">
     </div>
     <!-- Settings Section -->
 
     <!-- Account Section -->
-    <div data-role="page" id="my_account">
+    <div data-role="page" data-theme="a" id="my_account">
         <div class="ui-content">
             <h1>My Account</h1>
             <div id="div_account">
@@ -202,7 +205,7 @@
     <!-- Account Section -->
 
     <!-- My_Orders Section -->
-    <div data-role="page" id="my_orders">
+    <div data-role="page" data-theme="a" id="my_orders">
         <div class="ui-content">
             <h1>My Orders</h1>
             <ul id="my_orders_list" data-role="listview" data-inset="true">
@@ -211,7 +214,7 @@
         </div>
     </div>
 
-    <div data-role="page" id="order_instance">
+    <div data-role="page" data-theme="a" id="order_instance">
         <div class="ui-content">
             <div>
                 <h1>Order</h1>
@@ -237,7 +240,7 @@
 
 
     <!-- History Section -->
-    <div data-role="page" id="history">
+    <div data-role="page" data-theme="a" id="history">
         <div class="ui-content">
             <h1>History</h1>
             <ul id="History_Orders_list" data-role="listview" data-inset="true">
@@ -246,7 +249,7 @@
         </div>
     </div>
 
-    <div data-role="page" id="history_Order_Instance">
+    <div data-role="page" data-theme="a" id="history_Order_Instance">
         <div class="ui-content">
             <h1>Order Information</h1>
             <div> <!-- Transaction DIV-->
